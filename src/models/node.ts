@@ -1,5 +1,3 @@
-namespace rte.models {
-    export interface Node {        
-        hasChildren():boolean;
-    }
+export default interface Node {        
+    hasChildren():boolean;
 }

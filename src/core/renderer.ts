@@ -1,10 +1,8 @@
-namespace rte.core {
-    export class Renderer {
-        constructor(){
-        }
+export default class Renderer {
+    constructor(){
+    }
 
-        render(root:Node): HTMLElement {
-            return null;
-        }
+    render(root:Node): HTMLElement {
+        return null;
     }
 }

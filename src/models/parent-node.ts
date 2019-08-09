@@ -1,13 +1,11 @@
-namespace rte.models {
-    export class ParentNode extends Node {
-        private _children:Array<Node> = [];
+export default class ParentNode extends Node {
+    private _children:Array<Node> = [];
 
-        constructor(){
-            super();
-        }
+    constructor(){
+        super();
+    }
 
-        public hasChildren():boolean{
-            return this._children.length > 0;
-        }
+    public hasChildren():boolean{
+        return this._children.length > 0;
     }
 }

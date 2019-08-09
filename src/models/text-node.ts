@@ -1,13 +1,11 @@
-namespace rte.models {
-    export class TextNode extends Node {
-        public value:string;
+export default class TextNode extends Node {
+    public value:string;
 
-        constructor(){
-            super();
-        }
+    constructor(){
+        super();
+    }
 
-        public hasChildren():boolean{
-            return false;
-        }
+    public hasChildren():boolean{
+        return false;
     }
 }
