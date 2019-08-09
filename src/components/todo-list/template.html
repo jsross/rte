@@ -1,0 +1,20 @@
+<style>
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        list-style:none;
+    }
+</style>
+
+<ul>
+${_repeat(this._todoWrappers, (wrapper) => wrapper.id, (wrapper, index) => _html`
+    <li>
+        <todo-item .value=${wrapper.model}
+                    @change=${this._handleChange_todoItem}></todo-item>
+
+        <button @click=${this._handleClick_delete.bind(this, wrapper)}>Delete</button>
+    </li>
+`)}
+</ul>
