@@ -1,13 +1,13 @@
 {
-  "name": "todo-app",
-  "version": "1.0.0",
-  "description": "Lit element example app",
+  "name": "rte",
+  "version": "0.0.0",
+  "description": "",
   "scripts": {
     "build": "npm run webpack -- --env.mode development",
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server --history-api-fallback",
-    "prod": "npm run webpack -- --env.mode production --env.presets serviceworker",
-    "dev": "npm run webpack-dev-server -- --env.mode development"
+    "serve-prod": "npm run webpack -- --env.mode production --env.presets serviceworker",
+    "serve": "npm run webpack-dev-server -- --env.mode development"
   },
   "keywords": [],
   "license": "MIT",
