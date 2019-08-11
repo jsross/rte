@@ -1,8 +1,18 @@
-export default class ParentNode extends Node {
+import RteNode from "./rte-node";
+
+export default class ParentNode implements RteNode {
     private _children:Array<Node> = [];
 
-    constructor(){
-        super();
+    get children(): Array<Node> {
+        return this._children;
+    }
+
+    public type: string;
+
+    constructor(children:Array<Node>){
+        if(children){
+            this._children = children;
+        }
     }
 
     public hasChildren():boolean{
