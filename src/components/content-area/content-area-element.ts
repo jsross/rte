@@ -8,24 +8,33 @@ export class ContentAreaElement extends LitElement {
   
   private _html: any;
   private contentContainer: HTMLElement;
+  private content: RenderResult;
 
   constructor(){
     super();
   }
 
   public setContent(content: RenderResult){
-    this.clearContent();
-    this.contentContainer.appendChild( content.root );
+    this.content = content;
+
+    if(this.contentContainer) {
+      this.clearContent();
+      this.contentContainer.appendChild( content.root );
+    }
   }
 
   public clearContent(){
-    while (this.contentContainer.firstChild) {
+    while (this.contentContainer && this.contentContainer.firstChild) {
       this.contentContainer.firstChild.remove();
     }
   }
 
   public firstUpdated(){
     this.contentContainer = this.shadowRoot.getElementById('content-container');
+
+    if(this.content) {
+      this.contentContainer.appendChild( this.content.root );
+    }
   }
 
   public render() {
@@ -34,5 +43,17 @@ export class ContentAreaElement extends LitElement {
     var result = eval(code);
 
     return result;
+  }
+
+  private _handleEvent_keydown(event:KeyboardEvent){
+    event.preventDefault();
+    var selection = this.shadowRoot.getSelection();
+
+    var node = selection.anchorNode;
+    
+    console.log(node);
+    console.log(this.content.map.has(node));
+
+    return false;
   }
 }
