@@ -1,4 +1,4 @@
-import RenderResult from '../models/render-result'
+import RenderResult from '../models/render-result';
 import RteNode from "../models/rte-node";
 import TextNode from '../models/text-node'
 import ParentNode from '../models/parent-node';
