@@ -5,7 +5,6 @@ const webpackMerge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-
 const modeConfig = env => require(`./build-utils/webpack.${env.mode}.js`)(env);
 
 const webcomponentsjs = './node_modules/@webcomponents/webcomponentsjs';
@@ -56,6 +55,7 @@ module.exports = ({ mode, presets }) => {
   return webpackMerge(
     {
       mode,
+      entry: './src/index.js',
       output: {
         filename: '[name].[chunkhash:8].js'
       },
@@ -75,7 +75,10 @@ module.exports = ({ mode, presets }) => {
           }         
         ]
       },
-      plugins
+      plugins,
+      resolve: {
+        extensions: ['.ts', '.js']
+      }
     },
     modeConfig({ mode, presets })
   );

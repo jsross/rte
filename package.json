@@ -11,6 +11,7 @@
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server --history-api-fallback"
   },
+  "main": "index.js",
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
