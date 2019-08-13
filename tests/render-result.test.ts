@@ -16,7 +16,7 @@ describe('RenderResult Tests', function() {
     describe('constructor', function(){
         it('should set properties and map', function(){
             let root = this.document.createElement('div');
-            let source = new ParentNode(null);
+            let source = new ParentNode('normal', null);
 
             let target = new RenderResult(root, source);
 
@@ -30,8 +30,8 @@ describe('RenderResult Tests', function() {
         it('should append param root as first child of root', function() {
             let root1 = this.document.createElement('div');
             let root2 = this.document.createElement('div');
-            let source1 = new ParentNode(null);
-            let source2 = new ParentNode(null);
+            let source1 = new ParentNode('normal', null);
+            let source2 = new ParentNode('normal', null);
 
             let target = new RenderResult(root1, source1);
             let child = new RenderResult(root2, source2);

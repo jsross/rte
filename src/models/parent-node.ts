@@ -9,7 +9,9 @@ export default class ParentNode implements RteNode {
 
     public type: string;
 
-    constructor(children:Array<RteNode>){
+    constructor(type: string, children:Array<RteNode>){
+        this.type = type;
+        
         if(children){
             this._children = children;
         }

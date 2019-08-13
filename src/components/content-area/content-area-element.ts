@@ -1,6 +1,7 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
 import RenderResult from '../../models/render-result'
+import ContentEvent from '../../models/content-event';
 const _html = html;
 
 @customElement('content-area')
@@ -60,7 +61,10 @@ export class ContentAreaElement extends LitElement {
     var selection = this.shadowRoot.getSelection();
 
     var node = selection.anchorNode;
-    console.log(node);
+
+    var contentEvent = new ContentEvent(node,event);
+
+    this.dispatchEvent(contentEvent);
 
     return false;
   }
