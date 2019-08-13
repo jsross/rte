@@ -6,34 +6,35 @@ const _html = html;
 @customElement('content-area')
 export class ContentAreaElement extends LitElement {
   
-  private _html: any;
+  private _html: Function;
+  private isContentContainerReady: boolean = false;
   private contentContainer: HTMLElement;
-  private content: RenderResult;
+  private content: Node[];
 
   constructor(){
     super();
   }
 
-  public setContent(content: RenderResult){
+  public setContent(content: Node[]){
     this.content = content;
 
-    if(this.contentContainer) {
-      this.clearContent();
-      this.contentContainer.appendChild( content.root );
+    if(this.isContentContainerReady) {
+      this._applyContent();
     }
   }
 
   public clearContent(){
-    while (this.contentContainer && this.contentContainer.firstChild) {
+    while (this.isContentContainerReady && this.contentContainer.firstChild) {
       this.contentContainer.firstChild.remove();
     }
   }
 
   public firstUpdated(){
     this.contentContainer = this.shadowRoot.getElementById('content-container');
+    this.isContentContainerReady = true;
 
     if(this.content) {
-      this.contentContainer.appendChild( this.content.root );
+      this._applyContent();
     }
   }
 
@@ -45,14 +46,21 @@ export class ContentAreaElement extends LitElement {
     return result;
   }
 
+  private _applyContent(){
+    this.clearContent();
+    this.content.forEach(this._appendNode.bind(this));
+  }
+
+  private _appendNode(node: Node) {
+    this.contentContainer.appendChild(node);
+  }
+
   private _handleEvent_keydown(event:KeyboardEvent){
     event.preventDefault();
     var selection = this.shadowRoot.getSelection();
 
     var node = selection.anchorNode;
-    
     console.log(node);
-    console.log(this.content.map.has(node));
 
     return false;
   }

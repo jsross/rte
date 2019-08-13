@@ -32,9 +32,9 @@ export class RteElement extends LitElement {
     return result;
   }
 
-  public firstUpdated(){
+  public firstUpdated() {
     this.contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
     var content = this.renderer.render(this.root);
-    this.contentArea.setContent(content);
+    this.contentArea.setContent([content.root]);
   }
 }
