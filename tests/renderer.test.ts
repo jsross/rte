@@ -1,4 +1,4 @@
-import Renderer from '../src/core/renderer'
+import Renderer from '../src/core/render-engine'
 
 describe('Renderer', function() {
 

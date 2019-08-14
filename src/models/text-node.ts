@@ -1,12 +1,22 @@
-import Leaf from './leaf';
+import LeafNode from './leaf-node';
 
-export default class TextNode extends Leaf {
-    public value:string;
+export default class TextNode extends LeafNode {
+    private _value:string;
+    private _styles:string[];
 
-    constructor(value:string){
+    get value(): string {
+        return this._value;
+    }
+
+    get styles(): string[] {
+        return this._styles;
+    }    
+
+    constructor(value:string, styles:string[] = null){
         super();
 
-        this.value = value;
+        this._value = value;
+        this._styles = styles;
     }
 
     public hasChildren():boolean{
