@@ -4,25 +4,46 @@ import RenderEngine from "./render-engine";
 import TextNode from "../models/text-node";
 
 export default class TextNodeRenderer {
-    public render(node: RteNode, engine: RenderEngine): RenderResult {
-        let textNode = node as TextNode;
+    
+    public render(rteNode: RteNode, engine: RenderEngine): RenderResult {
+        let rteTextNode = rteNode as TextNode;
 
-        if(textNode === null) {
+        if(rteTextNode === null) {
             throw Error('Unable to render node');
         }
 
-        var text = document.createTextNode(textNode.value);
+        var nodes:Node[] = [];
+        var map: Map<Node, RteNode> = new Map<Node, RteNode>();
 
-        if(textNode.styles === null){
-            let result = new RenderResult(text,textNode);
+        var parts = rteTextNode.value.split('\n');
+
+        parts.forEach((part, index, array) => {
+            let text = document.createTextNode(part);
+            nodes.push(text);
+            map.set(text, rteNode);
+
+            if (index < array.length - 1) { 
+                let brElement = document.createElement('br');
+                nodes.push(brElement);
+            }
+        });
+
+        if(rteTextNode.styles === null){
+            let result = new RenderResult(nodes, map);
+
             return result;
         }
 
         var span = document.createElement('span');
-        span.appendChild(text);
-        span.className = textNode.styles.join(' ');
+        map.set(span, rteNode);
 
-        let result = new RenderResult(span, node)
+        nodes.forEach((node) => {
+            span.appendChild(node);
+        });
+
+        span.className = rteTextNode.styles.join(' ');
+
+        let result = new RenderResult(span, map);
 
         return result;
 

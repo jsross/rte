@@ -24,8 +24,7 @@ export class RteElement extends LitElement {
     this.renderEngine = new RenderEngine();
     
     this.root = new DocumentNode();
-    this.root.children.push(new BlockNode([new TextNode('Hello')]));
-    this.root.children.push(new BlockNode([new TextNode('World!')]));
+    this.root.children.push(new BlockNode([new TextNode('Hello\nWorld!')]));
     this.root.children.push(new BlockNode([new TextNode('Signed, me')], ['style1', 'style2']));
   }
 
@@ -40,7 +39,8 @@ export class RteElement extends LitElement {
   public firstUpdated() {
     this.contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
     var content = this.renderEngine.render(this.root);
-    this.contentArea.setContent([content.root]);
+
+    this.contentArea.setContent(content.nodes);
     this.contentArea.addEventListener('content-event', this._handleEvent_contentEvent.bind(this));
   }
 

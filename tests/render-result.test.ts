@@ -19,26 +19,16 @@ describe('RenderResult Tests', function() {
             let root = this.document.createElement('div');
             let source = new BlockNode();
 
-            let target = new RenderResult(root, source);
+            var map: Map<Node, RteNode> = new Map<Node, RteNode>();
 
-            expect(target.root).toBe(root);
+            map.set(root, source);
+
+            let target = new RenderResult(root, map);
+
+            expect(target.map).toContain(root);
             expect(target.map.has(root)).toBe(true);
             expect(target.map.get(root)).toBe(source);
         });
     });
 
-    describe('append() function', function(){
-        it('should append param root as first child of root', function() {
-            let root1 = this.document.createElement('div');
-            let root2 = this.document.createElement('div');
-            let source1 = new BlockNode();
-            let source2 = new BlockNode();
-
-            let target = new RenderResult(root1, source1);
-            let child = new RenderResult(root2, source2);
-
-            target.append(child);
-            expect(target.root.lastChild).toBe(root2);
-        })
-    });
 });

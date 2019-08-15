@@ -11,13 +11,13 @@ export default class BlockNodeRenderer {
             throw Error('Unable to render node');
         }
 
+        var map: Map<Node, RteNode> = new Map<Node, RteNode>();
+
         var div = document.createElement('div');
         
         if(blockNode.styles){
             div.className = blockNode.styles.join(' ');
         }
-
-        var result = new RenderResult(div, blockNode);
 
         if(blockNode.hasChildren()){
             for(let index = 0; index < blockNode.children.length; index++) {
@@ -25,9 +25,17 @@ export default class BlockNodeRenderer {
 
                 var currentResult = engine.render(current);
 
-                result.append(currentResult);
+                currentResult.nodes.forEach((node) => {
+                    div.appendChild(node);                    
+                });
+
+                for (let entry of currentResult.map) {
+                    map.set(entry[0],entry[1]);
+                }
             }
         }
+
+        var result = new RenderResult(div, map);        
 
         return result;
     }

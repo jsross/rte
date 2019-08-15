@@ -7,6 +7,7 @@ import DocumentNode from "../models/document-node";
 export default class DocumentNodeRenderer {
     public render(node: RteNode, engine: RenderEngine): RenderResult {
         let documentNode = node as DocumentNode;
+        var map: Map<Node, RteNode> = new Map<Node, RteNode>();
 
         if(documentNode === null) {
             throw Error('Unable to render node');
@@ -14,17 +15,23 @@ export default class DocumentNodeRenderer {
 
         var root = document.createElement('root');
 
-        var result = new RenderResult(root, documentNode);
-
         if(documentNode.hasChildren()){
             for(let index = 0; index < documentNode.children.length; index++) {
                 var current = documentNode.children[index];
 
                 var currentResult = engine.render(current);
 
-                result.append(currentResult);
+                currentResult.nodes.forEach((node) => {
+                    root.appendChild(node);                    
+                });
+
+                for (let entry of currentResult.map) {
+                    map.set(entry[0],entry[1]);
+                }
             }
         }
+
+        var result = new RenderResult(root, map);
 
         return result;
     }

@@ -1,19 +1,17 @@
 import RteNode from "./rte-node";
 
 export default class RenderResult {
-    public root: Node;
+    public nodes: Node[];
     public map : Map<Node, RteNode> = new Map<Node, RteNode>();
 
-    constructor(root: Node, source: RteNode){
-        this.root = root;
-        this.map.set(root, source);
-    }
-
-    public append(child: RenderResult){
-        this.root.appendChild(child.root);
-
-        for (let entry of child.map) {
-            this.map.set(entry[0],entry[1]);
+    constructor(rendered: Node | Node[], map: Map<Node, RteNode>){
+        if(rendered instanceof Node){
+            this.nodes = [rendered as Node];
         }
+        else {
+            this.nodes = rendered as Node[];
+        }
+
+        this.map = map;
     }
 }
