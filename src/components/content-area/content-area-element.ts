@@ -1,7 +1,5 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
-import RenderResult from '../../models/render-result'
-import ContentEvent from '../../models/content-event';
 const _html = html;
 
 @customElement('content-area')
@@ -47,6 +45,10 @@ export class ContentAreaElement extends LitElement {
     return result;
   }
 
+  public getSelection(): Selection{
+    return this.shadowRoot.getSelection();
+  }
+
   private _applyContent(){
     this.clearContent();
     this.content.forEach(this._appendNode.bind(this));
@@ -56,16 +58,4 @@ export class ContentAreaElement extends LitElement {
     this.contentContainer.appendChild(node);
   }
 
-  private _handleEvent_keydown(event:KeyboardEvent){
-    event.preventDefault();
-    var selection = this.shadowRoot.getSelection();
-
-    var node = selection.anchorNode;
-
-    var contentEvent = new ContentEvent(node,event);
-
-    this.dispatchEvent(contentEvent);
-
-    return false;
-  }
 }

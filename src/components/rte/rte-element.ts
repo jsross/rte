@@ -4,7 +4,6 @@ import {ContentAreaElement} from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
 import ParentNode from '../../models/parent-node'
 import TextNode from '../../models/text-node';
-import ContentEvent from '../../models/content-event';
 import DocumentNode from '../../models/document-node';
 import BlockNode from '../../models/block-node';
 const _html = html;
@@ -41,10 +40,11 @@ export class RteElement extends LitElement {
     var content = this.renderEngine.render(this.root);
 
     this.contentArea.setContent(content.nodes);
-    this.contentArea.addEventListener('content-event', this._handleEvent_contentEvent.bind(this));
   }
 
-  private _handleEvent_contentEvent(event: ContentEvent) {
+  private _handleEvent_keydown(event: KeyboardEvent){
+    event.preventDefault();
     console.log(event);
   }
+
 }
