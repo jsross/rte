@@ -1,5 +1,5 @@
 <style>
-    :host{
+    #wrapper{
         position:relative;
     }
 
@@ -15,5 +15,9 @@
         height: 100%; 
     }
 </style>
-<canvas id='overlay'></canvas>
-<div id='content-container' tabindex="0"></div>
+<div id='wrapper'>
+    <canvas id='overlay'></canvas>
+    <div id='content-container'
+         tabindex="0"
+         @click='${this._handleClick_contentContainer}'/>     
+</div>

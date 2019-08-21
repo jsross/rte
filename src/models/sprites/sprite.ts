@@ -16,6 +16,7 @@ export default abstract class Sprite {
     abstract get height(): number;
 
     constructor(context:CanvasRenderingContext2D, x:number, y:number){
+        this._context = context;
         this._x = x;
         this._y = y;
     }
