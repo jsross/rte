@@ -8,6 +8,7 @@ export class ContentAreaElement extends LitElement {
   private _html: Function;
   private isContentContainerReady: boolean = false;
   private contentContainer: HTMLElement;
+  private overlay: HTMLCanvasElement;
   private content: Node[];
 
   constructor(){
@@ -30,7 +31,10 @@ export class ContentAreaElement extends LitElement {
 
   public firstUpdated(){
     this.contentContainer = this.shadowRoot.getElementById('content-container');
+    this.overlay = this.shadowRoot.getElementById('overlay') as HTMLCanvasElement;
     this.isContentContainerReady = true;
+
+    this.overlay.getContext('2d');
 
     if(this.content) {
       this._applyContent();
