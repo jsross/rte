@@ -1,7 +1,9 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
+import Sprite from '../../models/sprites/sprite';
 import CaretSprite from '../../models/sprites/caret-sprite';
 import ResizeObserver from 'resize-observer-polyfill';
+import CircleSprite from '../../models/sprites/circle-sprite';
 const _html = html;
 
 @customElement('content-area')
@@ -12,7 +14,8 @@ export class ContentAreaElement extends LitElement {
   private contentContainer: HTMLDivElement;
   private overlay: HTMLCanvasElement;
   private content: Node[];
-  private caret: CaretSprite = null;
+  private sprites: Array<Sprite> = [];
+  private circleSprite: CircleSprite; 
   private resizeObserver:ResizeObserver;
 
   constructor(){
@@ -46,6 +49,11 @@ export class ContentAreaElement extends LitElement {
     if(this.content) {
       this._applyContent();
     }
+    
+    var context = this.overlay.getContext('2d');
+
+    this.circleSprite = new CircleSprite(context, 0, 0, 10);
+    this.sprites.push(this.circleSprite);
   }
 
   public render() {
@@ -60,26 +68,33 @@ export class ContentAreaElement extends LitElement {
     var entry = entries[0];
     this.overlay.width = entry.contentRect.width;
     this.overlay.height = entry.contentRect.height;
+
+    this.sprites.forEach((sprite) => {
+      if(sprite.isRendered){
+        sprite.clear();
+        sprite.render();
+      }
+    });
   }
  
   private _handlePromise_updateComplete():void{
     this.overlay.width = this.contentContainer.clientWidth;
-    this.overlay.height = this.contentContainer.clientHeight;
-
-    if(this.caret) {
-      this.caret.clear();
-      this.caret.render();
-    }
+    this.overlay.height = this.contentContainer.clientHeight;    
   }
 
   private _handleClick_contentContainer(event: MouseEvent){
-    if(this.caret === null){
-      var overlayContext = this.overlay.getContext('2d');
+    var selection = this.getSelection();
+    var position = selection.getRangeAt(0).getBoundingClientRect();
 
-      this.caret = new CaretSprite(overlayContext, 10,0);
-    }
+    console.log(position);
 
-    this.caret.render(event.x, event.y);
+    this.circleSprite.update(position.left, position.top); 
+    
+    this._renderSpites();
+  }
+
+  public _renderSpites(){
+    this.sprites.forEach((sprite) => sprite.render());
   }
 
   public getSelection(): Selection{
