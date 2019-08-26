@@ -30,7 +30,7 @@ export default abstract class Sprite {
         this._y = 0;
     }
 
-    public update(x:number, y:number) {
+    public update(x:number, y:number, ...params:any) {
         this._x = x;
         this._y = y;
 
