@@ -13,7 +13,7 @@ export default class DocumentNodeRenderer {
             throw Error('Unable to render node');
         }
 
-        var root = document.createElement('root');
+        var nodes: Array<Node> = [];
 
         if(documentNode.hasChildren()){
             for(let index = 0; index < documentNode.children.length; index++) {
@@ -22,7 +22,7 @@ export default class DocumentNodeRenderer {
                 var currentResult = engine.render(current);
 
                 currentResult.nodes.forEach((node) => {
-                    root.appendChild(node);                    
+                    nodes.push(node);                    
                 });
 
                 for (let entry of currentResult.map) {
@@ -31,7 +31,7 @@ export default class DocumentNodeRenderer {
             }
         }
 
-        var result = new RenderResult(root, map);
+        var result = new RenderResult(nodes, map);
 
         return result;
     }
