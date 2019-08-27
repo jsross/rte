@@ -3,7 +3,7 @@ import * as view from "./template.html";
 import Sprite from '../../models/sprites/sprite';
 import CaretSprite from '../../models/sprites/caret-sprite';
 import ResizeObserver from 'resize-observer-polyfill';
-import CircleSprite from '../../models/sprites/circle-sprite';
+import RectangleSprite from '../../models/sprites/rectangle-sprite';
 const _html = html;
 
 @customElement('content-area')
@@ -15,8 +15,10 @@ export class ContentAreaElement extends LitElement {
   private overlay: HTMLCanvasElement;
   private content: Node[];
   private sprites: Array<Sprite> = [];
-  private circleSprite: CircleSprite; 
+  private rectangleSprite: RectangleSprite;
   private resizeObserver:ResizeObserver;
+  private _offset_x: number;
+  private _offset_y: number;
 
   constructor(){
     super();  
@@ -52,8 +54,8 @@ export class ContentAreaElement extends LitElement {
     
     var context = this.overlay.getContext('2d');
 
-    this.circleSprite = new CircleSprite(context, 0, 0, 10);
-    this.sprites.push(this.circleSprite);
+    this.rectangleSprite = new RectangleSprite(context, 0, 0, 0, 0);
+    this.sprites.push(this.rectangleSprite);
   }
 
   public render() {
@@ -68,6 +70,11 @@ export class ContentAreaElement extends LitElement {
     var entry = entries[0];
     this.overlay.width = entry.contentRect.width;
     this.overlay.height = entry.contentRect.height;
+    var targetRect = entry.target.getBoundingClientRect() as DOMRect;
+    this._offset_x = targetRect.x;
+    this._offset_y = targetRect.y;
+
+    this.sprites.push(new RectangleSprite(this.overlay.getContext("2d"), 0, 0, this.overlay.width, this.overlay.height));
 
     this.sprites.forEach((sprite) => {
       if(sprite.isRendered){
@@ -84,11 +91,13 @@ export class ContentAreaElement extends LitElement {
 
   private _handleClick_contentContainer(event: MouseEvent){
     var selection = this.getSelection();
-    var position = selection.getRangeAt(0).getBoundingClientRect();
+    var selectedNode = selection.getRangeAt(0);
+    //selectedNode.collapse(true);
+    var position = selectedNode.getBoundingClientRect();
 
     console.log(position);
 
-    this.circleSprite.update(position.left, position.top); 
+    this.rectangleSprite.update(position.left - this._offset_x, position.top - this._offset_y, position.width, position.height); 
     
     this._renderSpites();
   }
