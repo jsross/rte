@@ -1,58 +1,52 @@
+import {Update} from './update';
+
 export default abstract class Sprite { 
 
-    protected _context: CanvasRenderingContext2D;
-    protected _x:number;
-    protected _y:number;
-    protected _isUpdated: boolean;
-    
-    private _isRendered: boolean;
-    
-    get x(): number {
-        return this._x;
-    }
-
-    get y(): number {
-        return this._y;
-    }
+    protected _context: CanvasRenderingContext2D = null;
+    private _isRendered: boolean = false;
+    protected _update: Update = null;
+    protected _x: number = 0;
+    protected _y: number = 0;
+    protected _width: number = 0;
+    protected _height: number = 0;
 
     get isRendered():boolean {
         return this._isRendered;
     }
 
-    abstract get width(): number;
-    abstract get height(): number;
-
     constructor(context:CanvasRenderingContext2D,
                 x:number,
                 y:number){
         this._context = context;
-        this._x = 0;
-        this._y = 0;
-    }
-
-    public update(x:number, y:number, ...params:any) {
         this._x = x;
         this._y = y;
+    }
 
-        this._isUpdated = true;
+    public scheduleUpdate(update: Update) {
+        this._update = update;
     }
 
     public render(): void {
-        if(this._isRendered && !this._isUpdated) {
+        if(this._isRendered && this._update == null) {
             return;
         }
-        else if(this._isRendered && this._isUpdated){
+        else if(this._isRendered && this._update != null){
             this.clear();
         }
 
-        this._isRendered = true;
-        this._isUpdated = false;
-
+        if(this._update != null){
+            this._x = this._update.x;
+            this._y = this._update.y;
+        }
+        
         this._draw();
+        
+        this._isRendered = true;
+        this._update = null;
     }
 
     public clear():void {  
-        this._context.clearRect(this.x, this.y, this.width, this.height);
+        this._context.clearRect(this._x, this._y, this._width, this._height);
         this._isRendered = false;
     };
 

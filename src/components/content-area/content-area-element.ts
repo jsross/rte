@@ -1,9 +1,9 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
 import Sprite from '../../models/sprites/sprite';
-import CaretSprite from '../../models/sprites/caret-sprite';
 import ResizeObserver from 'resize-observer-polyfill';
 import RectangleSprite from '../../models/sprites/rectangle-sprite';
+import { Update } from '../../models/sprites/update';
 const _html = html;
 
 @customElement('content-area')
@@ -54,7 +54,7 @@ export class ContentAreaElement extends LitElement {
     
     var context = this.overlay.getContext('2d');
 
-    this.rectangleSprite = new RectangleSprite(context, 0, 0, 0, 0);
+    this.rectangleSprite = new RectangleSprite(context, 0, 0, 1, 10);
     this.sprites.push(this.rectangleSprite);
   }
 
@@ -73,8 +73,6 @@ export class ContentAreaElement extends LitElement {
     var targetRect = entry.target.getBoundingClientRect() as DOMRect;
     this._offset_x = targetRect.x;
     this._offset_y = targetRect.y;
-
-    this.sprites.push(new RectangleSprite(this.overlay.getContext("2d"), 0, 0, this.overlay.width, this.overlay.height));
 
     this.sprites.forEach((sprite) => {
       if(sprite.isRendered){
@@ -95,9 +93,10 @@ export class ContentAreaElement extends LitElement {
     //selectedNode.collapse(true);
     var position = selectedNode.getBoundingClientRect();
 
-    console.log(position);
+    var update: Update = {x: position.left - this._offset_x,
+                          y: position.top - this._offset_y};
 
-    this.rectangleSprite.update(position.left - this._offset_x, position.top - this._offset_y, position.width, position.height); 
+    this.rectangleSprite.scheduleUpdate(update);
     
     this._renderSpites();
   }
