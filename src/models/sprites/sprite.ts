@@ -14,9 +14,9 @@ export default abstract class Sprite {
         return this._isRendered;
     }
 
-    constructor(context:CanvasRenderingContext2D,
-                x:number,
-                y:number){
+    protected constructor(context:CanvasRenderingContext2D,
+                          x:number,
+                          y:number){
         this._context = context;
         this._x = x;
         this._y = y;
