@@ -1,7 +1,6 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
 import ResizeObserver from 'resize-observer-polyfill';
-import { Update } from '../../models/sprites/update';
 import { OverlayElement } from '../overlay/overlay-element';
 import { CaretSprite, CaretUpdate } from '../../models/sprites/caret-sprite';
 const _html = html;
@@ -62,8 +61,14 @@ export class ContentAreaElement extends LitElement {
     var entry = entries[0];
     var targetRect = entry.target.getBoundingClientRect() as DOMRect;
     this._offset_x = targetRect.x;
-    this._offset_y = targetRect.y;
-    
+    this._offset_y = targetRect.y;    
+  }
+
+  private _handleBlur_contentContainer(event: Event){
+    if(this.caretSprite) {
+      this.overlay.removeSprite(this.caretSprite);
+      this.caretSprite = null;
+    }
   }
 
   private _handleClick_contentContainer(event: MouseEvent){

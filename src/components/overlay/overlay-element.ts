@@ -33,7 +33,19 @@ export class OverlayElement extends LitElement {
 
     this._isAnimationInProgress = true;
     window.requestAnimationFrame(this._handleAnimationFrame.bind(this));
-  } 
+  }
+  
+  public removeSprite(sprite:Sprite) {
+    var index = this._sprites.indexOf(sprite);
+
+    if(index < 0){
+      throw 'Not found';
+    }
+
+    this._sprites.splice(index,1);
+
+    sprite.clear();
+  }
 
   public render() {
     return html`<canvas id='canvas'></canvas>`;
