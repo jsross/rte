@@ -1,6 +1,6 @@
 import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
-import Sprite from '../../models/sprites/sprite';
+import Sprite from './models/sprite';
 import ResizeObserver from 'resize-observer-polyfill';
 
 @customElement('sprite-overlay')

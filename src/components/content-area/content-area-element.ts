@@ -2,7 +2,7 @@ import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
 import ResizeObserver from 'resize-observer-polyfill';
 import { OverlayElement } from '../overlay/overlay-element';
-import { CaretSprite, CaretUpdate } from '../../models/sprites/caret-sprite';
+import { CaretSprite, CaretUpdate } from '../overlay/models/caret-sprite';
 const _html = html;
 
 @customElement('content-area')

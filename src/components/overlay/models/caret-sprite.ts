@@ -1,7 +1,7 @@
 import Sprite from './sprite';
 import { Update } from './update';
-import {ColorValue} from '../color-value';
-import { OverlayElement } from '../../components/overlay/overlay-element';
+import {ColorValue} from './color-value';
+import { OverlayElement } from '../overlay-element';
 
 export class CaretSprite extends Sprite {
     
@@ -70,7 +70,7 @@ export class CaretUpdate implements Update {
     stroke: number;
 }
 
-declare module '../../components/overlay/overlay-element' {
+declare module '../overlay-element' {
     interface OverlayElement {
         addCaretSprite():CaretSprite;
     }
