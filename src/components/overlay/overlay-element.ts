@@ -55,15 +55,11 @@ export class OverlayElement extends LitElement {
   }
 
   private _handleAnimationFrame(timestamp:number) {
-    this._renderSpites();
+    this._sprites.forEach((sprite) => sprite.render(timestamp));
 
     if(this._isAnimationInProgress) {
       window.requestAnimationFrame(this._handleAnimationFrame.bind(this));
     }
-  }
-
-  public _renderSpites(){
-    this._sprites.forEach((sprite) => sprite.render());
   }
 
   public getSelection(): Selection{

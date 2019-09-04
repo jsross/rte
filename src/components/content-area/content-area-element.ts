@@ -1,10 +1,9 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import * as view from "./template.html";
-import Sprite from '../../models/sprites/sprite';
 import ResizeObserver from 'resize-observer-polyfill';
-import RectangleSprite from '../../models/sprites/rectangle-sprite';
 import { Update } from '../../models/sprites/update';
 import { OverlayElement } from '../overlay/overlay-element';
+import { CaretSprite, CaretUpdate } from '../../models/sprites/caret-sprite';
 const _html = html;
 
 @customElement('content-area')
@@ -15,7 +14,7 @@ export class ContentAreaElement extends LitElement {
   private contentContainer: HTMLDivElement;
   private overlay: OverlayElement;
   private content: Node[];
-  private rectangleSprite: RectangleSprite = null;
+  private caretSprite: CaretSprite = null;
   private resizeObserver:ResizeObserver;
   private _offset_x: number;
   private _offset_y: number;
@@ -48,9 +47,7 @@ export class ContentAreaElement extends LitElement {
 
     if(this.content) {
       this._applyContent();
-    }
-
-    
+    }    
   }
 
   public render() {
@@ -77,14 +74,13 @@ export class ContentAreaElement extends LitElement {
     var x = position.left - this._offset_x;
     var y = position.top - this._offset_y;
 
-    if(this.rectangleSprite == null) {
-      this.rectangleSprite = this.overlay.addRectangleSprite(x,y,3,position.height);
+    if(this.caretSprite == null) {
+      this.caretSprite = this.overlay.addCaretSprite();
     }
-    else {
-      var update: Update = {x: x, y: y};
 
-      this.rectangleSprite.scheduleUpdate(update);
-    }
+    var update: CaretUpdate = {x: x, y: y, lineHeight: position.height, stroke: 2};
+
+    this.caretSprite.scheduleUpdate(update);
 
     this.overlay.start();    
   }
