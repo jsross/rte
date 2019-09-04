@@ -7,6 +7,10 @@ export class CaretSprite extends Sprite {
     
     private _stroke:number;
     private _lineHeight:number;
+    private _blinkFrequency:number = 500;
+    private _isOn:boolean = false;
+
+    private _colorValue: ColorValue = new ColorValue(0,0,0,1);
 
     constructor(context:CanvasRenderingContext2D){
         super(context);
@@ -15,28 +19,34 @@ export class CaretSprite extends Sprite {
     public render(timestamp: number): void {
         var update = this._updateQueue.pop() as CaretUpdate;
 
-        if(update === undefined) {
-            return;
-        }
-
-        if(this.isRendered) {
+        if(update && this.isRendered) {
             this.clear();
             this._isRendered = false;
         }
 
-        this._x = update.x;
-        this._y = update.y;
-        this._stroke = update.stroke;
-        this._lineHeight = update.lineHeight;
+        if(update) {
+            this._x = update.x;
+            this._y = update.y;
+            this._stroke = update.stroke;
+            this._lineHeight = update.lineHeight;
+        }
 
-        var colorValue = new ColorValue(0,0,0,1);
+        var shouldBeOn = Math.floor(timestamp / this._blinkFrequency) % 2 === 0;
 
-        this._draw(this._x, this._y, this._stroke, this._lineHeight, colorValue);
+        if(!this._isOn && shouldBeOn){
+            this._draw(this._x, this._y, this._stroke, this._lineHeight, this._colorValue);
+            this._isOn = true;
+        }
+        else if(this._isOn && !shouldBeOn) {
+            this.clear();
+            this._isOn = false;
+        }
+        
         this._isRendered = true;
     }
 
     public clear(): void {
-        this._context.clearRect(this._x - this._stroke / 2, this._y, this._stroke, this._lineHeight);
+        this._context.clearRect(this._x - this._stroke, this._y, this._stroke * 2, this._lineHeight);
     }
 
     private _draw(x:number, y:number, stroke: number, lineHeight: number, color:ColorValue): void {
