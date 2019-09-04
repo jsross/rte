@@ -78,7 +78,7 @@ export class ContentAreaElement extends LitElement {
       this.caretSprite = this.overlay.addCaretSprite();
     }
 
-    var update: CaretUpdate = {x: x, y: y, lineHeight: position.height, stroke: 2};
+    var update: CaretUpdate = {x: x, y: y, timeStamp: event.timeStamp, lineHeight: position.height, stroke: 2};
 
     this.caretSprite.scheduleUpdate(update);
 

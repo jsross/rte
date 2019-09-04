@@ -7,6 +7,7 @@ export class CaretSprite extends Sprite {
     
     private _stroke:number;
     private _lineHeight:number;
+    private _blinkOffset:number = 0;
     private _blinkFrequency:number = 500;
     private _isOn:boolean = false;
 
@@ -21,6 +22,7 @@ export class CaretSprite extends Sprite {
 
         if(update && this.isRendered) {
             this.clear();
+            this._isOn = false;
             this._isRendered = false;
         }
 
@@ -29,9 +31,10 @@ export class CaretSprite extends Sprite {
             this._y = update.y;
             this._stroke = update.stroke;
             this._lineHeight = update.lineHeight;
+            this._blinkOffset = timestamp - update.timeStamp;
         }
 
-        var shouldBeOn = Math.floor(timestamp / this._blinkFrequency) % 2 === 0;
+        var shouldBeOn = Math.floor((timestamp - this._blinkOffset)/ this._blinkFrequency) % 2 === 0;
 
         if(!this._isOn && shouldBeOn){
             this._draw(this._x, this._y, this._stroke, this._lineHeight, this._colorValue);
@@ -62,6 +65,7 @@ export class CaretSprite extends Sprite {
 export class CaretUpdate implements Update {
     x: number;
     y: number;
+    timeStamp:number;
     lineHeight: number;
     stroke: number;
 }
