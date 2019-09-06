@@ -27,6 +27,7 @@ export class ContentAreaElement extends LitElement {
     }
 
     this.addEventListener("focusin",this._handleFocus.bind(this));
+    document.addEventListener('selectionchange', this._handleEvent_selectionChange.bind(this));
   }
 
   public setContent(content: Node[]){
@@ -50,8 +51,13 @@ export class ContentAreaElement extends LitElement {
     this._offset_y = targetRect.y;   
   }
 
-  private _handleFocus(event: Event){
+  private _handleEvent_selectionChange(event: Event) {
     var selection = this.getSelection();
+
+    if(!selection.anchorNode){
+      return;
+    }
+
     var selectedNode = selection.getRangeAt(0);
     var position = selectedNode.getBoundingClientRect();
 
@@ -68,6 +74,8 @@ export class ContentAreaElement extends LitElement {
     this.dispatchEvent(toDispatch);
   }
 
+  private _handleFocus(event: Event){ }
+
   public getSelection(): Selection{
     return this.shadowRoot.getSelection();
   }
@@ -75,5 +83,14 @@ export class ContentAreaElement extends LitElement {
   private _appendNode(node: Node) {
     this.shadowRoot.appendChild(node);
   }
+
+  private _isDescendant(node:Node){
+    for (; node; node = node.parentNode) {
+        if (node === this) {
+            return true;
+        }
+    }
+    return false;
+}
 
 }

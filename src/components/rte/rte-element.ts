@@ -1,4 +1,4 @@
-import { LitElement, html, customElement, property } from 'lit-element';
+import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
 import {ContentAreaElement} from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
@@ -21,6 +21,26 @@ export class RteElement extends LitElement {
   private root: DocumentNode;
 
   private caretSprite:CaretSprite;
+
+  static get styles() {
+    return [ css`
+    :host { 
+      display: block;
+      position:relative;
+    }
+
+    #overlay {
+      width: 100%;
+      height: 100%;
+      position:absolute;
+      pointer-events: none;
+    }
+
+    #content-area {
+        width: 100%;
+        height: 100%; 
+    }`];
+  }
 
   constructor(){
     super();
@@ -71,6 +91,8 @@ export class RteElement extends LitElement {
                               };
 
     this.caretSprite.scheduleUpdate(update);
+
+    this.overlay.start();
   }
 
 }
