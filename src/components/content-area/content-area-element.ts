@@ -8,9 +8,6 @@ import { CaretSprite, CaretUpdate } from '../overlay/models/caret-sprite';
 export class ContentAreaElement extends LitElement {
   
   private _content: Node[];
-  private _resizeObserver:ResizeObserver;
-  private _offset_x: number;
-  private _offset_y: number;
 
   static get styles() {
     return [ css`:host { display: block; }`];
@@ -18,9 +15,6 @@ export class ContentAreaElement extends LitElement {
 
   constructor(){
     super();  
-    
-    this._resizeObserver = new ResizeObserver(this._handleNotify_resizeObserver.bind(this));
-    this._resizeObserver.observe(this);
 
     if(!this.attributes.getNamedItem("tabindex")) {
       this.tabIndex = 0;  
@@ -44,14 +38,12 @@ export class ContentAreaElement extends LitElement {
     }
   }
 
-  private _handleNotify_resizeObserver(entries:Array<ResizeObserverEntry>, observer:ResizeObserver):void{
-    var entry = entries[0];
-    var targetRect = entry.target.getBoundingClientRect() as DOMRect;
-    this._offset_x = targetRect.x;
-    this._offset_y = targetRect.y;   
-  }
-
   private _handleEvent_selectionChange(event: Event) {
+
+    var rect = this.getBoundingClientRect() as DOMRect;
+    var offsetX = rect.x;
+    var offsetY = rect.y;
+
     var selection = this.getSelection();
 
     if(!selection.anchorNode){
@@ -65,8 +57,8 @@ export class ContentAreaElement extends LitElement {
       x: position.left,
       y: position.top,
       height: position.height,
-      relativeX: position.left - this._offset_x,
-      relativeY: position.top - this._offset_y
+      relativeX: position.left - offsetX,
+      relativeY: position.top - offsetY
     }
 
     var toDispatch = new CustomEvent('caret-update',{detail:detail});
