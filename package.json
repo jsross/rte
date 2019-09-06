@@ -9,7 +9,7 @@
     "test": "jasmine-ts --config=jasmine.json",
     "testWithCoverage": "nyc -r text -e .ts -x \"tests/*.test.ts\" jasmine-ts --config=jasmine.json",
     "webpack": "webpack",
-    "webpack-dev-server": "webpack-dev-server --history-api-fallback"
+    "webpack-dev-server": "webpack-dev-server --history-api-fallback --port 8770"
   },
   "main": "index.js",
   "keywords": [],
