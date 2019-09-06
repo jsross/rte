@@ -13,8 +13,8 @@ export class OverlayElement extends LitElement {
 
   constructor(){
     super();
-    this._resizeObserver = new ResizeObserver(this._handleNotify_resizeObserver.bind(this));
-    this._resizeObserver.observe(this.shadowRoot.host);
+
+    this._resizeObserver = new ResizeObserver(this._handleNotify_resizeObserver.bind(this));    
   }
 
   static get styles() {
@@ -24,6 +24,8 @@ export class OverlayElement extends LitElement {
   public firstUpdated(){
     this._canvas = this.shadowRoot.getElementById('canvas') as HTMLCanvasElement;
     this._context = this._canvas.getContext('2d');
+
+    this._resizeObserver.observe(this._canvas);
   }
 
   public start() {
