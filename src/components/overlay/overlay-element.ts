@@ -28,14 +28,11 @@ export class OverlayElement extends LitElement {
     this._resizeObserver.observe(this._canvas);
   }
 
-  public start() {
-    if(this._isAnimationInProgress) {
-      return;
-    }
-
-    this._isAnimationInProgress = true;
-    window.requestAnimationFrame(this._handleAnimationFrame.bind(this));
+  public getSelection(): Selection{
+    return this.shadowRoot.getSelection();
   }
+
+
   
   public removeSprite(sprite:Sprite) {
     var index = this._sprites.indexOf(sprite);
@@ -51,6 +48,21 @@ export class OverlayElement extends LitElement {
 
   public render() {
     return html`<canvas id='canvas'></canvas>`;
+  }
+
+  public start() {
+    if(this._isAnimationInProgress) {
+      return;
+    }
+
+    this._isAnimationInProgress = true;
+    window.requestAnimationFrame(this._handleAnimationFrame.bind(this));
+  }
+
+  public updateNow(){
+    var timestamp = Date.now();
+    
+    this._sprites.forEach((sprite) => sprite.render(timestamp));
   }
 
   private _handleNotify_resizeObserver(entries:Array<ResizeObserverEntry>, observer:ResizeObserver):void{
@@ -76,8 +88,6 @@ export class OverlayElement extends LitElement {
     }
   }
 
-  public getSelection(): Selection{
-    return this.shadowRoot.getSelection();
-  }
+
 
 }

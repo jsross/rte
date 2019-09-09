@@ -69,11 +69,12 @@ export class RteElement extends LitElement {
 
     this.contentArea.addEventListener('caret-update', this._handleEvent_caret_update.bind(this));
 
-    //this.overlay.start();
+    this.overlay.start();
   }
 
   private _handleEvent_keydown(event: KeyboardEvent){
     event.preventDefault();
+    
     console.log(event);
   }
 
@@ -92,7 +93,7 @@ export class RteElement extends LitElement {
 
     this.caretSprite.scheduleUpdate(update);
 
-    this.overlay.start();
+    this.overlay.updateNow();
   }
 
 }
