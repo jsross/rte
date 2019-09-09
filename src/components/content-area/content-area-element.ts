@@ -3,11 +3,13 @@ import * as view from "./template.html";
 import ResizeObserver from 'resize-observer-polyfill';
 import { OverlayElement } from '../overlay/overlay-element';
 import { CaretSprite, CaretUpdate } from '../overlay/models/caret-sprite';
+import { Caret } from './models/caret';
 
 @customElement('content-area')
 export class ContentAreaElement extends LitElement {
   
   private _content: Node[];
+  private _caret: Caret;
 
   static get styles() {
     return [ css`:host { display: block; }`];
@@ -39,29 +41,33 @@ export class ContentAreaElement extends LitElement {
   }
 
   private _handleEvent_selectionChange(event: Event) {
-
-    var rect = this.getBoundingClientRect() as DOMRect;
-    var offsetX = rect.x;
-    var offsetY = rect.y;
-
     var selection = this.getSelection();
 
     if(!selection.anchorNode){
-      return;
+      if(this._caret == null) {
+        return;
+      }
+      
+      this._caret = null;
+    }
+    else {
+      var rect = this.getBoundingClientRect() as DOMRect;
+      var offsetX = rect.x;
+      var offsetY = rect.y;
+
+      var selectedNode = selection.getRangeAt(0);
+      var position = selectedNode.getBoundingClientRect();
+
+      this._caret = {
+        x: position.left,
+        y: position.top,
+        height: position.height,
+        relativeX: position.left - offsetX,
+        relativeY: position.top - offsetY
+      }
     }
 
-    var selectedNode = selection.getRangeAt(0);
-    var position = selectedNode.getBoundingClientRect();
-
-    var detail = {
-      x: position.left,
-      y: position.top,
-      height: position.height,
-      relativeX: position.left - offsetX,
-      relativeY: position.top - offsetY
-    }
-
-    var toDispatch = new CustomEvent('caret-update',{detail:detail});
+    var toDispatch = new CustomEvent('caret-update', {detail: this._caret});
 
     this.dispatchEvent(toDispatch);
   }

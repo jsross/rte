@@ -74,26 +74,35 @@ export class RteElement extends LitElement {
 
   private _handleEvent_keydown(event: KeyboardEvent){
     event.preventDefault();
-    
+
     console.log(event);
   }
 
   private _handleEvent_caret_update(event: CustomEvent){
-    if(this.caretSprite == null) {
-      this.caretSprite = this.overlay.addCaretSprite();
+    if(event.detail) {
+      if(this.caretSprite == null) {
+        this.caretSprite = this.overlay.addCaretSprite();
+      }
+
+      var update: CaretUpdate = {
+        x: event.detail.relativeX,
+        y: event.detail.relativeY,
+        timeStamp: event.timeStamp,
+        lineHeight: event.detail.height,
+        stroke: 2
+      };
+
+      this.caretSprite.scheduleUpdate(update);
+
+      this.overlay.updateNow();
     }
+    else {
+      if(this.caretSprite != null) {
+        this.overlay.removeSprite(this.caretSprite);
 
-    var update: CaretUpdate = {
-                                x: event.detail.relativeX,
-                                y: event.detail.relativeY,
-                                timeStamp: event.timeStamp,
-                                lineHeight: event.detail.height,
-                                stroke: 2
-                              };
-
-    this.caretSprite.scheduleUpdate(update);
-
-    this.overlay.updateNow();
+        this.caretSprite = null;
+      }
+    }
   }
 
 }
