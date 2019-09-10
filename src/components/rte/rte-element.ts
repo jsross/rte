@@ -68,6 +68,7 @@ export class RteElement extends LitElement {
     this.contentArea.setContent(content.nodes);
 
     this.contentArea.addEventListener('caret-update', this._handleEvent_caret_update.bind(this));
+    this.contentArea.addEventListener('caret-removed', this._handleEvent_caret_removed.bind(this));
 
     this.overlay.start();
   }
@@ -78,31 +79,30 @@ export class RteElement extends LitElement {
     console.log(event);
   }
 
+  private _handleEvent_caret_removed(event: CustomEvent) {
+    if(this.caretSprite != null) {
+      this.overlay.removeSprite(this.caretSprite);
+
+      this.caretSprite = null;
+    }
+  }
+
   private _handleEvent_caret_update(event: CustomEvent){
-    if(event.detail) {
-      if(this.caretSprite == null) {
-        this.caretSprite = this.overlay.addCaretSprite();
-      }
-
-      var update: CaretUpdate = {
-        x: event.detail.relativeX,
-        y: event.detail.relativeY,
-        timeStamp: event.timeStamp,
-        lineHeight: event.detail.height,
-        stroke: 2
-      };
-
-      this.caretSprite.scheduleUpdate(update);
-
-      this.overlay.updateNow();
+    if(this.caretSprite == null) {
+      this.caretSprite = this.overlay.addCaretSprite();
     }
-    else {
-      if(this.caretSprite != null) {
-        this.overlay.removeSprite(this.caretSprite);
 
-        this.caretSprite = null;
-      }
-    }
+    var update: CaretUpdate = {
+      x: event.detail.relativeX,
+      y: event.detail.relativeY,
+      timeStamp: event.timeStamp,
+      lineHeight: event.detail.height,
+      stroke: 2
+    };
+
+    this.caretSprite.scheduleUpdate(update);
+
+    this.overlay.updateNow();
   }
 
 }

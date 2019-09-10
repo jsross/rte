@@ -49,8 +49,13 @@ export class ContentAreaElement extends LitElement {
       }
       
       this._caret = null;
+
+      this.dispatchEvent(new CustomEvent('caret-removed'));
+
+      return;      
     }
-    else {
+
+    if(selection.type === 'Caret') {
       var rect = this.getBoundingClientRect() as DOMRect;
       var offsetX = rect.x;
       var offsetY = rect.y;
@@ -65,11 +70,11 @@ export class ContentAreaElement extends LitElement {
         relativeX: position.left - offsetX,
         relativeY: position.top - offsetY
       }
+
+      this.dispatchEvent(new CustomEvent('caret-update', {detail: this._caret}));
     }
 
-    var toDispatch = new CustomEvent('caret-update', {detail: this._caret});
-
-    this.dispatchEvent(toDispatch);
+    
   }
 
   private _handleFocus(event: Event){ }
