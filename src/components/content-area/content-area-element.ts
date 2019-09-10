@@ -43,7 +43,7 @@ export class ContentAreaElement extends LitElement {
   private _handleEvent_selectionChange(event: Event) {
     var selection = this.getSelection();
 
-    if(!selection.anchorNode){
+    if(!selection.anchorNode || selection.type !== 'Caret'){
       if(this._caret == null) {
         return;
       }
