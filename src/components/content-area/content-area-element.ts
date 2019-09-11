@@ -43,18 +43,13 @@ export class ContentAreaElement extends LitElement {
   private _handleEvent_selectionChange(event: Event) {
     var selection = this.getSelection();
 
-    if(!selection.anchorNode || selection.type !== 'Caret'){
-      if(this._caret == null) {
-        return;
+    if(!selection.anchorNode){
+      if(this._caret !== null){
+        this._caret = null;
+        this.dispatchEvent(new CustomEvent('caret-removed'));
       }
-      
-      this._caret = null;
-
-      this.dispatchEvent(new CustomEvent('caret-removed'));
-
-      return;      
     }
-
+    
     if(selection.type === 'Caret') {
       var rect = this.getBoundingClientRect() as DOMRect;
       var offsetX = rect.x;
@@ -72,6 +67,19 @@ export class ContentAreaElement extends LitElement {
       }
 
       this.dispatchEvent(new CustomEvent('caret-update', {detail: this._caret}));
+    }
+    else if(selection.type === 'Range') {
+      console.log('----------------------------------------------');
+      console.log(selection);
+      console.log(document.getSelection());
+      
+      if(this._caret !== null){
+        this._caret = null;
+        this.dispatchEvent(new CustomEvent('caret-removed'));
+      }
+    }
+    else {
+      console.log(selection.type);
     }
 
     
