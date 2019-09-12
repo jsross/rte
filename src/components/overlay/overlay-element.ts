@@ -31,8 +31,6 @@ export class OverlayElement extends LitElement {
   public getSelection(): Selection{
     return this.shadowRoot.getSelection();
   }
-
-
   
   public removeSprite(sprite:Sprite) {
     var index = this._sprites.indexOf(sprite);
@@ -77,7 +75,7 @@ export class OverlayElement extends LitElement {
     this._canvas.width = entry.contentRect.width;
     this._canvas.height = entry.contentRect.height;  
 
-    //TODO (JSR) schedule render
+    this.updateNow()
   }
 
   private _handleAnimationFrame(timestamp:number) {
@@ -87,7 +85,4 @@ export class OverlayElement extends LitElement {
       window.requestAnimationFrame(this._handleAnimationFrame.bind(this));
     }
   }
-
-
-
 }
