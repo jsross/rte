@@ -10,14 +10,26 @@ export abstract class ContentSelectableElement extends LitElement {
         if(!this.attributes.getNamedItem("tabindex")) {
           this.tabIndex = 0;  
         }
-    
+
+        this.addEventListener("blur", this._handleEvent_blur.bind(this));
+        this.addEventListener("focus", this._handleEvent_focus.bind(this));    
         this.addEventListener("mousedown", this._handleEvent_mouseDown.bind(this));
         this.addEventListener("mousemove", this._handleEvent_mouseMove.bind(this));
         this.addEventListener("mouseup", this._handleEvent_mouseUp.bind(this));
     }
 
+    private _handleEvent_blur(event:Event) {
+        this.style.userSelect = 'auto';
+    }
+
+    private _handleEvent_focus(event:FocusEvent) {
+        console.log("_handleEvent_focus");
+    }
+
     private _handleEvent_mouseDown(event: MouseEvent){
         console.log('_handleEvent_mouseDown');
+        this.style.userSelect = 'none';
+        window.getSelection().removeAllRanges();
 
         if(this._range) {
           this._range.detach();
@@ -34,7 +46,20 @@ export abstract class ContentSelectableElement extends LitElement {
         var node = this._getNodeAtCoordinates(element, event.x, event.y);
     
         if(node === null) {
-            //TODO Needs to handle if element has no nodes, if x,y is before first node, or if x,y is after last node
+            if(!element.hasChildNodes()) {
+                this._range.setStart(element, 0);           
+            }
+            else {
+                var firstRect = this._getDomRect(element.firstChild);
+                var lastRect = this._getDomRect(element.lastChild);
+
+                if(this._areCoordinatesBefore(firstRect, event.x, event.y)){
+                    this._range.setStartBefore(element.firstChild);
+                }
+                else if( this._areCoodrinatesAfter(lastRect, event.x, event.y)){
+                    this._range.setStartAfter(element.lastChild);
+                }
+            }           
     
             return;
         }
@@ -70,8 +95,8 @@ export abstract class ContentSelectableElement extends LitElement {
         console.log(node);
         
         if (node instanceof Text) {
-          var offset = this._getIndexAtCoordinates(node as Text, event.x, event.y);
-        }
+          offset = this._getIndexAtCoordinates(node as Text, event.x, event.y);
+        }      
 
         //TODO: need to determine if the range has changed or not
     
@@ -139,6 +164,14 @@ export abstract class ContentSelectableElement extends LitElement {
     
         return true;
       }
+
+        private _areCoordinatesBefore(rect:DOMRect, x:number, y:number) {
+            return x < rect.left || y < rect.top;       
+        }
+
+        private _areCoodrinatesAfter(rect:DOMRect, x:number, y:number) {
+            return x > rect.right || y > rect.bottom;
+        }
 
       private _getDomRect(node:Node):DOMRect{
         let range = document.createRange();
