@@ -2,10 +2,11 @@ import RteNode from "../models/rte-node";
 import RenderResult from "../models/render-result";
 import RenderEngine from "./render-engine";
 import TextNode from "../models/text-node";
+import RteNodeRenderer from "./rte-node-renderer";
 
-export default class TextNodeRenderer {
+export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     
-    public render(rteNode: RteNode, engine: RenderEngine): RenderResult {
+    public render(rteNode: TextNode, engine: RenderEngine): RenderResult {
         let rteTextNode = rteNode as TextNode;
 
         if(rteTextNode === null) {

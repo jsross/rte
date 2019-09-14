@@ -5,13 +5,15 @@ import ParentNode from '../models/parent-node';
 import TextNodeRenderer from './text-node-renderer';
 import RteNodeRenderer from './rte-node-renderer';
 import BlockNodeRenderer from './block-node-renderer';
-import DocumentNodeRenderer from './document-node-renderer';
+import ParentNodeRenderer from './parent-node-renderer';
+import ListNodeRenderer from './list-node-renderer';
 
 export default class RenderEngine {
 
-    private map: Map<string, RteNodeRenderer> = new Map<string,RteNodeRenderer>(
+    private map: Map<string, RteNodeRenderer<any>> = new Map<string,RteNodeRenderer<any>>(
         [
-            ['DocumentNode', new DocumentNodeRenderer()],
+            ['ParentNode', new ParentNodeRenderer()],
+            ['ListNode', new ListNodeRenderer()],
             ['TextNode', new TextNodeRenderer()],
             ['BlockNode', new BlockNodeRenderer()]
         ]

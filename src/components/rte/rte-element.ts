@@ -2,12 +2,13 @@ import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
 import {ContentAreaElement} from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
-import ParentNode from '../../models/parent-node'
 import TextNode from '../../models/text-node';
-import DocumentNode from '../../models/document-node';
+import ParentNode from '../../models/parent-node';
 import BlockNode from '../../models/block-node';
 import { CaretSprite, CaretUpdate } from '../overlay/models/caret-sprite';
 import { OverlayElement } from '../overlay/overlay-element';
+import RteNode from '../../models/rte-node';
+import ListNode from '../../models/list-node';
 const _html = html;
 
 @customElement('mojj-rte')
@@ -18,7 +19,7 @@ export class RteElement extends LitElement {
   private contentArea: ContentAreaElement;
   private overlay: OverlayElement;
   private renderEngine: RenderEngine;
-  private root: DocumentNode;
+  private root: ParentNode<RteNode>;
 
   private caretSprite:CaretSprite;
 
@@ -47,9 +48,15 @@ export class RteElement extends LitElement {
 
     this.renderEngine = new RenderEngine();
     
-    this.root = new DocumentNode();
-    this.root.children.push(new BlockNode([new TextNode('Hello\nWorld!')]));
-    this.root.children.push(new BlockNode([new TextNode('Signed, me')], ['style1', 'style2']));
+    this.root = new ParentNode<RteNode>();
+    this.root.appendChild(new BlockNode([new TextNode('Hello\nWorld!')]));
+    this.root.appendChild(new BlockNode([new TextNode('Signed, me')], ['style1', 'style2']));
+
+    var list = new ListNode();
+    list.appendChild(new ParentNode([new TextNode('Item 1')]));
+    list.appendChild(new ParentNode([new TextNode('Item 2')]));
+
+    this.root.appendChild(list);
   }
 
   public render() {

@@ -1,23 +1,18 @@
 import RteNode from "../models/rte-node";
+import ParentNode from "../models/parent-node";
 import RenderResult from "../models/render-result";
 import RenderEngine from "./render-engine";
-import BlockNode from "../models/block-node";
-import DocumentNode from "../models/document-node";
+import RteNodeRenderer from "./rte-node-renderer";
 
-export default class DocumentNodeRenderer {
-    public render(node: RteNode, engine: RenderEngine): RenderResult {
-        let documentNode = node as DocumentNode;
+export default class ParentNodeRenderer implements RteNodeRenderer<ParentNode<RteNode>> {
+    public render(node: ParentNode<RteNode>, engine: RenderEngine): RenderResult {
         var map: Map<Node, RteNode> = new Map<Node, RteNode>();
-
-        if(documentNode === null) {
-            throw Error('Unable to render node');
-        }
 
         var nodes: Array<Node> = [];
 
-        if(documentNode.hasChildren()){
-            for(let index = 0; index < documentNode.children.length; index++) {
-                var current = documentNode.children[index];
+        if(node.hasChildren()){
+            for(let index = 0; index < node.children.length; index++) {
+                var current = node.children[index] as RteNode;
 
                 var currentResult = engine.render(current);
 

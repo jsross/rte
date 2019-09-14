@@ -1,13 +1,13 @@
 import RteNode from "./rte-node";
 
-export default abstract class ParentNode<T extends RteNode> implements RteNode {
+export default class ParentNode<T extends RteNode> implements RteNode {
     private _children:Array<T> = [];
 
     get children(): Array<T> {
         return this._children;
     }
 
-    constructor(children:Array<T>){
+    constructor(children:Array<T> = null){
         if(children){
             this._children = children;
         }
