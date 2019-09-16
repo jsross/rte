@@ -1,4 +1,5 @@
 import { LitElement, customElement, css } from 'lit-element';
+import { Rect } from './models/rect';
 
 export abstract class ContentSelectableElement extends LitElement {
     protected _range: Range;
@@ -16,6 +17,70 @@ export abstract class ContentSelectableElement extends LitElement {
         this.addEventListener("mousedown", this._handleEvent_mouseDown.bind(this));
         this.addEventListener("mousemove", this._handleEvent_mouseMove.bind(this));
         this.addEventListener("mouseup", this._handleEvent_mouseUp.bind(this));
+    }
+
+    private _getRect(node:Node):Rect{
+      let range = document.createRange();
+      range.selectNodeContents(node);
+      
+      var rect:DOMRect = range.getBoundingClientRect() as DOMRect;
+
+      range.detach();
+
+      return new Rect(rect);
+    }
+
+    private _getNodeAtCoordinates(element:Element, x:number, y:number): Node {
+      var previousNode: Node = null;
+
+      for(let child=element.firstChild; child!==null; child=child.nextSibling) {
+        var rect:Rect = this._getRect(child);
+  
+        if(rect.containsCoordinates(x,y)){
+          return child;
+        }
+
+      }
+  
+      return null;
+    }
+  
+    private _getIndexAtCoordinates(node:Node, x:number, y:number): number {
+        var range = node.ownerDocument.createRange();
+        range.selectNodeContents(node);
+        var currentPos = 0;
+        var endPos = range.endOffset;
+  
+        while(currentPos+1 < endPos) {
+          range.setStart(node, currentPos);
+          range.setEnd(node, currentPos+1);
+          var rect = new Rect(range.getBoundingClientRect() as DOMRect);
+  
+          if(rect.containsCoordinates(x, y)) {
+            range.detach();
+  
+            return currentPos;          
+          }
+          
+          currentPos++;
+        }
+  
+        range.detach();
+  
+        return -1;
+    }  
+
+    private _getNodePointerAtCoodrinates(x:number, y:number):NodePointer {
+      var element = this.shadowRoot.elementFromPoint(x, y);
+
+      if(element.hasChildNodes()){
+        var node = this._getNodeAtCoordinates(element, x, y);
+        var offset = this._getIndexAtCoordinates(node, x, y);
+        
+        return { Node: node, Offset: offset};
+      }
+    
+      return {Node: element, Offset: 0};
     }
 
     private _handleEvent_blur(event:Event) {
@@ -40,40 +105,9 @@ export abstract class ContentSelectableElement extends LitElement {
     
         this._range = document.createRange();
         
-        var offset:number = 0;
-    
-        var element = this.shadowRoot.elementFromPoint(event.x, event.y);
-        var node = this._getNodeAtCoordinates(element, event.x, event.y);
-    
-        if(node === null) {
-            if(!element.hasChildNodes()) {
-                this._range.setStart(element, 0);           
-            }
-            else {
-                var firstRect = this._getDomRect(element.firstChild);
-                var lastRect = this._getDomRect(element.lastChild);
+        var nodePointer = this._getNodePointerAtCoodrinates(event.x, event.y);
 
-                if(this._areCoordinatesBefore(firstRect, event.x, event.y)){
-                    this._range.setStartBefore(element.firstChild);
-                }
-                else if( this._areCoodrinatesAfter(lastRect, event.x, event.y)){
-                    this._range.setStartAfter(element.lastChild);
-                }
-            }           
-    
-            return;
-        }
-    
-        if(node instanceof Text) {
-          offset = this._getIndexAtCoordinates(node as Text, event.x, event.y);
-        }
-    
-        if(offset < 0) {
-          this._range.setStart(node,offset);
-        }
-        else {
-          this._range.setStartBefore(node);
-        }
+        this._range.setStart(nodePointer.Node, nodePointer.Offset);
       }
     
       private _handleEvent_mouseMove(event: MouseEvent) {
@@ -81,106 +115,19 @@ export abstract class ContentSelectableElement extends LitElement {
           return;
         }
     
-        var offset:number = 0;
-    
-        var element = this.shadowRoot.elementFromPoint(event.x, event.y);
-        var node = this._getNodeAtCoordinates(element, event.x, event.y);
-    
-        if(node == null) {
-          //TODO Needs to handle if element has no nodes, if x,y is before first node, or if x,y is after last node
-    
-          return;
-        }
+        var nodePointer = this._getNodePointerAtCoodrinates(event.x, event.y);
 
-        console.log(node);
-        
-        if (node instanceof Text) {
-          offset = this._getIndexAtCoordinates(node as Text, event.x, event.y);
-        }      
-
-        //TODO: need to determine if the range has changed or not
-    
-        if(offset < 0) {
-          this._range.setEndAfter(node);
-        }
-        else {
-          this._range.setEnd(node, offset);
-        }    
+        if(this._range.endContainer !== nodePointer.Node || this._range.endOffset !== nodePointer.Offset) {
+          this._range.setEnd(nodePointer.Node, nodePointer.Offset);
+        }          
       }
     
       private _handleEvent_mouseUp(event: MouseEvent) {
         this._isMouseDown = false;
       }
+}
 
-      private _getNodeAtCoordinates(element:Element, x:number, y:number): Node {
-        for(let child=element.firstChild; child!==null; child=child.nextSibling) {
-          var rect:DOMRect = this._getDomRect(child);
-    
-          if(this._areCoordinatesWithinBounds(rect, x, y)) {
-            return child;       
-          }
-        }
-    
-        return null;
-      }
-    
-      private _getIndexAtCoordinates(node:Text, x:number, y:number): number {
-          var range = node.ownerDocument.createRange();
-          range.selectNodeContents(node);
-          var currentPos = 0;
-          var endPos = range.endOffset;
-    
-          while(currentPos+1 < endPos) {
-            range.setStart(node, currentPos);
-            range.setEnd(node, currentPos+1);
-            var rect = range.getBoundingClientRect() as DOMRect;
-    
-            if(this._areCoordinatesWithinBounds(rect, x, y)) {
-              range.detach();
-    
-              return currentPos;          
-            }
-            
-            currentPos++;
-          }
-    
-          range.detach();
-    
-          return -1;
-      }  
-    
-      private _areCoordinatesWithinBounds(rect:DOMRect, x:number, y:number):boolean {
-        if(x < rect.x)
-          return false;
-    
-        if(x > rect.x + rect.width)
-          return false;
-        
-        if(y < rect.y)
-          return false;
-    
-        if(y > rect.y + rect.height)
-          return false;
-    
-        return true;
-      }
-
-        private _areCoordinatesBefore(rect:DOMRect, x:number, y:number) {
-            return x < rect.left || y < rect.top;       
-        }
-
-        private _areCoodrinatesAfter(rect:DOMRect, x:number, y:number) {
-            return x > rect.right || y > rect.bottom;
-        }
-
-      private _getDomRect(node:Node):DOMRect{
-        let range = document.createRange();
-        range.selectNodeContents(node);
-        
-        var rect:DOMRect = range.getBoundingClientRect() as DOMRect;
-  
-        range.detach();
-
-        return rect;
-      }
+interface NodePointer {
+  Node:Node;
+  Offset:number
 }

@@ -49,8 +49,8 @@ export class RteElement extends LitElement {
     this.renderEngine = new RenderEngine();
     
     this.root = new ParentNode<RteNode>();
-    this.root.appendChild(new BlockNode([new TextNode('Hello\nWorld!')]));
-    this.root.appendChild(new BlockNode([new TextNode('Signed, me')], ['style1', 'style2']));
+    this.root.appendChild(new BlockNode([new TextNode('Hello '), new TextNode('World', ['bigger']), new TextNode('!!!')]));
+    this.root.appendChild(new BlockNode([new TextNode('Signed,\nme')], ['style1', 'style2']));
 
     var list = new ListNode();
     list.appendChild(new ParentNode([new TextNode('Item 1')]));

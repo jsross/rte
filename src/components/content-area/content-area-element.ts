@@ -9,7 +9,9 @@ export class ContentAreaElement extends ContentSelectableElement {
   private _caret: Caret;
 
   static get styles() {
-    return [ css`:host { display: block; }`];
+    return [ css`
+    :host { display: block; }
+    .bigger {font-size:20pt;}`];
   }
 
   constructor(){
