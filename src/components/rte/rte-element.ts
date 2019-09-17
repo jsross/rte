@@ -26,7 +26,8 @@ export class RteElement extends LitElement {
   static get styles() {
     return [ css`
     :host { 
-      display: block;
+      display: inline-block;
+      width: 300px;
       position:relative;
     }
 
@@ -50,6 +51,7 @@ export class RteElement extends LitElement {
     
     this.root = new ParentNode<RteNode>();
     this.root.appendChild(new BlockNode([new TextNode('Hello '), new TextNode('World', ['bigger']), new TextNode('!!!')]));
+    this.root.appendChild(new BlockNode([new TextNode('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore'), new TextNode(' magna aliqua. Placerat in egestas erat imperdiet sed euismod nisi porta. Duis ultricies lacus sed turpis.')]));
     this.root.appendChild(new BlockNode([new TextNode('Signed,\nme')], ['style1', 'style2']));
 
     var list = new ListNode();
