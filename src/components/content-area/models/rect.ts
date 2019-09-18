@@ -11,6 +11,14 @@ export class Rect {
       this.height = rect.height;
     }
 
+    get bottom():number {
+      return this.y + this.height;
+    }
+
+    get right():number {
+      return this.x + this.width;
+    }
+
     public areCoordinatesAfter(x:number, y:number) {
       if(x > (this.x + this.width) && y > this.y) {
         return true;

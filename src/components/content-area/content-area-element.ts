@@ -32,6 +32,10 @@ export class ContentAreaElement extends ContentSelectableElement {
     this.clearContent();
     
     this._content.forEach(this._appendNode.bind(this));
+
+    var lineEndings = this._getElementLineEndings(this.shadowRoot);
+
+    console.log(lineEndings);
   }
 
   public clearContent(){
