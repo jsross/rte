@@ -1,17 +1,18 @@
-import { customElement, css } from 'lit-element';
-import { Caret } from './models/caret';
-import { ContentSelectableElement } from './content-selectable-element';
+import { LitElement, customElement, css, html } from 'lit-element';
 
 @customElement('content-area')
-export class ContentAreaElement extends ContentSelectableElement {
+export class ContentAreaElement extends LitElement {
   
   private _content: Node[];
-  private _caret: Caret;
+  private _contentWrapperElement: HTMLElement = null;
 
   static get styles() {
     return [ css`
-    :host { display: block; }
-    .bigger {font-size:20pt;}`];
+    .bigger {font-size:20pt;}
+      content-wrapper {
+        display: inline-block;
+      }
+    `];
   }
 
   constructor(){
@@ -21,80 +22,52 @@ export class ContentAreaElement extends ContentSelectableElement {
       this.tabIndex = 0;  
     }
 
-    this.addEventListener("focusin",this._handleFocus.bind(this));
+    this.addEventListener("focus",this._handleEvent_focus.bind(this));
+    this.addEventListener("blur",this._handleEvent_blur.bind(this));
+  }
 
-    document.addEventListener('selectionchange', this._handleEvent_selectionChange.bind(this));
+  public firstUpdated(){
+    this._contentWrapperElement = this.shadowRoot.getElementById('content-wrapper');
+
+    if(this._content !== null){
+      this.setContent(this._content);
+    }
+  }
+
+  public render() {
+    return html`<content-wrapper id='content-wrapper'></content-wrapper>`;
   }
 
   public setContent(content: Node[]){
     this._content = content;
 
-    this.clearContent();
+    if(this._contentWrapperElement !== null) {
+      this.clearContent();
     
-    this._content.forEach(this._appendNode.bind(this));
-
-    var lineEndings = this._getElementLineEndings(this.shadowRoot);
-
-    console.log(lineEndings);
+      this._content.forEach(this._appendNode.bind(this));
+    }
   }
 
   public clearContent(){
-    while (this.shadowRoot.host.firstChild) {
-      this.shadowRoot.host.firstChild.remove();
+    while (this._contentWrapperElement.firstChild) {
+      this._contentWrapperElement.firstChild.remove();
     }
   }
-
-  private _handleEvent_selectionChange(event: Event) {
-    var selection = this.getSelection();
-
-    if(!selection.anchorNode){
-      if(this._caret !== null){
-        this._caret = null;
-        this.dispatchEvent(new CustomEvent('caret-removed'));
-      }
-    }
-    
-    if(selection.type === 'Caret') {
-      var rect = this.getBoundingClientRect() as DOMRect;
-      var offsetX = rect.x;
-      var offsetY = rect.y;
-
-      var selectedNode = selection.getRangeAt(0);
-      var position = selectedNode.getBoundingClientRect();
-
-      this._caret = {
-        x: position.left,
-        y: position.top,
-        height: position.height,
-        relativeX: position.left - offsetX,
-        relativeY: position.top - offsetY
-      }
-
-      this.dispatchEvent(new CustomEvent('caret-update', {detail: this._caret}));
-    }
-    else if(selection.type === 'Range') {
-      console.log(selection);
-      console.log(document.getSelection());
-      
-      if(this._caret !== null){
-        this._caret = null;
-        this.dispatchEvent(new CustomEvent('caret-removed'));
-      }
-    }
-    else {
-      console.log(selection.type);
-    }
-    
+ 
+  private _handleEvent_blur(event: Event){
+    this._contentWrapperElement.contentEditable = 'false';
   }
 
-  private _handleFocus(event: Event){ }
+  private _handleEvent_focus(event: Event){
+    this._contentWrapperElement.contentEditable = 'true';
+  }
 
   public getSelection(): Selection{
     return this.shadowRoot.getSelection();
   }
 
   private _appendNode(node: Node) {
-    this.shadowRoot.appendChild(node);
+    this._contentWrapperElement.appendChild(node);
   }
 
 }
