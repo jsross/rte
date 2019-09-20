@@ -1,10 +1,10 @@
-import RteNode from "../models/rte-node";
-import ParentNode from "../models/parent-node";
-import RenderResult from "../models/render-result";
-import RenderEngine from "./render-engine";
-import RteNodeRenderer from "./rte-node-renderer";
+import RteNode from "../nodes/abstract/rte-node";
+import ParentNode from "../nodes/abstract/parent-node";
+import RenderResult from "../render-result";
+import RenderEngine from "../render-engine";
+import RteNodeRenderer from "../rte-node-renderer";
 
-export default class ParentNodeRenderer implements RteNodeRenderer<ParentNode<RteNode>> {
+export default class BasicParentNodeRenderer implements RteNodeRenderer<ParentNode<RteNode>> {
     public render(node: ParentNode<RteNode>, engine: RenderEngine): RenderResult {
         var map: Map<Node, RteNode> = new Map<Node, RteNode>();
 

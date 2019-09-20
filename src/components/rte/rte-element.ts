@@ -2,13 +2,9 @@ import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
 import {ContentAreaElement} from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
-import TextNode from '../../models/text-node';
-import ParentNode from '../../models/parent-node';
-import BlockNode from '../../models/block-node';
 import { CaretSprite, CaretUpdate } from '../overlay/models/caret-sprite';
 import { OverlayElement } from '../overlay/overlay-element';
-import RteNode from '../../models/rte-node';
-import ListNode from '../../models/list-node';
+import RteNode from '../../core/nodes/abstract/rte-node';
 const _html = html;
 
 @customElement('mojj-rte')
@@ -19,7 +15,7 @@ export class RteElement extends LitElement {
   private contentArea: ContentAreaElement;
   private overlay: OverlayElement;
   private renderEngine: RenderEngine;
-  private root: ParentNode<RteNode>;
+  private root: RteNode;
 
   private caretSprite:CaretSprite;
 
@@ -48,17 +44,6 @@ export class RteElement extends LitElement {
     super();
 
     this.renderEngine = new RenderEngine();
-    
-    this.root = new ParentNode<RteNode>();
-    this.root.appendChild(new BlockNode([new TextNode('Hello '), new TextNode('World', ['bigger']), new TextNode('!!!')]));
-    this.root.appendChild(new BlockNode([new TextNode('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore'), new TextNode(' magna aliqua. Placerat in egestas erat imperdiet sed euismod nisi porta. Duis ultricies lacus sed turpis.')]));
-    this.root.appendChild(new BlockNode([new TextNode('Signed,\nme')], ['style1', 'style2']));
-
-    var list = new ListNode();
-    list.appendChild(new ParentNode([new TextNode('Item 1')]));
-    list.appendChild(new ParentNode([new TextNode('Item 2')]));
-
-    this.root.appendChild(list);
   }
 
   public render() {
@@ -69,12 +54,18 @@ export class RteElement extends LitElement {
     return result;
   }
 
+  public setValue(root:RteNode) {
+    this.root = root;
+  }
+
   public firstUpdated() {
     this.contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
     this.overlay = this.shadowRoot.getElementById('overlay') as OverlayElement;
 
-    var content = this.renderEngine.render(this.root);
-    this.contentArea.setContent(content.nodes);
+    if(this.root) {
+      var content = this.renderEngine.render(this.root);
+      this.contentArea.setContent(content.nodes);
+    }
 
     this.contentArea.addEventListener('caret-update', this._handleEvent_caret_update.bind(this));
     this.contentArea.addEventListener('caret-removed', this._handleEvent_caret_removed.bind(this));

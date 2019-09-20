@@ -1,8 +1,8 @@
-import RteNode from "../models/rte-node";
-import RenderResult from "../models/render-result";
-import RenderEngine from "./render-engine";
-import BlockNode from "../models/block-node";
-import RteNodeRenderer from "./rte-node-renderer";
+import RteNode from "../nodes/abstract/rte-node";
+import RenderResult from "../render-result";
+import RenderEngine from "../render-engine";
+import BlockNode from "../nodes/concrete/block-node";
+import RteNodeRenderer from "../rte-node-renderer";
 
 export default class BlockNodeRenderer implements RteNodeRenderer<BlockNode>{
     public render(node: BlockNode, engine: RenderEngine): RenderResult {

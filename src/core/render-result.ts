@@ -1,4 +1,4 @@
-import RteNode from "./rte-node";
+import RteNode from "./nodes/abstract/rte-node";
 
 export default class RenderResult {
     public nodes: Node[];

@@ -1,9 +1,9 @@
-import RteNode from "../models/rte-node";
-import RenderResult from "../models/render-result";
-import RenderEngine from "./render-engine";
-import ParentNode from "../models/parent-node";
-import RteNodeRenderer from "./rte-node-renderer";
-import ListNode from "../models/list-node";
+import RteNode from "../nodes/abstract/rte-node";
+import RenderResult from "../render-result";
+import RenderEngine from "../render-engine";
+import ParentNode from "../nodes/abstract/parent-node";
+import RteNodeRenderer from "../rte-node-renderer";
+import ListNode from "../nodes/concrete/list-node";
 
 export default class ListNodeRenderer implements RteNodeRenderer<ListNode>{
     public render(node: ListNode, engine: RenderEngine): RenderResult {

@@ -1,5 +1,5 @@
 import {Update} from './update';
-import { Queue } from '../../../models/queue';
+import { Queue } from '../../../core/queue';
 
 export default abstract class Sprite { 
 

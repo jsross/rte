@@ -1,4 +1,4 @@
-import LeafNode from './leaf-node';
+import LeafNode from '../abstract/leaf-node';
 
 export default class TextNode extends LeafNode {
     private _value:string;
