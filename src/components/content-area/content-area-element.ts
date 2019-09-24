@@ -3,7 +3,7 @@ import { Caret } from './models/caret';
 import { ContentSelectableElement } from './content-selectable-element';
 
 @customElement('content-area')
-export class ContentAreaElement extends ContentSelectableElement {
+export default class ContentAreaElement extends ContentSelectableElement {
   
   private _content: Node[];
   private _caret: Caret;

@@ -55,7 +55,7 @@ module.exports = ({ mode, presets }) => {
   return webpackMerge(
     {
       mode,
-      entry: './src/index.js',
+      entry: './src/export.ts',
       output: {
         filename: '[name].[chunkhash:8].js'
       },

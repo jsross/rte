@@ -1,14 +1,14 @@
 import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
-import {ContentAreaElement} from "../content-area/content-area-element"
+import ContentAreaElement from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
 import { CaretSprite, CaretUpdate } from '../overlay/models/caret-sprite';
-import { OverlayElement } from '../overlay/overlay-element';
+import OverlayElement from '../overlay/overlay-element';
 import RteNode from '../../core/nodes/abstract/rte-node';
 const _html = html;
 
 @customElement('mojj-rte')
-export class RteElement extends LitElement {
+export default class RteElement extends LitElement {
   
   private _html: any;
 

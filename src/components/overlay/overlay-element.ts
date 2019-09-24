@@ -2,9 +2,10 @@ import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
 import Sprite from './models/sprite';
 import ResizeObserver from 'resize-observer-polyfill';
+import { CaretSprite } from './models/caret-sprite';
 
 @customElement('sprite-overlay')
-export class OverlayElement extends LitElement {
+export default class OverlayElement extends LitElement {
   private _canvas: HTMLCanvasElement;
   private _context:CanvasRenderingContext2D;
   private _isAnimationInProgress:boolean = false;
@@ -20,6 +21,14 @@ export class OverlayElement extends LitElement {
   static get styles() {
     return [ css`:host { display: block; }`];
   }
+  
+  public addCaretSprite = function(): CaretSprite{
+    var sprite = new CaretSprite(this._context);
+
+    this._sprites.push(sprite);
+
+    return sprite;
+};
 
   public firstUpdated(){
     this._canvas = this.shadowRoot.getElementById('canvas') as HTMLCanvasElement;

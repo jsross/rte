@@ -1,7 +1,6 @@
 import Sprite from './sprite';
 import { Update } from './update';
 import {ColorValue} from './color-value';
-import { OverlayElement } from '../overlay-element';
 
 export class CaretSprite extends Sprite {
     
@@ -69,17 +68,3 @@ export class CaretUpdate implements Update {
     lineHeight: number;
     stroke: number;
 }
-
-declare module '../overlay-element' {
-    interface OverlayElement {
-        addCaretSprite():CaretSprite;
-    }
-}
-
-OverlayElement.prototype.addCaretSprite = function(): CaretSprite{
-    var sprite = new CaretSprite(this._context);
-
-    this._sprites.push(sprite);
-
-    return sprite;
-};
