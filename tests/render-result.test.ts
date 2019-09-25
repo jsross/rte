@@ -1,9 +1,8 @@
-import RteNode from '../src/models/rte-node';
-import ParentNode from '../src/models/parent-node';
-import Renderer from '../src/core/render-engine'
-import RenderResult from '../src/models/render-result';
-import {JSDOM} from 'jsdom'
-import BlockNode from '../src/models/block-node';
+import Renderer from '../src/core/render-engine';
+import RenderResult from '../src/core/render-result';
+import {JSDOM} from 'jsdom';
+import BlockNode from '../src/core/nodes/concrete/block-node';
+import RteNode from '../src/core/nodes/abstract/rte-node';
 
 
 describe('RenderResult Tests', function() {

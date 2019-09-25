@@ -1,32 +1,20 @@
-import RenderResult from '../models/render-result';
-import RteNode from "../models/rte-node";
-import TextNode from '../models/text-node'
-import ParentNode from '../models/parent-node';
-import TextNodeRenderer from './text-node-renderer';
-import RteNodeRenderer from './rte-node-renderer';
-import BlockNodeRenderer from './block-node-renderer';
-import ParentNodeRenderer from './parent-node-renderer';
-import ListNodeRenderer from './list-node-renderer';
+import RenderResult from './render-result';
+import RteNode from "./nodes/abstract/rte-node";
+import RteConfig from './config/rte-config';
 
 export default class RenderEngine {
-
-    private map: Map<string, RteNodeRenderer<any>> = new Map<string,RteNodeRenderer<any>>(
-        [
-            ['ParentNode', new ParentNodeRenderer()],
-            ['ListNode', new ListNodeRenderer()],
-            ['TextNode', new TextNodeRenderer()],
-            ['BlockNode', new BlockNodeRenderer()]
-        ]
-    );
+    constructor(){
+        RteConfig.configure();
+    }
 
     render(root:RteNode): RenderResult {
         var type = root.constructor.name;
+        
+        var renderer = RteConfig.getRegisteredRenderer(type);
 
-        if(!this.map.has(type)){
+        if(renderer === null){
             throw new Error('Renderer not registered for type: ' + type);
         }
-
-        var renderer = this.map.get(type);
         
         var result = renderer.render(root,this);
 

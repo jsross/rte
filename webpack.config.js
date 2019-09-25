@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const { resolve } = require('path');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -11,17 +11,17 @@ const webcomponentsjs = './node_modules/@webcomponents/webcomponentsjs';
 
 const polyfills = [
   {
-    from: resolve(`${webcomponentsjs}/webcomponents-*.{js,map}`),
+    from: path.resolve(`${webcomponentsjs}/webcomponents-*.{js,map}`),
     to: 'vendor',
     flatten: true
   },
   {
-    from: resolve(`${webcomponentsjs}/bundles/*.{js,map}`),
+    from: path.resolve(`${webcomponentsjs}/bundles/*.{js,map}`),
     to: 'vendor/bundles',
     flatten: true
   },
   {
-    from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
+    from: path.resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
     to: 'vendor',
     flatten: true
   }
@@ -55,9 +55,13 @@ module.exports = ({ mode, presets }) => {
   return webpackMerge(
     {
       mode,
-      entry: './src/index.js',
+      entry: './src/export.ts',
       output: {
-        filename: '[name].[chunkhash:8].js'
+        filename: '[name].[chunkhash:8].js',
+        library: 'MojjRte'
+      },
+      devServer: {
+        port: 8770
       },
       devtool: 'inline-source-map',
       module: {

@@ -1,5 +1,5 @@
-import RteNode from "../models/rte-node";
-import RenderResult from "../models/render-result";
+import RteNode from "./nodes/abstract/rte-node";
+import RenderResult from "./render-result";
 import RenderEngine from "./render-engine";
 
 export default interface RteNodeRenderer<T extends RteNode> {

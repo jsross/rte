@@ -1,7 +1,7 @@
 import { LitElement, customElement, css, html } from 'lit-element';
 
 @customElement('content-area')
-export class ContentAreaElement extends LitElement {
+export default class ContentAreaElement extends LitElement {
   
   private _content: Node[];
   private _contentWrapperElement: HTMLElement = null;

@@ -1,6 +1,5 @@
-import ParentNode from './parent-node';
-import RteNode from './rte-node';
-import Leaf from './leaf-node';
+import ParentNode from '../abstract/parent-node';
+import Leaf from '../abstract/leaf-node';
 
 export default class BlockNode extends ParentNode<Leaf> {
     private _styles:string[];
@@ -14,4 +13,5 @@ export default class BlockNode extends ParentNode<Leaf> {
 
         this._styles = styles;
     }
+
 }
