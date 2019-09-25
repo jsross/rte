@@ -56,6 +56,11 @@ export default class RteElement extends LitElement {
 
   public setValue(root:RteNode) {
     this.root = root;
+
+    if(this.contentArea) {
+      var content = this.renderEngine.render(this.root);
+      this.contentArea.setContent(content.nodes);
+    }
   }
 
   public firstUpdated() {

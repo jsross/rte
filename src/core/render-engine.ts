@@ -3,7 +3,7 @@ import RteNode from "./nodes/abstract/rte-node";
 import RteConfig from './config/rte-config';
 
 export default class RenderEngine {
-    public RenderEngine(){
+    constructor(){
         RteConfig.configure();
     }
 
