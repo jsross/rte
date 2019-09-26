@@ -33,6 +33,12 @@ export default class ContentAreaElement extends LitElement {
     this._keyListeners.push(keyListener);
   }
 
+  public clearContent(){
+    while (this._contentWrapperElement.firstChild) {
+      this._contentWrapperElement.firstChild.remove();
+    }
+  }
+
   public firstUpdated(){
     this._contentWrapperElement = this.shadowRoot.getElementById('content-wrapper');
 
@@ -59,10 +65,8 @@ export default class ContentAreaElement extends LitElement {
     }
   }
 
-  public clearContent(){
-    while (this._contentWrapperElement.firstChild) {
-      this._contentWrapperElement.firstChild.remove();
-    }
+  private _appendNode(node: Node) {
+    this._contentWrapperElement.appendChild(node);
   }
  
   private _handleEvent_blur(event: Event){
@@ -89,11 +93,4 @@ export default class ContentAreaElement extends LitElement {
       event.preventDefault();
     }
   }
-
-
-
-  private _appendNode(node: Node) {
-    this._contentWrapperElement.appendChild(node);
-  }
-
 }

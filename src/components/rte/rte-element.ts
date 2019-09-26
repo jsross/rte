@@ -4,18 +4,15 @@ import ContentAreaElement from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
 import RteNode from '../../core/nodes/abstract/rte-node';
 import ArrowKeyListener from './arrow-key-listener';
-const _html = html;
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
   
-  private _html: any;
+  private _contentArea: ContentAreaElement;
+  private _renderEngine: RenderEngine;
+  private _root: RteNode;
 
-  private contentArea: ContentAreaElement;
-  private renderEngine: RenderEngine;
-  private root: RteNode;
-
-  static get styles() {
+  static get styles() {    
     return [ css`
     :host { 
       display: inline-block;
@@ -25,10 +22,21 @@ export default class RteElement extends LitElement {
   constructor(){
     super();
 
-    this.renderEngine = new RenderEngine();
+    this._renderEngine = new RenderEngine();
+  }
+
+  public firstUpdated() {
+    this._contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
+    this._contentArea.addKeyListener(new ArrowKeyListener());
+
+    if(this._root) {
+      var content = this._renderEngine.render(this._root);
+      this._contentArea.setContent(content.nodes);
+    }
   }
 
   public render() {
+    const _html = html;
     let code: string = '_html`' + view + "`";
 
     var result = eval(code);
@@ -37,28 +45,12 @@ export default class RteElement extends LitElement {
   }
 
   public setValue(root:RteNode) {
-    this.root = root;
+    this._root = root;
 
-    if(this.contentArea) {
-      var content = this.renderEngine.render(this.root);
-      this.contentArea.setContent(content.nodes);
+    if(this._contentArea) {
+      var content = this._renderEngine.render(this._root);
+      this._contentArea.setContent(content.nodes);
     }
-  }
-
-  public firstUpdated() {
-    this.contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
-    this.contentArea.addKeyListener(new ArrowKeyListener());
-
-    if(this.root) {
-      var content = this.renderEngine.render(this.root);
-      this.contentArea.setContent(content.nodes);
-    }
-  }
-
-  private _handleEvent_keydown(event: KeyboardEvent){
-    event.preventDefault();
-
-    console.log(event);
   }
 
 }
