@@ -3,6 +3,7 @@ import * as view from "./template.html";
 import ContentAreaElement from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
 import RteNode from '../../core/nodes/abstract/rte-node';
+import ArrowKeyListener from './arrow-key-listener';
 const _html = html;
 
 @customElement('mojj-rte')
@@ -46,6 +47,7 @@ export default class RteElement extends LitElement {
 
   public firstUpdated() {
     this.contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
+    this.contentArea.addKeyListener(new ArrowKeyListener());
 
     if(this.root) {
       var content = this.renderEngine.render(this.root);

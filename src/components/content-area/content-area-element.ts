@@ -1,10 +1,12 @@
 import { LitElement, customElement, css, html } from 'lit-element';
+import KeyListener from './key-listener';
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
   
-  private _content: Node[];
+  private _content: Node[] = null;
   private _contentWrapperElement: HTMLElement = null;
+  private _keyListeners: KeyListener[] = [];
 
   static get styles() {
     return [ css`
@@ -24,6 +26,11 @@ export default class ContentAreaElement extends LitElement {
 
     this.addEventListener("focus",this._handleEvent_focus.bind(this));
     this.addEventListener("blur",this._handleEvent_blur.bind(this));
+    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));
+  }
+
+  public addKeyListener(keyListener:KeyListener){
+    this._keyListeners.push(keyListener);
   }
 
   public firstUpdated(){
@@ -32,6 +39,10 @@ export default class ContentAreaElement extends LitElement {
     if(this._content !== null){
       this.setContent(this._content);
     }
+  }
+
+  public getSelection(): Selection{
+    return this.shadowRoot.getSelection();
   }
 
   public render() {
@@ -62,9 +73,24 @@ export default class ContentAreaElement extends LitElement {
     this._contentWrapperElement.contentEditable = 'true';
   }
 
-  public getSelection(): Selection{
-    return this.shadowRoot.getSelection();
+  private _handleEvent_keydown(event:KeyboardEvent) {
+    var preventDefault = false;
+    var selection = this.getSelection();
+    var keyCode = `${!event.code.includes('Shift') && event.shiftKey ? 'SHIFT-':''}${event.code}`;
+    
+    for(let listener of this._keyListeners){
+      if(!listener.handleKey(keyCode, selection)) {
+        preventDefault = true;
+        break;
+      }
+    }
+
+    if(preventDefault) {
+      event.preventDefault();
+    }
   }
+
+
 
   private _appendNode(node: Node) {
     this._contentWrapperElement.appendChild(node);
