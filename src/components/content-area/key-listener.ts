@@ -1,3 +1,5 @@
+import ContentUpdate from "./content-update";
+
 export default interface KeyListener {
     /**
      * 
@@ -5,5 +7,5 @@ export default interface KeyListener {
      * @param selection 
      * @returns boolean true value indicates key processing should continue
      */
-    handleKey(key:string, selection:Selection): boolean;
+    handleKey(key:string, selection:Selection): ContentUpdate;
 }

@@ -1,5 +1,6 @@
 import { LitElement, customElement, css, html } from 'lit-element';
 import KeyListener from './key-listener';
+import ContentUpdate from './content-update';
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
@@ -65,6 +66,10 @@ export default class ContentAreaElement extends LitElement {
     }
   }
 
+  public updateContent(contentUpdate:ContentUpdate){
+    contentUpdate.execute(this._content);
+  }
+
   private _appendNode(node: Node) {
     this._contentWrapperElement.appendChild(node);
   }
@@ -78,19 +83,19 @@ export default class ContentAreaElement extends LitElement {
   }
 
   private _handleEvent_keydown(event:KeyboardEvent) {
-    var preventDefault = false;
     var selection = this.getSelection();
     var keyCode = `${!event.code.includes('Shift') && event.shiftKey ? 'SHIFT-':''}${event.code}`;
     
     for(let listener of this._keyListeners){
-      if(!listener.handleKey(keyCode, selection)) {
-        preventDefault = true;
+      var result = listener.handleKey(keyCode, selection);
+      if(result != null) {
+        event.preventDefault();
+
+        this.updateContent(result);
+
         break;
       }
-    }
-
-    if(preventDefault) {
-      event.preventDefault();
+      
     }
   }
 }
