@@ -1,5 +1,7 @@
+import { ContentAreaElement } from "../../export";
+
 export default interface ContentUpdate {
-    execute(content:Node[]):void;
+    execute(contentArea:ContentAreaElement):void;
 
     undoAction:ContentUpdate;
 }
