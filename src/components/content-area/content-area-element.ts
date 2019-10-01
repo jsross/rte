@@ -2,7 +2,7 @@ import { LitElement, customElement, css, html } from 'lit-element';
 import KeyListener from './key-listener';
 import { stringify } from 'querystring';
 import ContentAreaSelection from './content-area-selection';
-import NodePointer from './node-pointer';
+import HierarchyPath from '../../core/hierarchy-path';
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
@@ -53,16 +53,12 @@ export default class ContentAreaElement extends LitElement {
   public getSelection():ContentAreaSelection{
     var selection = this.shadowRoot.getSelection();
 
-    var anchorPointer = new NodePointer(selection.anchorNode,
-                                        this._getNodeHierarchyPath(selection.anchorNode),
-                                        selection.anchorOffset);
+    var anchorPointer = this._getNodeHierarchyPath(selection.anchorNode)
 
-    var focusPointer:NodePointer = null;
+    var focusPointer:HierarchyPath = null;
 
     if(!selection.isCollapsed) {
-      var focusPointer = new NodePointer(selection.focusNode,
-                                         this._getNodeHierarchyPath(selection.focusNode),
-                                         selection.focusOffset);
+      focusPointer = this._getNodeHierarchyPath(selection.focusNode);
     }
 
     var result = new ContentAreaSelection(anchorPointer, focusPointer);
@@ -74,8 +70,8 @@ export default class ContentAreaElement extends LitElement {
     return html`<content-wrapper id='content-wrapper'></content-wrapper>`;
   }
 
-  public removeCharAt(hierarchyPath: number[], index:number){
-    var node = this._getNode(this._contentWrapperElement,hierarchyPath);
+  public removeCharAt(hierarchyPath:HierarchyPath) {
+    var node = this._getNode(this._contentWrapperElement, hierarchyPath.getParent());
 
     if(!(node instanceof Text)) {
       throw 'Cannot remove char from non Text node';
@@ -83,7 +79,7 @@ export default class ContentAreaElement extends LitElement {
 
     var textNode = node as Text;
 
-    textNode.nodeValue = this._removeCharAtIndex(textNode.nodeValue, index);
+    textNode.nodeValue = this._removeCharAtIndex(textNode.nodeValue, hierarchyPath.end);
   }
 
   public setContent(content: Node[]){
@@ -100,30 +96,26 @@ export default class ContentAreaElement extends LitElement {
     this._contentWrapperElement.appendChild(node);
   }
 
-  private _getNode(node:Node, hierarchyPath: number[]):Node {
-    var [head, ...tail] = hierarchyPath;
-
-    var child = node.childNodes[head];
-
-    if(tail.length === 0) {
-      return child;
+  private _getNode(node:Node, hierarchyPath: HierarchyPath):Node {
+    if(hierarchyPath.isRoot()){
+      return node;
     }
 
-    var result = this._getNode(child, tail);
+    var child = node.childNodes[hierarchyPath.head];
 
-    return result;
+    return this._getNode(child, hierarchyPath.tail);
   }
 
-  private _getNodeHierarchyPath(node:Node): number[] {
-    var currentIndex = Array.prototype.indexOf.call(node.parentNode.childNodes, node);
+  private _getNodeHierarchyPath(node:Node): HierarchyPath {
+    var currentIndex = Array.prototype.indexOf.call(node.parentNode.childNodes, node) as number;
 
     if(node.parentNode === this._contentWrapperElement){
-      return [currentIndex];
+      return new HierarchyPath([currentIndex]);
     }
 
-    var result = this._getNodeHierarchyPath(node.parentNode);
+    var result:HierarchyPath = this._getNodeHierarchyPath(node.parentNode);
 
-    result.push(currentIndex);
+    result.createChildPath(currentIndex);
 
     return result;
   }
