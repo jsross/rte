@@ -1,19 +1,18 @@
 import { LitElement, customElement, css, html } from 'lit-element';
 import KeyListener from './key-listener';
-import { stringify } from 'querystring';
 import ContentAreaSelection from './content-area-selection';
 import HierarchyPath from '../../core/hierarchy-path';
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
   
-  private _content: Node[] = null;
+  private _root: DocumentFragment = null;
   private _contentWrapperElement: HTMLElement = null;
   private _keyListeners: KeyListener[] = [];
 
   static get styles() {
     return [ css`
-    .bigger {font-size:20pt;}
+      .bigger {font-size:20pt;}
       content-wrapper {
         display: inline-block;
       }
@@ -45,8 +44,8 @@ export default class ContentAreaElement extends LitElement {
   public firstUpdated(){
     this._contentWrapperElement = this.shadowRoot.getElementById('content-wrapper');
 
-    if(this._content !== null){   
-      this.setContent(this._content);
+    if(this._root !== null){   
+      this._contentWrapperElement.appendChild(this._root);
     }
   }
 
@@ -82,18 +81,14 @@ export default class ContentAreaElement extends LitElement {
     textNode.nodeValue = this._removeCharAtIndex(textNode.nodeValue, hierarchyPath.end);
   }
 
-  public setContent(content: Node[]){
-    this._content = content;
+  public setContent(root: DocumentFragment){
+    this._root = root.cloneNode(true) as DocumentFragment;
 
     if(this._contentWrapperElement !== null) {
       this.clearContent();
-    
-      this._content.forEach(this._appendNode.bind(this));
-    }
-  }
 
-  private _appendNode(node: Node) {
-    this._contentWrapperElement.appendChild(node);
+      this._contentWrapperElement.appendChild(this._root);
+    }
   }
 
   private _getNode(node:Node, hierarchyPath: HierarchyPath):Node {

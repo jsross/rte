@@ -5,8 +5,8 @@ window.addEventListener('load', (event) => {
     root.appendChild(new MojjRte.BlockNode([new MojjRte.TextNode('Signed,\nme')], ['style1', 'style2']));
     
     var list = new MojjRte.ListNode();
-    list.appendChild(new MojjRte.BasicParentNode([new MojjRte.TextNode('Item 1')]));
-    list.appendChild(new MojjRte.BasicParentNode([new MojjRte.TextNode('Item 2')]));
+    list.appendChild(new MojjRte.ListItemNode([new MojjRte.TextNode('Item 1')]));
+    list.appendChild(new MojjRte.ListItemNode([new MojjRte.TextNode('Item 2')]));
     
     root.appendChild(list);
 

@@ -30,8 +30,8 @@ export default class RteElement extends LitElement {
     this._contentArea.addKeyListener(new ArrowKeyListener());
 
     if(this._root) {
-      var content = this._renderEngine.render(this._root);
-      this._contentArea.setContent(content.nodes);
+      var renderResult = this._renderEngine.render(this._root);
+      this._contentArea.setContent(renderResult.root as DocumentFragment);
     }
   }
 
@@ -48,8 +48,8 @@ export default class RteElement extends LitElement {
     this._root = root;
 
     if(this._contentArea) {
-      var content = this._renderEngine.render(this._root);
-      this._contentArea.setContent(content.nodes);
+      var renderResult = this._renderEngine.render(this._root);
+      this._contentArea.setContent(renderResult.root as DocumentFragment);
     }
   }
 

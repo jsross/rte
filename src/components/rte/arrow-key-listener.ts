@@ -6,7 +6,7 @@ export default class ArrowKeyListener implements KeyListener{
     handleKey(key: string, selection: ContentAreaSelection): boolean {
         console.log(key);
 
-        return false;
+        return true;
     }
 
 }

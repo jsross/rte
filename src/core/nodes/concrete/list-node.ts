@@ -1,8 +1,8 @@
 import ParentNode from '../abstract/parent-node';
-import RteNode from '../abstract/rte-node';
+import ListItemNode from './list-item-node';
 
-export default class ListNode extends ParentNode<ParentNode<RteNode>> {
-    constructor(children: ParentNode<RteNode>[] = []){
+export default class ListNode extends ParentNode<ListItemNode> {
+    constructor(children: ListItemNode[] = []){
         super(children);
     }
 }
