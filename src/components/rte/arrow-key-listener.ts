@@ -4,7 +4,7 @@ import ContentAreaSelection from "../content-area/content-area-selection";
 export default class ArrowKeyListener implements KeyListener{
 
     handleKey(key: string, selection: ContentAreaSelection): boolean {
-        console.log(key);
+        console.log(`key: ${key} at ${selection.AnchorPointer}`);
 
         return true;
     }
