@@ -1,4 +1,3 @@
-import RenderResult from './render-result';
 import RteNode from "./nodes/abstract/rte-node";
 import RteConfig from './config/rte-config';
 
@@ -7,7 +6,7 @@ export default class RenderEngine {
         RteConfig.configure();
     }
 
-    render(root:RteNode): RenderResult {
+    render(root:RteNode): Node {
         var type = root.constructor.name;
         
         var renderer = RteConfig.getRegisteredRenderer(type);

@@ -2,15 +2,15 @@ import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
 import ContentAreaElement from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
-import RteNode from '../../core/nodes/abstract/rte-node';
 import ArrowKeyListener from './arrow-key-listener';
+import DocumentFragmentNode from '../../core/nodes/concrete/document-fragment-node';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
   
   private _contentArea: ContentAreaElement;
   private _renderEngine: RenderEngine;
-  private _root: RteNode;
+  private _documentRoot: DocumentFragmentNode;
 
   static get styles() {    
     return [ css`
@@ -29,9 +29,8 @@ export default class RteElement extends LitElement {
     this._contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
     this._contentArea.addKeyListener(new ArrowKeyListener());
 
-    if(this._root) {
-      var renderResult = this._renderEngine.render(this._root);
-      this._contentArea.setContent(renderResult.root as DocumentFragment);
+    if(this._documentRoot) {
+      this._doRender();
     }
   }
 
@@ -44,13 +43,17 @@ export default class RteElement extends LitElement {
     return result;
   }
 
-  public setValue(root:RteNode) {
-    this._root = root;
+  public setValue(value:DocumentFragmentNode) {
+    this._documentRoot = value;
 
     if(this._contentArea) {
-      var renderResult = this._renderEngine.render(this._root);
-      this._contentArea.setContent(renderResult.root as DocumentFragment);
+      this._doRender();
     }
+  }
+
+  private _doRender(){
+    var root = this._renderEngine.render(this._documentRoot) as DocumentFragment;
+    this._contentArea.setContent(root as DocumentFragment);
   }
 
 }

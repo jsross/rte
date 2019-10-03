@@ -1,6 +1,6 @@
 import Configurator from "./configurator";
 import DefaultConfigurator from "./default-configurator";
-import RteNodeRenderer from "../rte-node-renderer";
+import RteNodeRenderer from "../renderers/abstract/rte-node-renderer";
 
 export default class RteConfig {
     public static configurator:Configurator = new DefaultConfigurator();
