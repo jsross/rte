@@ -69,16 +69,16 @@ export default class ContentAreaElement extends LitElement {
     return html`<content-wrapper id='content-wrapper'></content-wrapper>`;
   }
 
-  public removeCharAt(hierarchyPath:HierarchyPath) {
-    var node = hierarchyPath.getParent().resolve(this._contentWrapperElement);
+  public removeNode(path:HierarchyPath) {
+    if(path.isRoot()){
+      this.clearContent();
 
-    if(!(node instanceof Text)) {
-      throw 'Cannot remove char from non Text node';
+      return;
     }
 
-    var textNode = node as Text;
+    var node = path.resolve(this._contentWrapperElement);
 
-    textNode.nodeValue = this._removeCharAtIndex(textNode.nodeValue, hierarchyPath.end);
+    node.parentNode.removeChild(node);    
   }
 
   public setContent(root: DocumentFragment){
@@ -89,6 +89,18 @@ export default class ContentAreaElement extends LitElement {
 
       this._contentWrapperElement.appendChild(this._root);
     }
+  }
+
+  public updateTextNode(hierarchyPath:HierarchyPath, content:string){
+    var node = hierarchyPath.resolve(this._contentWrapperElement);
+
+    if(!(node instanceof Text)) {
+      throw 'Cannot remove char from non Text node';
+    }
+
+    var textNode = node as Text;
+
+    textNode.nodeValue = content;
   }
 
   private _handleEvent_blur(event: Event){
@@ -114,9 +126,5 @@ export default class ContentAreaElement extends LitElement {
     if(preventDefault) {
       event.preventDefault();
     }
-  }
-
-  private _removeCharAtIndex(value:string, index:number):string {
-    return value.substring(0,index) + value.substring(index + 1);
   }
 }
