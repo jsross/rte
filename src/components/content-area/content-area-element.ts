@@ -91,6 +91,16 @@ export default class ContentAreaElement extends LitElement {
     }
   }
 
+  public swapNode(path:HierarchyPath, node:Node){
+    if(path.isRoot()){
+      throw 'Cannot swap root';
+    }
+
+    var toReplace = path.resolve(this._contentWrapperElement);
+
+    toReplace.parentNode.replaceChild(node, toReplace);
+  }
+
   public updateTextNode(hierarchyPath:HierarchyPath, content:string){
     var node = hierarchyPath.resolve(this._contentWrapperElement);
 
