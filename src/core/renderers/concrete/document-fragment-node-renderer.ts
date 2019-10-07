@@ -1,6 +1,6 @@
-import RenderEngine from "../render-engine";
-import DocumentFragmentNode from "../nodes/concrete/document-fragment-node";
-import ParentNodeRenderer from "./abstract/parent-node-renderer";
+import RenderEngine from "../../render-engine";
+import DocumentFragmentNode from "../../nodes/concrete/document-fragment-node";
+import ParentNodeRenderer from "../abstract/parent-node-renderer";
 
 export default class DocumentFragmentNodeRenderer extends ParentNodeRenderer<DocumentFragmentNode> {
     public render(node: DocumentFragmentNode, engine: RenderEngine): Node {

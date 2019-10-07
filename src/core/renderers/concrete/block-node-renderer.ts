@@ -1,6 +1,6 @@
-import RenderEngine from "../render-engine";
-import BlockNode from "../nodes/concrete/block-node";
-import ParentNodeRenderer from "./abstract/parent-node-renderer";
+import RenderEngine from "../../render-engine";
+import BlockNode from "../../nodes/concrete/block-node";
+import ParentNodeRenderer from "../abstract/parent-node-renderer";
 
 export default class BlockNodeRenderer extends ParentNodeRenderer<BlockNode>{
     public render(node: BlockNode, engine: RenderEngine): Node {
