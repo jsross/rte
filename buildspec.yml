@@ -3,15 +3,11 @@ phases:
   install:
     runtime-versions:
       nodejs: 10
-    pre_build:
-      commands:
-        - echo Pre Build
-        - cd $CODEBUILD_SRC_DIR/
-        - npm install
   build:
     commands:
       - echo Building the Node code...
       - cd $CODEBUILD_SRC_DIR/
+      - npm install
       - npm run build
 artifacts:
   files:
