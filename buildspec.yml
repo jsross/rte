@@ -13,6 +13,3 @@ phases:
       - echo Building the Node code...
       - cd $CODEBUILD_SRC_DIR/
       - npm run build
-artifacts:
-  files:
-    - 'dist/**/*'
