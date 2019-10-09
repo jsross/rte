@@ -60,7 +60,24 @@ module.exports = ({ mode, presets }) => {
             test: /\.tsx?$/,
             use: 'ts-loader',
             exclude: /node_modules/
-          }         
+          },
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+              plugins: ['@babel/plugin-syntax-dynamic-import'],
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'usage',
+                    targets: '>1%, not dead, not ie 11'
+                  }
+                ]
+              ]
+            }
+          }     
         ]
       },
       plugins,
