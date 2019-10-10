@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "npm run webpack-dev & npm run copy-demo",
-    "serve": "npm run webpack-dev-server -- --env.mode development",
+    "serve": "node dev-server.js",
     "test": "jasmine-ts --config=jasmine.json",
     "testWithCoverage": "nyc -r text -e .ts -x \"tests/*.test.ts\" jasmine-ts --config=jasmine.json",
     "webpack": "webpack",
@@ -26,6 +26,7 @@
     "copy-webpack-plugin": "^5.0.4",
     "copyfiles": "^2.1.1",
     "css-loader": "^3.1.0",
+    "express": "^4.17.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "jasmine": "^3.4.0",

@@ -41,11 +41,8 @@ module.exports = ({ mode, presets }) => {
       entry: './src/export.ts',
       output: {
         filename: '[name].js',
-        library: 'MojjRte'
-      },
-      devServer: {
-        port: 8770,
-        writeToDisk: true
+        library: 'MojjRte',
+        libraryTarget: 'umd'
       },
       devtool: 'inline-source-map',
       module: {
