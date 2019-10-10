@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "build": "npm run webpack-dev & npm run copy-demo",
+    "build": "npm run webpack-dev && npm run copy-demo",
     "serve": "node dev-server.js",
     "test": "jasmine-ts --config=jasmine.json",
     "testWithCoverage": "nyc -r text -e .ts -x \"tests/*.test.ts\" jasmine-ts --config=jasmine.json",
