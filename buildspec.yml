@@ -15,5 +15,6 @@ phases:
       - npm run webpack-dev
       - npm run copy-demo
 artifacts:
+  base-directory: 'dist/'
   files:
-    - dist/*/**
+    - '**/*'
