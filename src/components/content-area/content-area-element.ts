@@ -2,6 +2,7 @@ import { LitElement, customElement, css, html } from 'lit-element';
 import KeyListener from './key-listener';
 import ContentAreaSelection from './content-area-selection';
 import HierarchyPath from '../../core/hierarchy-path';
+import RteOperation from '../../core/operations/rte-operation';
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
@@ -125,12 +126,22 @@ export default class ContentAreaElement extends LitElement {
     var preventDefault = false;
     var selection = this.getSelection();
     var keyCode = `${!event.code.includes('Shift') && event.shiftKey ? 'SHIFT-':''}${event.code}`;
-        
+    
+    var operations:RteOperation[] = new Array<RteOperation>();
+
     for(let listener of this._keyListeners){
-      if(!listener.handleKey(keyCode, selection)) {
+      var result = listener.handleKey(keyCode, selection);
+
+      operations.concat(result.operations);
+
+      if(result.preventNext){
         preventDefault = true;
         break;
       }
+    }
+
+    if(operations.length > 0) {
+      
     }
 
     if(preventDefault) {

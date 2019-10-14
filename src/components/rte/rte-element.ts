@@ -4,6 +4,7 @@ import ContentAreaElement from "../content-area/content-area-element"
 import RenderEngine from '../../core/render-engine';
 import ArrowKeyListener from './arrow-key-listener';
 import DocumentFragmentNode from '../../core/nodes/concrete/document-fragment-node';
+import BackspaceListener from './backspace-listener';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -28,6 +29,7 @@ export default class RteElement extends LitElement {
   public firstUpdated() {
     this._contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
     this._contentArea.addKeyListener(new ArrowKeyListener());
+    this._contentArea.addKeyListener(new BackspaceListener());
 
     if(this._documentRoot) {
       this._doRender();
