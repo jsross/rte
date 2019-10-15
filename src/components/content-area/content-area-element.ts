@@ -53,7 +53,7 @@ export default class ContentAreaElement extends LitElement {
 
     var focusPointer:HierarchyPath = null;
 
-    if(!selection.isCollapsed) {
+    if(selection.type === 'Range') {
       focusPointer = HierarchyPath.getPath(this._contentWrapperElement, selection.focusNode).createChildPath(selection.focusOffset);
     }
 
