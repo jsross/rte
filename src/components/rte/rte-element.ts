@@ -6,6 +6,7 @@ import DocumentFragmentNode from '../../core/nodes/concrete/document-fragment-no
 import KeyPipe, { KeyPipePayload } from '../../core/keyPipeline/key-pipe';
 import LoggerPipe from '../../core/keyPipeline/logger-pipe';
 import ContentSelection from '../../core/content-selection';
+import BackspaceListener from '../../core/keyPipeline/backspace-listener';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -28,11 +29,12 @@ export default class RteElement extends LitElement {
 
     this._renderEngine = new RenderEngine();
     this._keyPipeline.push(new LoggerPipe());
+    this._keyPipeline.push(new BackspaceListener());
   }
 
   public firstUpdated() {
     this._contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
-    this._contentArea.addEventListener('rte-keyboard-event', this._handleRteKeyboardEvent.bind(this))
+    this._contentArea.addEventListener('rte-keyboard-event', this._handleRteKeyboardEvent.bind(this));
 
     if(this._documentRoot) {
       this._doRender();
