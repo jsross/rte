@@ -86,6 +86,20 @@ export default class HierarchyPath {
         return new HierarchyPath(parentArray);
     }
 
+    public getPreviousSibling():HierarchyPath {
+        if(this.isRoot()){
+            return null;
+        }
+
+        var end = this.end;
+
+        if(this.end === 0){
+            return null;
+        }
+
+        return this.getParent().createChildPath(end - 1);
+    }
+
     public resolve(node:Node):Node {
         if(this.isRoot()){
           return node;

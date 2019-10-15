@@ -5,7 +5,7 @@ export class DeleteOperation extends RteOperation{
 
     public value:string = null;
 
-    constructor(start: HierarchyPath, end: HierarchyPath){
+    constructor(start: HierarchyPath, end: HierarchyPath = null){
         super(start, end);
     }
 }

@@ -6,10 +6,9 @@ export default interface KeyPipe {
 }
 
 export class KeyPipePayload {
-
-    key:string;
-    selection: ContentSelection;
-    operations: RteOperation[];
+    public key:string;
+    public selection: ContentSelection;
+    public operations: RteOperation[];
 
     constructor(key:string, selection:ContentSelection){
         this.key = key;
