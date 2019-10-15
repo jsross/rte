@@ -1,6 +1,6 @@
-import HierachyPath from "../../core/hierarchy-path";
+import HierachyPath from "./hierarchy-path";
 
-export default class ContentAreaSelection {
+export default class ContentSelection {
 
     private readonly _anchorPointer: HierachyPath;
     public readonly _focusPointer: HierachyPath;
