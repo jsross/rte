@@ -1,14 +1,14 @@
 import { LitElement, customElement, css, html } from 'lit-element';
-import KeyListener from './key-listener';
-import ContentAreaSelection from './content-area-selection';
 import HierarchyPath from '../../core/hierarchy-path';
+import ContentSelection from '../../core/content-selection';
+
+const keyCodeWhiteList = [123];
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
   
   private _root: DocumentFragment = null;
   private _contentWrapperElement: HTMLElement = null;
-  private _keyListeners: KeyListener[] = [];
 
   static get styles() {
     return [ css`
@@ -31,10 +31,6 @@ export default class ContentAreaElement extends LitElement {
     this.addEventListener('keydown', this._handleEvent_keydown.bind(this));
   }
 
-  public addKeyListener(keyListener:KeyListener){
-    this._keyListeners.push(keyListener);
-  }
-
   public clearContent(){
     while (this._contentWrapperElement.firstChild) {
       this._contentWrapperElement.firstChild.remove();
@@ -49,7 +45,7 @@ export default class ContentAreaElement extends LitElement {
     }
   }
 
-  public getSelection():ContentAreaSelection{
+  public getSelection():ContentSelection{
     var selection = this.shadowRoot.getSelection();
 
     var anchorPointer = HierarchyPath.getPath(this._contentWrapperElement, selection.anchorNode).createChildPath(selection.anchorOffset);
@@ -60,7 +56,7 @@ export default class ContentAreaElement extends LitElement {
       focusPointer = HierarchyPath.getPath(this._contentWrapperElement, selection.focusNode).createChildPath(selection.focusOffset);
     }
 
-    var result = new ContentAreaSelection(anchorPointer, focusPointer);
+    var result = new ContentSelection(anchorPointer, focusPointer);
 
     return result;
   }
@@ -122,18 +118,19 @@ export default class ContentAreaElement extends LitElement {
   }
 
   private _handleEvent_keydown(event:KeyboardEvent) {
-    var preventDefault = false;
     var selection = this.getSelection();
-    var keyCode = `${!event.code.includes('Shift') && event.shiftKey ? 'SHIFT-':''}${event.code}`;
-        
-    for(let listener of this._keyListeners){
-      if(!listener.handleKey(keyCode, selection)) {
-        preventDefault = true;
-        break;
-      }
+    var key = `${!event.code.includes('Shift') && event.shiftKey ? 'SHIFT-':''}${event.code}`;
+
+    var detail = {
+      selection: selection,
+      key: key
     }
 
-    if(preventDefault) {
+    var rteEvent = new CustomEvent('rte-keyboard-event', { detail: detail});
+
+    this.dispatchEvent(rteEvent);      
+
+    if(keyCodeWhiteList.indexOf(event.keyCode) < 0) {
       event.preventDefault();
     }
   }
