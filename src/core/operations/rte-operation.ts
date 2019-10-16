@@ -1,4 +1,5 @@
 import HierarchyPath from "../hierarchy-path";
+import RteNode from "../nodes/abstract/rte-node";
 
 export default abstract class RteOperation{
 
@@ -9,4 +10,6 @@ export default abstract class RteOperation{
         this.start = start;
         this.end = end;
     }
+
+    abstract execute(root:RteNode):void;
 }
