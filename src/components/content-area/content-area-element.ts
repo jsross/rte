@@ -1,6 +1,7 @@
 import { LitElement, customElement, css, html } from 'lit-element';
 import HierarchyPath from '../../core/hierarchy-path';
 import ContentSelection from '../../core/content-selection';
+import NodePathHelper from '../../core/node-path-helper';
 
 const keyCodeWhiteList = [123];
 
@@ -48,12 +49,12 @@ export default class ContentAreaElement extends LitElement {
   public getSelection():ContentSelection{
     var selection = this.shadowRoot.getSelection();
 
-    var anchorPointer = HierarchyPath.getPath(this._contentWrapperElement, selection.anchorNode).createChildPath(selection.anchorOffset);
+    var anchorPointer = NodePathHelper.getPath(this._contentWrapperElement, selection.anchorNode).createChildPath(selection.anchorOffset);
 
     var focusPointer:HierarchyPath = null;
 
     if(!selection.isCollapsed) {
-      focusPointer = HierarchyPath.getPath(this._contentWrapperElement, selection.focusNode).createChildPath(selection.focusOffset);
+      focusPointer = NodePathHelper.getPath(this._contentWrapperElement, selection.focusNode).createChildPath(selection.focusOffset);
     }
 
     var result = new ContentSelection(anchorPointer, focusPointer);
@@ -71,10 +72,10 @@ export default class ContentAreaElement extends LitElement {
 
       return;
     }
+    
+    var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    var node = path.resolve(this._contentWrapperElement);
-
-    node.parentNode.removeChild(node);    
+    target.parentNode.removeChild(target);    
   }
 
   public setContent(root: DocumentFragment){
@@ -92,21 +93,21 @@ export default class ContentAreaElement extends LitElement {
       throw 'Cannot swap root';
     }
 
-    var toReplace = path.resolve(this._contentWrapperElement);
+    var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    toReplace.parentNode.replaceChild(node, toReplace);
+    target.parentNode.replaceChild(node, target);
   }
 
-  public updateTextNode(hierarchyPath:HierarchyPath, content:string){
-    var node = hierarchyPath.resolve(this._contentWrapperElement);
+  public updateTextNode(path:HierarchyPath, content:string){
+    var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    if(!(node instanceof Text)) {
+    if(!(target instanceof Text)) {
       throw 'Cannot remove char from non Text node';
     }
 
-    var textNode = node as Text;
+    var targetTextNode = target as Text;
 
-    textNode.nodeValue = content;
+    targetTextNode.nodeValue = content;
   }
 
   private _handleEvent_blur(event: Event){

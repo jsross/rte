@@ -57,25 +57,6 @@ export default class HierarchyPath {
         return new HierarchyPath([]);
     }
 
-    static getPath(root:Node, toFind:Node) : HierarchyPath {
-        if(root === toFind) {
-            return this.createRoot();
-        }
-
-        if(!toFind.parentNode) {
-            throw 'Not found';
-        }
-
-        var childNodes = Array.from(toFind.parentNode.childNodes) as Node[];
-        var index = childNodes.indexOf(toFind);
-    
-        var parentPath:HierarchyPath = this.getPath(root, toFind.parentNode);
-    
-        var result = parentPath.createChildPath(index);
-    
-        return result;
-    }
-
     public getParent():HierarchyPath {
         if(this.isRoot()) {
             return null;
@@ -85,16 +66,6 @@ export default class HierarchyPath {
         
         return new HierarchyPath(parentArray);
     }
-
-    public resolve(node:Node):Node {
-        if(this.isRoot()){
-          return node;
-        }
-    
-        var child = node.childNodes[this.head];
-    
-        return this.tail.resolve(child);
-      }
 
     public isEqual(toCompare:HierarchyPath):boolean {
         if(toCompare._path.length !== this._path.length) {
