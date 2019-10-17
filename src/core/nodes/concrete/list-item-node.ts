@@ -5,4 +5,5 @@ export default class ListItemNode extends ParentNode<RteNode> {
     constructor(children: RteNode[] = []){
         super(children);
     }
+
 }

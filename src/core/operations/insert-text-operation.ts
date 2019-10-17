@@ -4,16 +4,18 @@ import RteNode from "../nodes/abstract/rte-node";
 
 export class InsertTextOperation extends RteOperation{
     
-    public value:string = null;
+    private _value:string = null;
+    private _index:number = 0;
 
-    constructor(start: HierarchyPath, value: string){
+    constructor(start: HierarchyPath, value: string, index:number){
         super(start);
 
-        this.value = value;
+        this._value = value;
+        this._index = index;
     }
 
     execute(root: RteNode): void {
-        throw new Error("Method not implemented.");
+        root.insertText(this.start, this._value, this._index);
     }
 
 }

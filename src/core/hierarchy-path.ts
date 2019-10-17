@@ -39,6 +39,10 @@ export default class HierarchyPath {
         return new HierarchyPath(array);
     }
 
+    public depth():number {
+        return this._path.length;
+    }
+
     public isChildOf(path:HierarchyPath):boolean {
         var parent = this.getParent();
 
@@ -50,7 +54,7 @@ export default class HierarchyPath {
     }
 
     public isRoot():boolean {
-        return this._path.length > 0;
+        return this.depth() === 0;
     }
 
     static createRoot() : HierarchyPath{

@@ -13,5 +13,4 @@ export default class BlockNode extends ParentNode<Leaf> {
 
         this._styles = styles;
     }
-
 }
