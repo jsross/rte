@@ -15,7 +15,7 @@ export class InsertTextOperation extends RteOperation{
     }
 
     execute(root: RteNode): void {
-        root.insertText(this.start, this._value, this._index);
+        root.insertText(this.start, this._value);
     }
 
 }

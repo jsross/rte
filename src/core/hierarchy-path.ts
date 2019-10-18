@@ -66,7 +66,7 @@ export default class HierarchyPath {
             return null;
         }
 
-        var parentArray = this._path.slice(0, this._path.length - 2);
+        var parentArray = this._path.slice(0, this._path.length - 1);
         
         return new HierarchyPath(parentArray);
     }

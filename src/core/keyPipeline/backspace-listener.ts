@@ -9,9 +9,9 @@ export default class BackspaceListener implements KeyPipe{
         }
       
         if(!payload.selection.FocusPointer && payload.selection.AnchorPointer.end > 0) {
-            var operation = new DeleteTextOperation(payload.selection.AnchorPointer.getParent(),
-                                                    payload.selection.AnchorPointer.end - 1,
-                                                    1);
+            var sibling = payload.selection.AnchorPointer.getPreviousSibling();
+
+            var operation = new DeleteTextOperation(sibling, 1);
 
             payload.operations.push(operation);
         }
