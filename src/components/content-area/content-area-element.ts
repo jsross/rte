@@ -121,11 +121,10 @@ export default class ContentAreaElement extends LitElement {
 
   private _handleEvent_keydown(event:KeyboardEvent) {
     var selection = this.getSelection();
-    var key = `${!event.code.includes('Shift') && event.shiftKey ? 'SHIFT-':''}${event.code}`;
 
     var detail = {
       selection: selection,
-      key: key
+      key: event.key
     }
 
     var rteEvent = new CustomEvent('rte-keyboard-event', { detail: detail});

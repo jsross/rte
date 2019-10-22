@@ -8,6 +8,7 @@ import LoggerPipe from '../../core/keyPipeline/logger-pipe';
 import ContentSelection from '../../core/content-selection';
 import BackspaceListener from '../../core/keyPipeline/backspace-listener';
 import RteOperation from '../../core/operations/rte-operation';
+import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -31,6 +32,7 @@ export default class RteElement extends LitElement {
     this._renderEngine = new RenderEngine();
     this._keyPipeline.push(new LoggerPipe());
     this._keyPipeline.push(new BackspaceListener());
+    this._keyPipeline.push(new CharacterKeyListener());
   }
 
   public firstUpdated() {
