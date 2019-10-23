@@ -63,6 +63,12 @@ export default class ContentAreaElement extends LitElement {
     return result;
   }
 
+  public setSelection(start:HierarchyPath, end:HierarchyPath=null){
+    var startPointer = NodePathHelper.resolvePath(this._contentWrapperElement, start);
+
+    this.shadowRoot.getSelection().setPosition(startPointer.node, startPointer.remainder.end);
+  }
+
   public render() {
     return html`<content-wrapper id='content-wrapper'></content-wrapper>`;
   }
@@ -73,10 +79,12 @@ export default class ContentAreaElement extends LitElement {
 
       return;
     }
-    
+
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    target.parentNode.removeChild(target);    
+    if(target.remainder.isRoot()){
+      target.node.parentNode.removeChild(target.node);
+    }
   }
 
   public setContent(root: DocumentFragment){
@@ -96,17 +104,19 @@ export default class ContentAreaElement extends LitElement {
 
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    target.parentNode.replaceChild(node, target);
+    if(target.remainder.isRoot()){
+      target.node.parentNode.replaceChild(node, target.node);
+    }
   }
 
   public updateTextNode(path:HierarchyPath, content:string){
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    if(!(target instanceof Text)) {
+    if(!(target.node instanceof Text)) {
       throw 'Cannot remove char from non Text node';
     }
 
-    var targetTextNode = target as Text;
+    var targetTextNode = target.node as Text;
 
     targetTextNode.nodeValue = content;
   }

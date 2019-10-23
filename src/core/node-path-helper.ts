@@ -20,13 +20,18 @@ export default class NodePathHelper{
         return result;
     }
 
-    static resolvePath(root:Node, path:HierarchyPath):Node {
-        if(path.isRoot()){
-          return root;
+    static resolvePath(root:Node, path:HierarchyPath): PathResolution {
+        if(path.isRoot() || !root.hasChildNodes() ){
+          return { node: root, remainder: path};
         }
     
         var child = root.childNodes[path.head];
     
         return NodePathHelper.resolvePath(child, path.tail);
     }
+}
+
+export interface PathResolution {
+    node: Node;
+    remainder: HierarchyPath;
 }

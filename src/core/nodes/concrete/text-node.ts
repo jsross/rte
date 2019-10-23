@@ -23,7 +23,8 @@ export default class TextNode extends LeafNode {
 
         this._value = StringHelper.insert(this._value, value, path.end);
 
-        this._notifyOfChange();
+        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([path.end + 1]));
+        this._subject.next(event); 
     }
 
     public deleteText(path: HierarchyPath, count: number): void {
@@ -33,11 +34,8 @@ export default class TextNode extends LeafNode {
 
         this._value = StringHelper.remove(this._value, path.end, count);
 
-        this._notifyOfChange();        
+        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([path.end - 1]));
+        this._subject.next(event);        
     }
 
-    private _notifyOfChange(){
-        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this);
-        this._subject.next(event);
-    }
 }

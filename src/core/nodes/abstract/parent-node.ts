@@ -64,7 +64,8 @@ export default abstract class ParentNode<T extends RteNode> extends RteNode {
 
         var childIndex = this.children.indexOf(child);
         var path = (new HierarchyPath([childIndex])).concat(event.path);
-        var toEmit = new RteNodeEvent(path, this, event.origin);
+        var caret = (new HierarchyPath([childIndex])).concat(event.caretPosition);
+        var toEmit = new RteNodeEvent(path, this, event.origin, caret);
 
         this._subject.next(toEmit);
     }

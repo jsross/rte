@@ -86,7 +86,7 @@ export default class RteElement extends LitElement {
 
   private _processOperations(operations:RteOperation[]) {
     for(var operation of operations) {
-      operation.execute(this._internalDocument);
+      operation.execute(this._internalDocument);      
     }
   }
 
@@ -98,6 +98,7 @@ export default class RteElement extends LitElement {
     if(newContent instanceof Text){
       var text = newContent as Text;
       this._contentArea.updateTextNode(event.path, text.textContent);
+      this._contentArea.setSelection(event.caretPosition);
     }
   }
 
