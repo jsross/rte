@@ -1,22 +1,30 @@
 import RteNode from "./rte-node";
 import HierarchyPath from "../../hierarchy-path";
+import RteNodeEvent from "./rte-node-event";
 
-export default abstract class ParentNode<T extends RteNode> implements RteNode {
+export default abstract class ParentNode<T extends RteNode> extends RteNode {
     private _children:Array<T> = [];
-   
 
     get children(): Array<T> {
         return this._children;
     }
 
     constructor(children:Array<T> = null){
+        super();
+
         if(children){
             this._children = children;
+
+            for(var child of this._children){
+                child.addListener(this._childListener.bind(this));
+            }
         }
     }
 
     public appendChild(child:T) {
         this._children.push(child);
+
+        child.addListener(this._childListener.bind(this));
     }
 
     public hasChildren():boolean{
@@ -49,5 +57,15 @@ export default abstract class ParentNode<T extends RteNode> implements RteNode {
         }
 
         child.deleteText(path.tail, count);
+    }
+
+    protected _childListener(event:RteNodeEvent) {
+        var child = event.emitter as T;
+
+        var childIndex = this.children.indexOf(child);
+        var path = (new HierarchyPath([childIndex])).concat(event.path);
+        var toEmit = new RteNodeEvent(path, this, event.origin);
+
+        this._subject.next(toEmit);
     }
 }

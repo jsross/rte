@@ -1,9 +1,7 @@
 import RteNode from './rte-node';
 import HierarchyPath from '../../hierarchy-path';
 
-export default abstract class LeafNode implements RteNode {
-
-    constructor(){}
+export default abstract class LeafNode extends RteNode {
 
     abstract insertText(path: HierarchyPath, value: string): void;
     abstract deleteText(path: HierarchyPath, count: number): void;

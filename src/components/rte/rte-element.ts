@@ -9,6 +9,7 @@ import ContentSelection from '../../core/content-selection';
 import BackspaceListener from '../../core/keyPipeline/backspace-listener';
 import RteOperation from '../../core/operations/rte-operation';
 import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
+import RteNodeEvent from '../../core/nodes/abstract/rte-node-event';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -56,6 +57,8 @@ export default class RteElement extends LitElement {
   public setValue(value:DocumentFragmentNode) {
     this._internalDocument = value;
 
+    this._internalDocument.addListener(this._handleRteNodeEvent.bind(this));
+
     if(this._contentArea) {
       this._doRender();
     }
@@ -84,6 +87,17 @@ export default class RteElement extends LitElement {
   private _processOperations(operations:RteOperation[]) {
     for(var operation of operations) {
       operation.execute(this._internalDocument);
+    }
+  }
+
+  private _handleRteNodeEvent(event:RteNodeEvent){
+    console.log(event);
+    var newContent = this._renderEngine.render(event.origin);
+    console.log(newContent);
+
+    if(newContent instanceof Text){
+      var text = newContent as Text;
+      this._contentArea.updateTextNode(event.path, text.textContent);
     }
   }
 
