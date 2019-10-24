@@ -34,7 +34,7 @@ export default class TextNode extends LeafNode {
 
         this._value = StringHelper.remove(this._value, path.end, count);
 
-        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([path.end - 1]));
+        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([path.end]));
         this._subject.next(event);        
     }
 
