@@ -5,7 +5,9 @@ import RteNodeRenderer from "../abstract/rte-node-renderer";
 export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     
     public render(node: TextNode, engine: RenderEngine): Node {
-        var root = document.createTextNode(node.value);
+        var content = node.value.replace(/ /g, '\u205f');
+        
+        var root = document.createTextNode(content);
 
         return root;
     }
