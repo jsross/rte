@@ -1,13 +1,16 @@
 import RenderEngine from "../../render-engine";
 import DocumentFragmentNode from "../../nodes/concrete/document-fragment-node";
 import ParentNodeRenderer from "../abstract/parent-node-renderer";
+import RenderResult from "../../render-result";
 
 export default class DocumentFragmentNodeRenderer extends ParentNodeRenderer<DocumentFragmentNode> {
-    public render(node: DocumentFragmentNode, engine: RenderEngine): Node {
+    public render(node: DocumentFragmentNode, engine: RenderEngine): RenderResult {
         var root = document.createDocumentFragment();
 
-        this._renderChildren(node, root, engine);
+        var result = new RenderResult(root);
 
-        return root;
+        this._renderChildren(node, result, engine);
+
+        return result;
     }
 }

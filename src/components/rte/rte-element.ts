@@ -10,6 +10,7 @@ import BackspaceListener from '../../core/keyPipeline/backspace-listener';
 import RteOperation from '../../core/operations/rte-operation';
 import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
 import RteNodeEvent from '../../core/nodes/abstract/rte-node-event';
+import HierarchyPath from '../../core/hierarchy-path';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -18,6 +19,7 @@ export default class RteElement extends LitElement {
   private _renderEngine: RenderEngine;
   private _internalDocument: DocumentFragmentNode;
   private _keyPipeline: KeyPipe[];
+  private _map: Map<Node,HierarchyPath>;
 
   static get styles() {    
     return [ css`
@@ -65,8 +67,10 @@ export default class RteElement extends LitElement {
   }
 
   private _doRender(){
-    var root = this._renderEngine.render(this._internalDocument) as DocumentFragment;
-    this._contentArea.setContent(root as DocumentFragment);
+    var result = this._renderEngine.render(this._internalDocument);
+    var root = result.root as DocumentFragment;
+    this._map = result.map;
+    this._contentArea.setContent(root);
   }
 
   private _handleRteKeyboardEvent(event:CustomEvent) {
