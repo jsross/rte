@@ -19,7 +19,7 @@ export default class RteElement extends LitElement {
   private _renderEngine: RenderEngine;
   private _internalDocument: DocumentFragmentNode;
   private _keyPipeline: KeyPipe[];
-  private _map: Map<Node,HierarchyPath>;
+  private _map: Map<HierarchyPath,HierarchyPath>;
 
   static get styles() {    
     return [ css`
@@ -68,7 +68,7 @@ export default class RteElement extends LitElement {
 
   private _doRender(){
     var result = this._renderEngine.render(this._internalDocument);
-    var root = result.root as DocumentFragment;
+    var root = result.nodes[0] as DocumentFragment;
     this._map = result.map;
     this._contentArea.setContent(root);
   }

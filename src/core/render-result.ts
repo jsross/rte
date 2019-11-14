@@ -1,17 +1,16 @@
 import HierarchyPath from "./hierarchy-path";
 
 export default class RenderResult {
-    public readonly root : Node;
-    public map : Map<Node, HierarchyPath> = new Map<Node, HierarchyPath>();
+    public readonly nodes : Node[];
+    public readonly map : Map<HierarchyPath, HierarchyPath> = new Map<HierarchyPath, HierarchyPath>();
 
-    constructor(root: Node){
-        this.root = root;
+    constructor(nodes: Node[], map: Map<HierarchyPath, HierarchyPath>){
+        this.nodes = nodes;
+        this.map = map;
     }
 
     append(child: RenderResult, path: HierarchyPath) {        
-        this.root.appendChild(child.root);
-
-        this.map.set(child.root, path);
+        //this.map.set(child.root, path);
 
         for(var node of child.map.keys()){
             var nodePath:HierarchyPath = child.map.get(node);
