@@ -14,13 +14,33 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         var content = node.value;
 
         content = content.replace(/ /g, '\u205f');
+        
+        var currentLine = "";
+        var nodeOffset = 0;
 
-        if(content.includes('\n')){
-            lines = content.split('\n');
+        for (var index = 0; index < content.length; index++) {
+            var char = content.charAt(index);
+
+            if(char === '\n'){
+                nodes.push(document.createTextNode(currentLine));
+
+                map.set(HierarchyPath.parse(`/${nodes.length - 1}`),
+                        HierarchyPath.parse(`/${nodeOffset}`));
+
+                var br = document.createElement('br');             
+                nodes.push(br); 
+
+                map.set(HierarchyPath.parse(`/${nodes.length - 1}`),
+                        HierarchyPath.parse(`/${index}`));
+
+                nodeOffset = index + 1;
+            }
         }
-        else {
-            lines = [content];
-        }
+
+        nodes.push(document.createTextNode(currentLine));
+
+        map.set(HierarchyPath.parse(`/${nodes.length - 1}`),
+                        HierarchyPath.parse(`/${nodeOffset}`));
 
         lines.forEach((line, index) => {
             if(index > 0){

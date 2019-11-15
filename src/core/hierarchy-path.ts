@@ -1,5 +1,32 @@
 export default class HierarchyPath {
 
+    static createRoot() : HierarchyPath{
+        return new HierarchyPath([]);
+    }
+
+    static parse(path:string) : HierarchyPath {
+        const validate = new RegExp('^(\/\d*)(\/\d+)*$');
+        const partsRegex = new RegExp('((?<=\/)\d+)');
+
+        if(!validate.test(path)){
+            throw 'Parse Exception';
+        }
+
+        var matches = path.match(partsRegex);
+        
+        if(matches.length === 0) {
+            return HierarchyPath.createRoot();
+        }
+
+        var parsed:Array<number> = [];
+
+        for(var match of matches) {
+            parsed.push(parseInt(match))
+        }
+
+        return new HierarchyPath(parsed);
+    }
+
     private readonly _path:Array<number>;
     private _stringValue: string = null;
 
@@ -20,6 +47,8 @@ export default class HierarchyPath {
     get end(): number {
         return this._path[this._path.length - 1];
     }
+
+
     
     constructor(path:number[]) {
         this._path = path;
@@ -57,9 +86,7 @@ export default class HierarchyPath {
         return this.depth() === 0;
     }
 
-    static createRoot() : HierarchyPath{
-        return new HierarchyPath([]);
-    }
+    
 
     public getParent():HierarchyPath {
         if(this.isRoot()) {
