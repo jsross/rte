@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npm run webpack-dev && npm run copy-demo",
     "serve": "node dev-server.js",
-    "test": "jasmine-ts --config=jasmine.json",
+    "test": "jasmine-ts --reporter=jasmine-ts-console-reporter --config=jasmine.json",
     "testWithCoverage": "nyc -r text -e .ts -x \"tests/*.test.ts\" jasmine-ts --config=jasmine.json",
     "webpack": "webpack",
     "webpack-dev": "npm run webpack -- --env.mode development",
@@ -31,6 +31,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jasmine": "^3.4.0",
     "jasmine-ts": "^0.3.0",
+    "jasmine-ts-console-reporter": "^3.1.1",
     "jsdom": "^15.1.1",
     "mini-css-extract-plugin": "^0.8.0",
     "nyc": "^14.1.1",
