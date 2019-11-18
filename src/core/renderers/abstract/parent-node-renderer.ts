@@ -7,7 +7,11 @@ import HierarchyPath from "../../hierarchy-path";
 export default abstract class ParentNodeRenderer<T extends ParentNode<any>> implements RteNodeRenderer<T>{
     abstract render(node: T, engine: RenderEngine): RenderResult;
 
-    protected _renderChildren(rteNode: T, htmlNode: Node, engine:RenderEngine) {
+    protected _renderChildren(rteNode: T,
+                              htmlNode: Node,
+                              map:  Map<string, string>,
+                              engine:RenderEngine) {
+
         if(rteNode.hasChildren()){
             for(let index = 0; index < rteNode.children.length; index++) {
                 var child = rteNode.children[index];
@@ -17,10 +21,17 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
                 for(var childHtmlNode of childResult.nodes) {
                     htmlNode.appendChild(childHtmlNode);
                 }
-                
-                //renderResult.append(childResult, HierarchyPath.createRoot().createChildPath(index));
+
+                for(var key of childResult.map.keys()) {
+                    var nodeKey = HierarchyPath.parse(`/${index}`).concat(HierarchyPath.parse(key));
+                    var rtePath = HierarchyPath.parse(`/${index}`).concat(HierarchyPath.parse(childResult.map.get(key)));
+
+                    map.set(nodeKey.toString(), rtePath.toString());
+                }
             }
         }
+
+        return map;
     } 
 
 }

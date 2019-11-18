@@ -19,7 +19,7 @@ export default class RteElement extends LitElement {
   private _renderEngine: RenderEngine;
   private _internalDocument: DocumentFragmentNode;
   private _keyPipeline: KeyPipe[];
-  private _map: Map<HierarchyPath,HierarchyPath>;
+  private _map: Map<string,string>;
 
   static get styles() {    
     return [ css`
@@ -86,6 +86,8 @@ export default class RteElement extends LitElement {
     if(payload.operations.length > 0) {
       this._processOperations(payload.operations);
     }
+
+    console.log(`${selection.AnchorPointer.toString()} : ${this._find(selection.AnchorPointer)}`);
   }
 
   private _processOperations(operations:RteOperation[]) {
@@ -104,6 +106,18 @@ export default class RteElement extends LitElement {
       this._contentArea.updateTextNode(event.path, text.textContent);
       this._contentArea.setSelection(event.caretPosition);
     }
+  }
+
+  private _find(path:HierarchyPath):string {
+    while(!path.isRoot()) {
+      if(this._map.has(path.toString())) {
+        return this._map.get(path.toString());
+      }
+
+      path = path.getParent();
+    }
+
+    return null;
   }
 
 }

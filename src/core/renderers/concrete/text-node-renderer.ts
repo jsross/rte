@@ -8,7 +8,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     
     public render(node: TextNode, engine: RenderEngine): RenderResult {
         var nodes = new Array<Node>();
-        var map = new Map<HierarchyPath, HierarchyPath>();
+        var map = new Map<string, string>();
         
         var lines:string[] = null;
         var content = node.value;
@@ -24,33 +24,26 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
             if(char === '\n'){
                 nodes.push(document.createTextNode(currentLine));
 
-                map.set(HierarchyPath.parse(`/${nodes.length - 1}`),
-                        HierarchyPath.parse(`/${nodeOffset}`));
+                map.set(HierarchyPath.parse(`/${nodes.length - 1}`).toString(),
+                        HierarchyPath.parse(`/${nodeOffset}`).toString());
 
                 var br = document.createElement('br');             
                 nodes.push(br); 
 
-                map.set(HierarchyPath.parse(`/${nodes.length - 1}`),
-                        HierarchyPath.parse(`/${index}`));
+                map.set(HierarchyPath.parse(`/${nodes.length - 1}`).toString(),
+                        HierarchyPath.parse(`/${index}`).toString());
 
                 nodeOffset = index + 1;
+            }
+            else {
+                currentLine += char;
             }
         }
 
         nodes.push(document.createTextNode(currentLine));
 
-        map.set(HierarchyPath.parse(`/${nodes.length - 1}`),
-                        HierarchyPath.parse(`/${nodeOffset}`));
-
-        lines.forEach((line, index) => {
-            if(index > 0){
-                var br = document.createElement('br');             
-                nodes.push(br);
-            }
-
-            var textNode = document.createTextNode(line);
-            nodes.push(textNode);
-        });
+        map.set(HierarchyPath.parse(`/${nodes.length - 1}`).toString(),
+                HierarchyPath.parse(`/${nodeOffset}`).toString());
 
         var result = new RenderResult(nodes, map);
 

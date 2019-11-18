@@ -7,7 +7,8 @@ import HierarchyPath from "../../hierarchy-path";
 export default class ListItemNodeRenderer extends ParentNodeRenderer<ListItemNode>{
     public render(node: ListItemNode, engine: RenderEngine): RenderResult {
         var nodes:Node[] = [];
-        var map = new Map<HierarchyPath, HierarchyPath>();
+        var map = new Map<string, string>();
+        map.set(HierarchyPath.createRoot().toString(), HierarchyPath.createRoot().toString());
         
         var root = document.createElement('li');
         
@@ -15,7 +16,7 @@ export default class ListItemNodeRenderer extends ParentNodeRenderer<ListItemNod
 
         var result = new RenderResult(nodes, map);
 
-        this._renderChildren(node, root, engine);
+        this._renderChildren(node, root, map, engine);
 
         return result;
     }
