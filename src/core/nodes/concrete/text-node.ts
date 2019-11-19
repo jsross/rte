@@ -4,16 +4,22 @@ import StringHelper from '../../string-helper';
 import RteNodeEvent from '../abstract/rte-node-event';
 
 export default class TextNode extends LeafNode {
-    private _value:string;
+    private _value: string;
+    private _styles: string[];
 
     get value(): string {
         return this._value;
     }
 
-    constructor(value:string){
+    get styles():string[] {
+        return this._styles;
+    }
+
+    constructor(value:string, styles:string[] = null){
         super();
 
         this._value = value;
+        this._styles = styles;
     }
 
     public insertText(path: HierarchyPath, value: string): void {

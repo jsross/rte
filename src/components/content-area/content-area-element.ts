@@ -14,11 +14,22 @@ export default class ContentAreaElement extends LitElement {
 
   static get styles() {
     return [ css`
-      .bigger {font-size:20pt;}
+      .header {
+          font-weight: bold;
+          font-size: 16pt;
+      }
+      
+      .bold {
+          font-weight: bold;
+      }
+      
+      .underlined {
+          text-decoration: underline;
+      }
+
       content-wrapper {
         display: inline-block;
-      }
-    `];
+      }`];
   }
 
   constructor(){
