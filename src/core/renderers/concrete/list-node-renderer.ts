@@ -6,17 +6,12 @@ import HierarchyPath from "../../hierarchy-path";
 
 export default class ListNodeRenderer extends ParentNodeRenderer<ListNode>{
     public render(node: ListNode, engine: RenderEngine): RenderResult {
-        var nodes = new Array<Node>();
-        var map = new Map<string, string>();
+        var root = document.createElement('ul');
 
+        var map = this._renderChildren(node, root, engine);
         map.set(HierarchyPath.createRoot().toString(), HierarchyPath.createRoot().toString());
 
-        var root = document.createElement('ul');
-        nodes.push(root);
-
-        var result = new RenderResult(nodes, map);
-
-        this._renderChildren(node, root, map, engine);
+        var result = new RenderResult([root], map);
 
         return result;
     }

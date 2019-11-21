@@ -17,6 +17,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         }
         
         nodes.push(root);
+        map.set(HierarchyPath.createRoot().toString(), HierarchyPath.createRoot().toString());
         
         var content = node.value.replace(/ /g, '\u205f');
 

@@ -70,6 +70,12 @@ export default class RteElement extends LitElement {
     var result = this._renderEngine.render(this._internalDocument);
     var root = result.nodes[0] as DocumentFragment;
     this._map = result.map;
+
+    for(var key of this._map.keys()) {
+      var value = this._map.get(key);
+      console.log(`${key}\t\t=>\t${value}`)
+    }
+
     this._contentArea.setContent(root);
   }
 

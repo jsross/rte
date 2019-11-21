@@ -8,9 +8,9 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
     abstract render(node: T, engine: RenderEngine): RenderResult;
 
     protected _renderChildren(rteNode: T,
-                              htmlNode: Node,
-                              map:  Map<string, string>,
-                              engine:RenderEngine) {
+                              htmlNode: Node,                              
+                              engine:RenderEngine) : Map<string, string> {
+        var map = new Map<string, string>();
 
         if(rteNode.hasChildren()){
             for(let index = 0; index < rteNode.children.length; index++) {
