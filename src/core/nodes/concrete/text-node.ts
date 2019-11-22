@@ -23,13 +23,19 @@ export default class TextNode extends LeafNode {
     }
 
     public insertText(path: HierarchyPath, value: string): void {
-        if(path.depth() !== 1) {
+        var index = 0;
+
+        if(path.depth() > 1) {
             throw 'Invalid path';
         }
 
-        this._value = StringHelper.insert(this._value, value, path.end);
+        if(!path.isRoot()){
+            index = path.end;
+        }
 
-        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([path.end + 1]));
+        this._value = StringHelper.insert(this._value, value, index);
+
+        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([index + 1]));
         this._subject.next(event); 
     }
 
