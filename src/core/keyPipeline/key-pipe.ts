@@ -1,5 +1,6 @@
 import ContentSelection from "../content-selection";
 import RteOperation from "../operations/rte-operation";
+import HierarchyPath from "../hierarchy-path";
 
 export default interface KeyPipe {
     process(payload:KeyPipePayload): KeyPipePayload
@@ -7,12 +8,15 @@ export default interface KeyPipe {
 
 export class KeyPipePayload {
     public key:string;
-    public selection: ContentSelection;
+    public start: HierarchyPath;
+    public end: HierarchyPath;
+
     public operations: RteOperation[];
 
-    constructor(key:string, selection:ContentSelection){
+    constructor(key:string, start:HierarchyPath, end:HierarchyPath){
         this.key = key;
-        this.selection = selection;
+        this.start = start;
+        this.end = end;        
         this.operations = new Array<RteOperation>();
     }
 }

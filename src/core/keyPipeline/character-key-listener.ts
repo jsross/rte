@@ -10,8 +10,8 @@ export default class CharacterKeyListener implements KeyPipe{
             return payload;
         }
       
-        if(!payload.selection.FocusPointer && payload.selection.AnchorPointer.end > 0) {
-            var operation = new InsertTextOperation(payload.selection.AnchorPointer, payload.key);
+        if(!payload.end) {
+            var operation = new InsertTextOperation(payload.start, payload.key);
 
             payload.operations.push(operation);
         }

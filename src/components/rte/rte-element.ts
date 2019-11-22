@@ -83,7 +83,20 @@ export default class RteElement extends LitElement {
     let key:string = event.detail.key;
     let selection:ContentSelection = event.detail.selection;
 
-    var payload = new KeyPipePayload(key, selection);
+    let start:HierarchyPath = null;
+    let end:HierarchyPath = null;
+
+    if(selection.AnchorPointer) {
+      var startPathString = this._find(selection.AnchorPointer);
+      start = HierarchyPath.parse(startPathString);
+    }
+
+    if(selection.FocusPointer) {
+      var endPathString = this._find(selection.FocusPointer);
+      end = HierarchyPath.parse(endPathString);
+    }
+
+    var payload = new KeyPipePayload(key, start, end);
 
     this._keyPipeline.forEach(pipe => {
       payload = pipe.process(payload);
@@ -92,8 +105,6 @@ export default class RteElement extends LitElement {
     if(payload.operations.length > 0) {
       this._processOperations(payload.operations);
     }
-
-    console.log(`${selection.AnchorPointer.toString()} : ${this._find(selection.AnchorPointer)}`);
   }
 
   private _processOperations(operations:RteOperation[]) {
@@ -115,15 +126,17 @@ export default class RteElement extends LitElement {
   }
 
   private _find(path:HierarchyPath):string {
-    while(!path.isRoot()) {
-      if(this._map.has(path.toString())) {
-        return this._map.get(path.toString());
-      }
+    var pathString = path.toString();
 
-      path = path.getParent();
+    if(this._map.has(path.toString())){
+      return this._map.get(pathString);
     }
 
-    return null;
+    if(path.isRoot()) {
+      return "";
+    }
+
+    return this._find(path.getParent()) + path.end;
   }
 
 }
