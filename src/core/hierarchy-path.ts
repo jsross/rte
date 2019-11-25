@@ -58,14 +58,6 @@ export default class HierarchyPath {
         return new HierarchyPath(concatArray);
     }
 
-    public createChildPath(value:number) {
-        var array = this._path.slice(0);
-
-        array.push(value);
-
-        return new HierarchyPath(array);
-    }
-
     public depth():number {
         return this._path.length;
     }
@@ -82,6 +74,14 @@ export default class HierarchyPath {
 
     public isRoot():boolean {
         return this.depth() === 0;
+    }
+
+    public getChild(value:number) {
+        var array = this._path.slice(0);
+
+        array.push(value);
+
+        return new HierarchyPath(array);
     }
 
     public getParent():HierarchyPath {
@@ -105,7 +105,15 @@ export default class HierarchyPath {
             return null;
         }
 
-        return this.getParent().createChildPath(end - 1);
+        return this.getSibling(end - 1);
+    }
+
+    public getSibling(value:number):HierarchyPath {
+        var array = this._path.slice(0, -1);
+
+        array.push(value);
+
+        return new HierarchyPath(array);
     }
 
     public isEqual(toCompare:HierarchyPath):boolean {

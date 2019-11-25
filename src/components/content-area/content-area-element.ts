@@ -61,12 +61,12 @@ export default class ContentAreaElement extends LitElement {
   public getSelection():ContentSelection{
     var selection = this.shadowRoot.getSelection();
 
-    var anchorPointer = NodePathHelper.getPath(this._contentWrapperElement, selection.anchorNode).createChildPath(selection.anchorOffset);
+    var anchorPointer = NodePathHelper.getPath(this._contentWrapperElement, selection.anchorNode).getChild(selection.anchorOffset);
 
     var focusPointer:HierarchyPath = null;
 
     if(selection.type === 'Range') {
-      focusPointer = NodePathHelper.getPath(this._contentWrapperElement, selection.focusNode).createChildPath(selection.focusOffset);
+      focusPointer = NodePathHelper.getPath(this._contentWrapperElement, selection.focusNode).getChild(selection.focusOffset);
     }
 
     var result = new ContentSelection(anchorPointer, focusPointer);
@@ -120,16 +120,9 @@ export default class ContentAreaElement extends LitElement {
     }
   }
 
-  public updateTextNode(path:HierarchyPath, content:string){
+  public updateNode(path:HierarchyPath, node:Node) {
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
-
-    if(!(target.node instanceof Text)) {
-      throw 'Cannot remove char from non Text node';
-    }
-
-    var targetTextNode = target.node as Text;
-
-    targetTextNode.nodeValue = content;
+    target.node.parentNode.replaceChild(node, target.node);  
   }
 
   private _handleEvent_blur(event: Event){

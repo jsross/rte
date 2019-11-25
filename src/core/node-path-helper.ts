@@ -15,7 +15,7 @@ export default class NodePathHelper{
     
         var parentPath:HierarchyPath = this.getPath(root, toFind.parentNode);
     
-        var result = parentPath.createChildPath(index);
+        var result = parentPath.getChild(index);
     
         return result;
     }
