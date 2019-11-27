@@ -3,12 +3,13 @@ import TextNode from "../../nodes/concrete/text-node";
 import RteNodeRenderer from "../abstract/rte-node-renderer";
 import RenderResult from "../../render-result";
 import HierarchyPath from "../../hierarchy-path";
+import HierarchyPathMap from "../../hierachy-path-map";
 
 export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     
     public render(node: TextNode, engine: RenderEngine): RenderResult {
         var nodes = new Array<Node>();
-        var map = new Map<string, string>();
+        var map = new HierarchyPathMap();
 
         var root = document.createElement('span');
 
@@ -17,7 +18,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         }
         
         nodes.push(root);
-        map.set('/', '/0');
+        map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.parse('/0'));
         
         var content = node.value.replace(/ /g, '\u205f');
 
@@ -32,15 +33,15 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
                 root.appendChild(document.createTextNode(currentLine));
                 nodeCount++
 
-                map.set(HierarchyPath.parse(`/${nodeCount - 1}`).toString(),
-                        HierarchyPath.parse(`/${nodeOffset}`).toString());
+                map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`),
+                                   HierarchyPath.parse(`/${nodeOffset}`));
 
                 var br = document.createElement('br');             
                 root.appendChild(br); 
                 nodeCount++;
 
-                map.set(HierarchyPath.parse(`/${nodeCount - 1}`).toString(),
-                        HierarchyPath.parse(`/${index}`).toString());
+                map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`),
+                                   HierarchyPath.parse(`/${index}`));
 
                 nodeOffset = index + 1;
                 currentLine = "";
@@ -53,8 +54,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         root.appendChild(document.createTextNode(currentLine));
         nodeCount++;
 
-        map.set(HierarchyPath.parse(`/${nodeCount - 1}`).toString(),
-                HierarchyPath.parse(`/${nodeOffset}`).toString());
+        map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`), HierarchyPath.parse(`/${nodeOffset}`));
 
         var result = new RenderResult(nodes, map);
 

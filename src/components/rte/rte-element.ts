@@ -11,6 +11,7 @@ import RteOperation from '../../core/operations/rte-operation';
 import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
 import RteNodeEvent from '../../core/nodes/abstract/rte-node-event';
 import HierarchyPath from '../../core/hierarchy-path';
+import HierarchyPathMap from '../../core/hierachy-path-map';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -19,7 +20,7 @@ export default class RteElement extends LitElement {
   private _renderEngine: RenderEngine;
   private _internalDocument: DocumentFragmentNode;
   private _keyPipeline: KeyPipe[];
-  private _map: Map<string,string>;
+  private _map: HierarchyPathMap;
 
   static get styles() {    
     return [ css`
@@ -71,11 +72,6 @@ export default class RteElement extends LitElement {
     var root = result.nodes[0] as DocumentFragment;
     this._map = result.map;
 
-    for(var key of this._map.keys()) {
-      var value = this._map.get(key);
-      console.log(`${key}\t\t=>\t${value}`)
-    }
-
     this._contentArea.setContent(root);
   }
 
@@ -87,11 +83,11 @@ export default class RteElement extends LitElement {
     let end:HierarchyPath = null;
 
     if(selection.AnchorPointer) {
-      start = this._find(selection.AnchorPointer);
+      start = this._map.findRight(selection.AnchorPointer);
     }
 
     if(selection.FocusPointer) {
-      end = this._find(selection.FocusPointer);
+      end = this._map.findRight(selection.FocusPointer);
     }
 
     var payload = new KeyPipePayload(key, start, end);
@@ -115,26 +111,7 @@ export default class RteElement extends LitElement {
     var newContent = this._renderEngine.render(event.origin);
 
     this._contentArea.updateNode(event.path, newContent.nodes[0]);
-    this._contentArea.setSelection(event.caretPosition);
-  }
-
-  private _find(path:HierarchyPath):HierarchyPath {
-    var pathString = path.toString();
-
-    if(this._map.has(path.toString())){
-      var result = HierarchyPath.parse(this._map.get(pathString));
-      return result;
-    }
-
-    if(path.isRoot()) {
-      return HierarchyPath.createRoot();
-    }
-
-    var mapValue = this._find(path.getParent());
-    
-    var result = mapValue.getSibling(mapValue.end + path.end);
-
-    return result;
+    //this._contentArea.setSelection(event.caretPosition);
   }
 
 }

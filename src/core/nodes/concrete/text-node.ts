@@ -35,7 +35,7 @@ export default class TextNode extends LeafNode {
 
         this._value = StringHelper.insert(this._value, value, index);
 
-        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([index + 1]));
+        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this);
         this._subject.next(event); 
     }
 
@@ -46,7 +46,7 @@ export default class TextNode extends LeafNode {
 
         this._value = StringHelper.remove(this._value, path.end, count);
 
-        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this, new HierarchyPath([path.end]));
+        var event = new RteNodeEvent(HierarchyPath.createRoot(), this, this);
         this._subject.next(event);        
     }
 

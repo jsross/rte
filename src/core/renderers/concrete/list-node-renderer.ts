@@ -9,7 +9,7 @@ export default class ListNodeRenderer extends ParentNodeRenderer<ListNode>{
         var root = document.createElement('ul');
 
         var map = this._renderChildren(node, root, engine);
-        map.set(HierarchyPath.createRoot().toString(), HierarchyPath.createRoot().toString());
+        map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.createRoot());
 
         var result = new RenderResult([root], map);
 

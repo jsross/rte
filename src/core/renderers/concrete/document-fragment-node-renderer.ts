@@ -9,8 +9,7 @@ export default class DocumentFragmentNodeRenderer extends ParentNodeRenderer<Doc
         var root = document.createDocumentFragment();
         var map = this._renderChildren(node, root, engine);
 
-        map.set(HierarchyPath.createRoot().toString(),
-                HierarchyPath.createRoot().toString());
+        map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.createRoot());
 
         var result = new RenderResult([root], map);
 
