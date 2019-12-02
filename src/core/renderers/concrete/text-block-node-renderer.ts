@@ -15,7 +15,7 @@ export default class TextBlockNodeRenderer extends ParentNodeRenderer<TextBlockN
         var map = this._renderChildren(node, root, engine);
         map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.createRoot());
 
-        var result = new RenderResult([root], map);
+        var result = new RenderResult(root, map);
 
         return result;
     }

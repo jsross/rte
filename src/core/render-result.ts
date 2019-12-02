@@ -2,11 +2,11 @@ import HierarchyPath from "./hierarchy-path";
 import HierarchyPathMap from "./hierachy-path-map";
 
 export default class RenderResult {
-    public readonly nodes : Node[];
+    public readonly root : Node;
     public readonly map : HierarchyPathMap;
 
-    constructor(nodes: Node[], map: HierarchyPathMap){
-        this.nodes = nodes;
+    constructor(root: Node, map: HierarchyPathMap){
+        this.root = root;
         this.map = map;
     }
 }

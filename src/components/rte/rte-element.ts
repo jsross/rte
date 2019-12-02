@@ -69,7 +69,7 @@ export default class RteElement extends LitElement {
 
   private _doRender(){
     var result = this._renderEngine.render(this._internalDocument);
-    var root = result.nodes[0] as DocumentFragment;
+    var root = result.root as DocumentFragment;
     this._map = result.map;
 
     this._contentArea.setContent(root);
@@ -110,7 +110,7 @@ export default class RteElement extends LitElement {
   private _handleRteNodeEvent(event:RteNodeEvent){
     var newContent = this._renderEngine.render(event.origin);
 
-    this._contentArea.updateNode(event.path, newContent.nodes[0]);
+    this._contentArea.updateNode(event.path, newContent.root);
     //this._contentArea.setSelection(event.caretPosition);
   }
 

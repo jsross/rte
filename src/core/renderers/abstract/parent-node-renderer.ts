@@ -18,11 +18,8 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
                 var child = rteNode.children[index];
 
                 var childResult = engine.render(child);
-
-                for(var childHtmlNode of childResult.nodes) {
-                    htmlNode.appendChild(childHtmlNode);
-                }
                 
+                htmlNode.appendChild(childResult.root);
 
                 for(var entry of childResult.map.entries) {
                     var nodeKey = HierarchyPath.parse(`/${index}`).concat(entry[0]);

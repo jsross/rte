@@ -8,7 +8,6 @@ import HierarchyPathMap from "../../hierachy-path-map";
 export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     
     public render(node: TextNode, engine: RenderEngine): RenderResult {
-        var nodes = new Array<Node>();
         var map = new HierarchyPathMap();
 
         var root = document.createElement('span');
@@ -17,7 +16,6 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
             root.className = node.styles.join(' ');
         }
         
-        nodes.push(root);
         map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.parse('/0'));
         
         var content = node.value.replace(/ /g, '\u205f');
@@ -56,7 +54,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
 
         map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`), HierarchyPath.parse(`/${nodeOffset}`));
 
-        var result = new RenderResult(nodes, map);
+        var result = new RenderResult(root, map);
 
         return result;
     }
