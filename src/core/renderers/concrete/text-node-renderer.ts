@@ -3,7 +3,7 @@ import TextNode from "../../nodes/concrete/text-node";
 import RteNodeRenderer from "../abstract/rte-node-renderer";
 import RenderResult from "../../render-result";
 import HierarchyPath from "../../hierarchy-path";
-import HierarchyPathMap from "../../hierachy-path-map";
+import HierarchyPathMap from "../../document-management/hierachy-path-map";
 
 export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     

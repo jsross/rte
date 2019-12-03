@@ -1,4 +1,4 @@
-import HierarchyPath from "./hierarchy-path";
+import HierarchyPath from "../hierarchy-path";
 
 export default class HierarchyPathMap {
 

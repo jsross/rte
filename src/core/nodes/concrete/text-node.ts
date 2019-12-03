@@ -7,6 +7,8 @@ export default class TextNode extends LeafNode {
     private _value: string;
     private _styles: string[];
 
+    private static $inject:string[] = ['string', 'string[]'];
+
     get value(): string {
         return this._value;
     }

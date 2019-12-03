@@ -11,7 +11,7 @@ import RteOperation from '../../core/operations/rte-operation';
 import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
 import RteNodeEvent from '../../core/nodes/abstract/rte-node-event';
 import HierarchyPath from '../../core/hierarchy-path';
-import HierarchyPathMap from '../../core/hierachy-path-map';
+import HierarchyPathMap from '../../core/document-management/hierachy-path-map';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
