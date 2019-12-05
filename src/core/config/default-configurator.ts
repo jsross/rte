@@ -5,6 +5,9 @@ import ListNodeRenderer from "../renderers/concrete/list-node-renderer";
 import TextNodeRenderer from "../renderers/concrete/text-node-renderer";
 import TextBlockNodeRenderer from "../renderers/concrete/text-block-node-renderer";
 import ListItemNodeRenderer from "../renderers/concrete/list-item-node-renderer";
+import Registry from "../ioc/registry";
+import RenderEngine from "../render-engine";
+import DocumentManagerFactory from "../document-management/document-manager-factory";
 
 export default class DefaultConfigurator implements Configurator {
     public configure() {
@@ -13,5 +16,9 @@ export default class DefaultConfigurator implements Configurator {
         RteConfig.registerRenderer('ListItemNode', new ListItemNodeRenderer());
         RteConfig.registerRenderer('TextNode', new TextNodeRenderer());
         RteConfig.registerRenderer('TextBlockNode', new TextBlockNodeRenderer());
+
+        Registry.register(RenderEngine);
+        Registry.register(DocumentManagerFactory);
+        
     }
 }

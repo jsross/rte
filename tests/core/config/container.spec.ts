@@ -1,5 +1,5 @@
-import Container from '../../../src/core/config/container'
-import { TextNode } from '../../../src/export';
+import TextNode from '../../../src/core/nodes/concrete/text-node';
+import Registry from '../../../src/core/ioc/registry';
 
 describe('Container class', function() {
 
@@ -9,8 +9,9 @@ describe('Container class', function() {
 
     describe('register() function', function(){
         it('basic test', function(){
+            var x = new TextNode('test');
             
-            Container.register(TextNode.constructor)
+            Registry.register(TextNode);
         })
     });
 

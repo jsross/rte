@@ -9,6 +9,8 @@ export default class DocumentManagerFactory {
         this._renderEngine = renderEngine;
     }
 
+    private static $inject:string[] = ['RenderEngine'];
+
     public createInstance(document: DocumentFragmentNode): DocumentManager {
         return new DocumentManager(document, this._renderEngine);
     }

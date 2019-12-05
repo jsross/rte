@@ -21,5 +21,4 @@ export default class RteConfig {
 
         return this._rendererRegistry.get(nodeType);
     }   
-
 }
