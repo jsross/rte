@@ -1,5 +1,5 @@
 import RteNode from './rte-node';
-import HierarchyPath from '../../hierarchy-path';
+import HierarchyPath from '@src/core/hierarchy-path';
 
 export default abstract class LeafNode extends RteNode {
 

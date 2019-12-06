@@ -1,5 +1,5 @@
 import RteNode from "./rte-node";
-import HierarchyPath from "../../hierarchy-path";
+import HierarchyPath from "@src/core/hierarchy-path";
 import RteNodeEvent from "./rte-node-event";
 
 export default abstract class ParentNode<T extends RteNode> extends RteNode {

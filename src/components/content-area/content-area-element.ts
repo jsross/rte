@@ -1,7 +1,7 @@
 import { LitElement, customElement, css, html } from 'lit-element';
-import HierarchyPath from '../../core/hierarchy-path';
-import ContentSelection from '../../core/content-selection';
-import NodePathHelper from '../../core/node-path-helper';
+import HierarchyPath from '@src/core/hierarchy-path';
+import ContentSelection from '@src/core/content-selection';
+import NodePathHelper from '@src/core/node-path-helper';
 
 const keyCodeWhiteList = [123];
 

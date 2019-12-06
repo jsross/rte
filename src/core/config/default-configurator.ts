@@ -1,14 +1,14 @@
 import Configurator from "./configurator";
 import RteConfig from "./rte-config"
-import DocumentFragmentRenderer from "../renderers/concrete/document-fragment-node-renderer"
-import ListNodeRenderer from "../renderers/concrete/list-node-renderer";
-import TextNodeRenderer from "../renderers/concrete/text-node-renderer";
-import TextBlockNodeRenderer from "../renderers/concrete/text-block-node-renderer";
-import ListItemNodeRenderer from "../renderers/concrete/list-item-node-renderer";
-import Registry from "../ioc/registry";
-import RenderEngine from "../render-engine";
-import DocumentManagerFactory from "../document-management/document-manager-factory";
-import Container from "../ioc/container";
+import DocumentFragmentRenderer from "@src/core/renderers/concrete/document-fragment-node-renderer"
+import ListNodeRenderer from "@src/core/renderers/concrete/list-node-renderer";
+import TextNodeRenderer from "@src/core/renderers/concrete/text-node-renderer";
+import TextBlockNodeRenderer from "@src/core/renderers/concrete/text-block-node-renderer";
+import ListItemNodeRenderer from "@src/core/renderers/concrete/list-item-node-renderer";
+import Registry from "@src/core/ioc/registry";
+import RenderEngine from "@src/core/render-engine";
+import DocumentManagerFactory from "@src/core/document-management/document-manager-factory";
+import Container from "@src/core/ioc/container";
 
 export default class DefaultConfigurator implements Configurator {
     public configure() {

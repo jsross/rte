@@ -1,4 +1,3 @@
-import HierarchyPath from "./hierarchy-path";
 import HierarchyPathMap from "./document-management/hierachy-path-map";
 
 export default class RenderResult {

@@ -1,6 +1,6 @@
-import HierarchyPath from "../../hierarchy-path";
+import HierarchyPath from "@src/core/hierarchy-path";
 import RteOperation from "./rte-operation";
-import RteNode from "../../nodes/abstract/rte-node";
+import RteNode from "@src/core/nodes/abstract/rte-node";
 
 export default class InsertTextOperation extends RteOperation{
     

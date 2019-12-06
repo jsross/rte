@@ -1,9 +1,9 @@
-import RenderEngine from "../../render-engine";
-import TextNode from "../../nodes/concrete/text-node";
-import RteNodeRenderer from "../abstract/rte-node-renderer";
-import RenderResult from "../../render-result";
-import HierarchyPath from "../../hierarchy-path";
-import HierarchyPathMap from "../../document-management/hierachy-path-map";
+import RenderEngine from "@src/core/render-engine";
+import TextNode from "@src/core/nodes/concrete/text-node";
+import RteNodeRenderer from "@src/core/renderers/abstract/rte-node-renderer";
+import RenderResult from "@src/core/render-result";
+import HierarchyPath from "@src/core/hierarchy-path";
+import HierarchyPathMap from "@src/core/document-management/hierachy-path-map";
 
 export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     

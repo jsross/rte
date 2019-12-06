@@ -1,16 +1,16 @@
 import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
-import ContentAreaElement from "../content-area/content-area-element"
-import DocumentFragmentNode from '../../core/nodes/concrete/document-fragment-node';
-import KeyPipe, { KeyPipePayload } from '../../core/keyPipeline/key-pipe';
-import LoggerPipe from '../../core/keyPipeline/logger-pipe';
-import ContentSelection from '../../core/content-selection';
-import BackspaceListener from '../../core/keyPipeline/backspace-listener';
-import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
-import RteNodeEvent from '../../core/nodes/abstract/rte-node-event';
-import DocumentManagerFactory from '../../core/document-management/document-manager-factory';
-import DocumentManager from '../../core/document-management/document-manager';
-import RteConfig from '../../core/config/rte-config';
+import ContentAreaElement from "@src/components/content-area/content-area-element"
+import DocumentFragmentNode from '@src/core/nodes/concrete/document-fragment-node';
+import KeyPipe, { KeyPipePayload } from '@src/core/keyPipeline/key-pipe';
+import LoggerPipe from '@src/core/keyPipeline/logger-pipe';
+import ContentSelection from '@src/core/content-selection';
+import BackspaceListener from '@src/core/keyPipeline/backspace-listener';
+import CharacterKeyListener from '@src/core/keyPipeline/character-key-listener';
+import RteNodeEvent from '@src/core/nodes/abstract/rte-node-event';
+import DocumentManagerFactory from '@src/core/document-management/document-manager-factory';
+import DocumentManager from '@src/core/document-management/document-manager';
+import RteConfig from '@src/core/config/rte-config';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {

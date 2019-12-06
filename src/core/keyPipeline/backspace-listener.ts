@@ -1,5 +1,5 @@
 import KeyPipe, { KeyPipePayload } from "./key-pipe";
-import DeleteTextOperation from "../document-management/operations/delete-text-operation";
+import DeleteTextOperation from "@src/core/document-management/operations/delete-text-operation";
 
 export default class BackspaceListener implements KeyPipe{
 

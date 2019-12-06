@@ -1,9 +1,9 @@
 import RteNodeRenderer from "./rte-node-renderer";
-import RenderEngine from "../../render-engine";
-import ParentNode from '../../nodes/abstract/parent-node';
-import RenderResult from "../../render-result";
-import HierarchyPath from "../../hierarchy-path";
-import HierarchyPathMap from "../../document-management/hierachy-path-map";
+import RenderEngine from "@src/core/render-engine";
+import ParentNode from '@src/core/nodes/abstract/parent-node';
+import RenderResult from "@src/core/render-result";
+import HierarchyPath from "@src/core/hierarchy-path";
+import HierarchyPathMap from "@src/core/document-management/hierachy-path-map";
 
 export default abstract class ParentNodeRenderer<T extends ParentNode<any>> implements RteNodeRenderer<T>{
     abstract render(node: T, engine: RenderEngine): RenderResult;

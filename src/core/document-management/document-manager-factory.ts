@@ -1,5 +1,5 @@
-import RenderEngine from "../render-engine";
-import DocumentFragmentNode from "../nodes/concrete/document-fragment-node";
+import RenderEngine from "@src/core/render-engine";
+import DocumentFragmentNode from "@src/core/nodes/concrete/document-fragment-node";
 import DocumentManager from "./document-manager";
 
 export default class DocumentManagerFactory {

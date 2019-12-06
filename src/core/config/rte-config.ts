@@ -1,7 +1,7 @@
 import Configurator from "./configurator";
 import DefaultConfigurator from "./default-configurator";
-import RteNodeRenderer from "../renderers/abstract/rte-node-renderer";
-import Container from "../ioc/container";
+import RteNodeRenderer from "@src/core/renderers/abstract/rte-node-renderer";
+import Container from "@src/core/ioc/container";
 
 export default class RteConfig {
     public static configurator:Configurator = new DefaultConfigurator();

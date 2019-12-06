@@ -1,5 +1,4 @@
-import ParentNode from '../abstract/parent-node';
-import Leaf from '../abstract/leaf-node';
+import ParentNode from '@src/core/nodes/abstract/parent-node';
 import TextNode from './text-node';
 
 export default class TextBlockNode extends ParentNode<TextNode> {

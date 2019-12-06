@@ -1,4 +1,4 @@
-import HierarchyPath from "../../hierarchy-path";
+import HierarchyPath from "@src/core/hierarchy-path";
 import {Subject} from 'rxjs'
 import RteNodeEvent from "./rte-node-event";
 

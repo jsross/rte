@@ -1,5 +1,5 @@
 import KeyPipe, { KeyPipePayload } from "./key-pipe";
-import { NamedKeyAttributeValues } from "../named-key-attribute-values";
+import { NamedKeyAttributeValues } from "@src/core/named-key-attribute-values";
 import InsertTextOperation from "@src/core/document-management/operations/insert-text-operation";
 
 export default class CharacterKeyListener implements KeyPipe{

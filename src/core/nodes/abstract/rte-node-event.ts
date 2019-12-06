@@ -1,4 +1,4 @@
-import HierarchyPath from "../../hierarchy-path";
+import HierarchyPath from "@src/core/hierarchy-path";
 import RteNode from "./rte-node";
 
 export default class RteNodeEvent {

@@ -1,7 +1,7 @@
-import DocumentFragmentNode from "../nodes/concrete/document-fragment-node";
-import ContentSelection from "../content-selection";
+import DocumentFragmentNode from "@src/core/nodes/concrete/document-fragment-node";
+import ContentSelection from "@src/core/content-selection";
 import HierarchyPathMap from "./hierachy-path-map";
-import RenderEngine from "../render-engine";
+import RenderEngine from "@src/core/render-engine";
 import RteOperation from "./operations/rte-operation";
 
 export default class DocumentManager {

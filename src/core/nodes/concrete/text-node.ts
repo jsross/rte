@@ -1,7 +1,7 @@
-import LeafNode from '../abstract/leaf-node';
-import HierarchyPath from '../../hierarchy-path';
-import StringHelper from '../../string-helper';
-import RteNodeEvent from '../abstract/rte-node-event';
+import LeafNode from '@src/core/nodes/abstract/leaf-node';
+import HierarchyPath from '@src/core/hierarchy-path';
+import StringHelper from '@src/core/string-helper';
+import RteNodeEvent from '@src/core/nodes/abstract/rte-node-event';
 
 export default class TextNode extends LeafNode {
     private _value: string;
