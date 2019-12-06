@@ -39,7 +39,7 @@ export default class RteElement extends LitElement {
     this._keyPipeline.push(new BackspaceListener());
     this._keyPipeline.push(new CharacterKeyListener());
 
-    this._documentManagerFactory = Container.resolve(DocumentManagerFactory);
+    this._documentManagerFactory = RteConfig.container.resolve(DocumentManagerFactory);
   }
 
   public firstUpdated() {

@@ -1,23 +1,29 @@
 import Registry from "./registry";
 
 export default class Container {
-    private static _instances:Map<string, any> = new Map<string, any>();
+    private _instances:Map<string, any> = new Map<string, any>();
+    private _registry: Registry;
 
-    public static resolve<T>(ctor: { new(...args: any[]): T }) {
+    constructor(registry: Registry) {
+        this._registry = registry;
+        this._instances =  new Map<string, any>();
+    }
+
+    public resolve<T>(ctor: { new(...args: any[]): T }) {
         return this.resolveByName(ctor.name) as T;
     }
 
-    private static resolveByName(name:string): any{
+    private resolveByName(name:string): any{
         if(!this._instances.has(name)) {
-            var constructor = Registry.getEntry(name);
+            var constructor = this._registry.getEntry(name);
 
-            this.createInstance(constructor.typeConstructor, constructor.argumentTypes);
+            this.createInstance(constructor.constructorFunction, constructor.argumentTypes);
         }
 
         return this._instances.get(name);
     }
 
-    private static createInstance(ctor: { new(...args: any[]): any }, argumentTypes: string[]){
+    private createInstance(ctor: { new(...args: any[]): any }, argumentTypes: string[]){
         var args:any[] = [];
 
         for(var argType of argumentTypes){

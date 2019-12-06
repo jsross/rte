@@ -11,7 +11,7 @@ describe('Container class', function() {
         it('basic test', function(){
             var x = new TextNode('test');
             
-            Registry.register(TextNode);
+            //Registry.register(TextNode);
         })
     });
 
