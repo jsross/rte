@@ -1,6 +1,6 @@
-import HierarchyPath from "../hierarchy-path";
-import RteNode from "../nodes/abstract/rte-node";
-import ParentNode from "../nodes/abstract/parent-node";
+import HierarchyPath from "../../hierarchy-path";
+import RteNode from "../../nodes/abstract/rte-node";
+import ParentNode from "../../nodes/abstract/parent-node";
 
 export default abstract class RteOperation{
 

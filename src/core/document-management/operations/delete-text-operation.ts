@@ -1,8 +1,8 @@
 import RteOperation from "./rte-operation";
-import HierarchyPath from "../hierarchy-path";
-import RteNode from "../nodes/abstract/rte-node";
+import HierarchyPath from "../../hierarchy-path";
+import RteNode from "../../nodes/abstract/rte-node";
 
-export class DeleteTextOperation extends RteOperation{
+export default class DeleteTextOperation extends RteOperation{
 
     private _count:number;
 

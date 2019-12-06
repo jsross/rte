@@ -1,8 +1,8 @@
+import HierarchyPath from "../../hierarchy-path";
 import RteOperation from "./rte-operation";
-import HierarchyPath from "../hierarchy-path";
-import RteNode from "../nodes/abstract/rte-node";
+import RteNode from "../../nodes/abstract/rte-node";
 
-export class InsertTextOperation extends RteOperation{
+export default class InsertTextOperation extends RteOperation{
     
     private _value:string = null;
 

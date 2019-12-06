@@ -6,12 +6,9 @@ import KeyPipe, { KeyPipePayload } from '../../core/keyPipeline/key-pipe';
 import LoggerPipe from '../../core/keyPipeline/logger-pipe';
 import ContentSelection from '../../core/content-selection';
 import BackspaceListener from '../../core/keyPipeline/backspace-listener';
-import RteOperation from '../../core/operations/rte-operation';
 import CharacterKeyListener from '../../core/keyPipeline/character-key-listener';
 import RteNodeEvent from '../../core/nodes/abstract/rte-node-event';
-import HierarchyPath from '../../core/hierarchy-path';
 import DocumentManagerFactory from '../../core/document-management/document-manager-factory';
-import Container from '../../core/ioc/container';
 import DocumentManager from '../../core/document-management/document-manager';
 import RteConfig from '../../core/config/rte-config';
 
@@ -76,13 +73,7 @@ export default class RteElement extends LitElement {
     });
 
     if(payload.operations.length > 0) {
-      this._processOperations(payload.operations);
-    }
-  }
-
-  private _processOperations(operations:RteOperation[]) {
-    for(var operation of operations) {
-      //operation.execute(this._internalDocument);      
+      this._documentManager.executeOperations(payload.operations);
     }
   }
 

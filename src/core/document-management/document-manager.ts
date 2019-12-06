@@ -2,6 +2,7 @@ import DocumentFragmentNode from "../nodes/concrete/document-fragment-node";
 import ContentSelection from "../content-selection";
 import HierarchyPathMap from "./hierachy-path-map";
 import RenderEngine from "../render-engine";
+import RteOperation from "./operations/rte-operation";
 
 export default class DocumentManager {
 
@@ -28,7 +29,13 @@ export default class DocumentManager {
         this._map = result.map;
 
         return result.root as DocumentFragment;
-    }   
+    }
+    
+    public executeOperations(operations:RteOperation[]) {
+        for(var operation of operations) {
+            operation.execute(this._document);      
+        }
+    }
 
 
 }

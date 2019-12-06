@@ -1,6 +1,5 @@
-import ContentSelection from "../content-selection";
-import RteOperation from "../operations/rte-operation";
 import HierarchyPath from "../hierarchy-path";
+import RteOperation from "../document-management/operations/rte-operation";
 
 export default interface KeyPipe {
     process(payload:KeyPipePayload): KeyPipePayload

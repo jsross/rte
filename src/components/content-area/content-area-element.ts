@@ -1,6 +1,5 @@
 import { LitElement, customElement, css, html } from 'lit-element';
 import HierarchyPath from '../../core/hierarchy-path';
-import RteOperation from '../../core/operations/rte-operation';
 import ContentSelection from '../../core/content-selection';
 import NodePathHelper from '../../core/node-path-helper';
 
