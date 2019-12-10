@@ -1,6 +1,4 @@
 import HierarchyPath from "@src/core/hierarchy-path";
-import RteNode from "@src/core/nodes/abstract/rte-node";
-import ParentNode from "@src/core/nodes/abstract/parent-node";
 
 export default abstract class RteOperation{
 
@@ -11,35 +9,5 @@ export default abstract class RteOperation{
         this.start = start;
         this.end = end;
     }
-
-    abstract execute(root:RteNode):void;
-
-    protected _resolvePath(root: RteNode, path:HierarchyPath):ResolveResult {
-        if(path.isRoot()){
-            return {
-                node: root,
-                remainder: null
-            };
-        }
-
-        if(root instanceof ParentNode) {
-            var parentNode = root as ParentNode<RteNode>;
-
-            var head = path.head;
-
-            var child = parentNode.children[head];
-
-            return this._resolvePath(child, path.tail);
-        }
-
-        return {
-            node: root,
-            remainder: path
-        };
-    }
+    
 }
-
-export interface ResolveResult {
-    node: RteNode;
-    remainder: HierarchyPath;
-} 

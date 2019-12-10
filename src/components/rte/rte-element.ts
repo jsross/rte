@@ -7,7 +7,6 @@ import LoggerPipe from '@src/core/keyPipeline/logger-pipe';
 import ContentSelection from '@src/core/content-selection';
 import BackspaceListener from '@src/core/keyPipeline/backspace-listener';
 import CharacterKeyListener from '@src/core/keyPipeline/character-key-listener';
-import RteNodeEvent from '@src/core/nodes/abstract/rte-node-event';
 import DocumentManagerFactory from '@src/core/document-management/document-manager-factory';
 import DocumentManager from '@src/core/document-management/document-manager';
 import RteConfig from '@src/core/config/rte-config';
@@ -75,13 +74,6 @@ export default class RteElement extends LitElement {
     if(payload.operations.length > 0) {
       this._documentManager.executeOperations(payload.operations);
     }
-  }
-
-  private _handleRteNodeEvent(event:RteNodeEvent){
-    //var newContent = this._renderEngine.render(event.origin);
-
-    //this._contentArea.updateNode(event.path, newContent.root);
-    //this._contentArea.setSelection(event.caretPosition);
   }
 
 }

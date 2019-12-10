@@ -1,5 +1,7 @@
 import KeyPipe, { KeyPipePayload } from "./key-pipe";
 import DeleteTextOperation from "@src/core/document-management/operations/delete-text-operation";
+import HierarchyPathMap from "../document-management/hierachy-path-map";
+import HierarchyPath from "../hierarchy-path";
 
 export default class BackspaceListener implements KeyPipe{
 
@@ -7,14 +9,22 @@ export default class BackspaceListener implements KeyPipe{
         if(payload.key !== 'Backspace') {
             return payload;
         }
-      
-        if(!payload.end && payload.start.end > 0) {
-            var sibling = payload.start.getPreviousSibling();
 
-            var operation = new DeleteTextOperation(sibling, 1);
+        var start:HierarchyPath = null;
+        var end:HierarchyPath = null;
 
-            payload.operations.push(operation);
+        if(!payload.end) {
+            start = payload.start.getPreviousSibling();
+            end = payload.start;
         }
+        else {
+            start = payload.start;
+            end = payload.end;
+        }
+         
+        var operation = new DeleteTextOperation(start, end);
+
+        payload.operations.push(operation);
 
         return payload;
     }

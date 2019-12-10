@@ -3,6 +3,13 @@ import ContentSelection from "@src/core/content-selection";
 import HierarchyPathMap from "./hierachy-path-map";
 import RenderEngine from "@src/core/render-engine";
 import RteOperation from "./operations/rte-operation";
+import RteNode from "../nodes/abstract/rte-node";
+import ParentNode from "../nodes/abstract/parent-node";
+import HierarchyPath from "../hierarchy-path";
+import InsertTextOperation from "./operations/insert-text-operation";
+import { Action } from "rxjs/internal/scheduler/Action";
+import TextNode from "../nodes/concrete/text-node";
+import StringHelper from "../string-helper";
 
 export default class DocumentManager {
 
@@ -33,8 +40,55 @@ export default class DocumentManager {
     
     public executeOperations(operations:RteOperation[]) {
         for(var operation of operations) {
-            operation.execute(this._document);      
+            this.executeOperation(operation);
+           
         }
+    }
+
+    public executeOperation(operation:RteOperation) {
+        var startPath:HierarchyPath = this._map.findRight(operation.start);
+        var endPath:HierarchyPath;
+
+        if(operation.end != null) {
+            endPath = this._map.findRight(operation.end)
+        }
+
+
+        switch(operation.constructor) {
+            case InsertTextOperation: 
+                var insertTextOperation = operation as InsertTextOperation;
+
+                this._doInsert(insertTextOperation.value, startPath, endPath);
+            break;
+        }
+
+  
+    }
+
+    private _doInsert(value:string, start:HierarchyPath, end:HierarchyPath){
+        var startResult = this._find(this._document, start);
+        var startNode:TextNode = startResult[0] as TextNode;
+        var startIndex = startResult[1].head;
+
+        startNode.content = StringHelper.insert(startNode.content, value, startIndex);
+
+        console.log(startNode);
+    }
+
+    private _find(root:RteNode, path: HierarchyPath) : [RteNode, HierarchyPath] {
+        if(!root.hasChildren()){
+            return [root, path];
+        }
+
+        var parentNode = root as ParentNode<RteNode>;
+
+        var child = parentNode.children[path.head];
+
+        if(child === undefined){
+            throw new Error('Unable to resolve path');
+        }
+
+        return this._find(child, path.tail);       
     }
 
 

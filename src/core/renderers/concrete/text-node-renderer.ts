@@ -18,7 +18,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         
         map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.parse('/0'));
         
-        var content = node.value.replace(/ /g, '\u205f');
+        var content = node.content.replace(/ /g, '\u205f');
 
         var currentLine = "";
         var nodeOffset = 0;
