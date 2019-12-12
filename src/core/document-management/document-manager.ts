@@ -38,11 +38,16 @@ export default class DocumentManager {
         return result.root as DocumentFragment;
     }
     
-    public executeOperations(operations:RteOperation[]) {
+    public executeOperations(operations:RteOperation[]) : DocumentFragment {
         for(var operation of operations) {
             this.executeOperation(operation);
-           
         }
+
+        var result = this._renderEngine.render(this._document);
+
+        this._map = result.map;
+
+        return result.root as DocumentFragment;
     }
 
     public executeOperation(operation:RteOperation) {
@@ -71,6 +76,8 @@ export default class DocumentManager {
         var startIndex = startResult[1].head;
 
         startNode.content = StringHelper.insert(startNode.content, value, startIndex);
+
+
 
         console.log(startNode);
     }

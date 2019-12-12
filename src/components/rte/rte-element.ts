@@ -57,8 +57,6 @@ export default class RteElement extends LitElement {
     var root = this._documentManager.init();
     
     this._contentArea.setContent(root);
-
-    //this._internalDocument.addListener(this._handleRteNodeEvent.bind(this));
   }
 
   private _handleRteKeyboardEvent(event:CustomEvent) {
@@ -72,7 +70,10 @@ export default class RteElement extends LitElement {
     });
 
     if(payload.operations.length > 0) {
-      this._documentManager.executeOperations(payload.operations);
+      var result = this._documentManager.executeOperations(payload.operations);
+
+      this._contentArea.setContent(result);
+      this._contentArea.setSelection(selection.AnchorPointer);
     }
   }
 
