@@ -7,9 +7,10 @@ import RteNode from "../nodes/abstract/rte-node";
 import ParentNode from "../nodes/abstract/parent-node";
 import HierarchyPath from "../hierarchy-path";
 import InsertTextOperation from "./operations/insert-text-operation";
-import { Action } from "rxjs/internal/scheduler/Action";
 import TextNode from "../nodes/concrete/text-node";
 import StringHelper from "../string-helper";
+import DeleteOperation from "./operations/delete-operation";
+import SetSelectionOperation from "./operations/set-selection-operation";
 
 export default class DocumentManager {
 
@@ -38,7 +39,7 @@ export default class DocumentManager {
         return result.root as DocumentFragment;
     }
     
-    public executeOperations(operations:RteOperation[]) : DocumentFragment {
+    public executeOperations(operations:RteOperation[]) : [DocumentFragment, ContentSelection] {
         for(var operation of operations) {
             this.executeOperation(operation);
         }
@@ -47,7 +48,9 @@ export default class DocumentManager {
 
         this._map = result.map;
 
-        return result.root as DocumentFragment;
+        var document = result.root as DocumentFragment;
+        
+        return [document, new ContentSelection(HierarchyPath.createRoot())];
     }
 
     public executeOperation(operation:RteOperation) {
@@ -58,16 +61,19 @@ export default class DocumentManager {
             endPath = this._map.findRight(operation.end)
         }
 
-
         switch(operation.constructor) {
             case InsertTextOperation: 
                 var insertTextOperation = operation as InsertTextOperation;
 
                 this._doInsert(insertTextOperation.value, startPath, endPath);
             break;
-        }
+            case DeleteOperation:
 
-  
+            break;
+            case SetSelectionOperation:
+                this._selection = new ContentSelection(startPath, endPath);
+            break;
+        }
     }
 
     private _doInsert(value:string, start:HierarchyPath, end:HierarchyPath){
@@ -76,10 +82,6 @@ export default class DocumentManager {
         var startIndex = startResult[1].head;
 
         startNode.content = StringHelper.insert(startNode.content, value, startIndex);
-
-
-
-        console.log(startNode);
     }
 
     private _find(root:RteNode, path: HierarchyPath) : [RteNode, HierarchyPath] {

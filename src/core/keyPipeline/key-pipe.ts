@@ -1,21 +1,19 @@
 import HierarchyPath from "../hierarchy-path";
 import RteOperation from "../document-management/operations/rte-operation";
+import ContentSelection from "../content-selection";
 
 export default interface KeyPipe {
     process(payload:KeyPipePayload): KeyPipePayload
 }
 
 export class KeyPipePayload {
+    public selection: ContentSelection;
     public key:string;
-    public start: HierarchyPath;
-    public end: HierarchyPath;
+    public operations: RteOperation[];    
 
-    public operations: RteOperation[];
-
-    constructor(key:string, start:HierarchyPath, end:HierarchyPath){
+    constructor(key:string, selection: ContentSelection){
+        this.selection = selection;
         this.key = key;
-        this.start = start;
-        this.end = end;        
         this.operations = new Array<RteOperation>();
     }
 }

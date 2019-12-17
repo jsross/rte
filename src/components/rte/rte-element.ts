@@ -63,7 +63,7 @@ export default class RteElement extends LitElement {
     let key:string = event.detail.key;
     let selection:ContentSelection = event.detail.selection;
 
-    var payload = new KeyPipePayload(key, selection.AnchorPointer, selection.FocusPointer);
+    var payload = new KeyPipePayload(key, selection);
 
     this._keyPipeline.forEach(pipe => {
       payload = pipe.process(payload);
@@ -72,8 +72,8 @@ export default class RteElement extends LitElement {
     if(payload.operations.length > 0) {
       var result = this._documentManager.executeOperations(payload.operations);
 
-      this._contentArea.setContent(result);
-      this._contentArea.setSelection(selection.AnchorPointer);
+      this._contentArea.setContent(result[0]);
+      this._contentArea.setSelection(result[1].AnchorPointer, result[1].FocusPointer);
     }
   }
 

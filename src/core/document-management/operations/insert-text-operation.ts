@@ -5,8 +5,8 @@ export default class InsertTextOperation extends RteOperation{
     
     public value:string = null;
 
-    constructor(value: string, start: HierarchyPath, end: HierarchyPath = null){
-        super(start, end);
+    constructor(value: string, start: HierarchyPath){
+        super(start);
 
         this.value = value;
     }
