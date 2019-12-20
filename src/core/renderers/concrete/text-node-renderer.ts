@@ -7,7 +7,7 @@ import HierarchyPathMap from "@src/core/document-management/hierachy-path-map";
 
 export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
     
-    public render(node: TextNode, engine: RenderEngine): RenderResult {
+    public render(node: TextNode, engine: RenderEngine, context:Map<string,any>): RenderResult {
         var map = new HierarchyPathMap();
 
         var root = document.createElement('span');
@@ -15,8 +15,11 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         if(node.styles){
             root.className = node.styles.join(' ');
         }
-        
-        map.setLeftToRight(HierarchyPath.createRoot(), HierarchyPath.parse('/0'));
+
+        var sourcePath = context.get('sourcePath') as HierarchyPath;
+        var destPath = context.get('destPath') as HierarchyPath;
+
+        map.setLeftToRight(destPath, sourcePath.getChild(0));
         
         var content = node.content.replace(/ /g, '\u205f');
 
@@ -31,15 +34,15 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
                 root.appendChild(document.createTextNode(currentLine));
                 nodeCount++
 
-                map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`),
-                                   HierarchyPath.parse(`/${nodeOffset}`));
+                map.setLeftToRight(destPath.getChild(nodeCount - 1),
+                                   sourcePath.getChild(nodeOffset));
 
                 var br = document.createElement('br');             
                 root.appendChild(br); 
                 nodeCount++;
 
-                map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`),
-                                   HierarchyPath.parse(`/${index}`));
+                map.setLeftToRight(destPath.getChild(nodeCount - 1),
+                                   sourcePath.getChild(index));
 
                 nodeOffset = index + 1;
                 currentLine = "";
@@ -52,7 +55,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         root.appendChild(document.createTextNode(currentLine));
         nodeCount++;
 
-        map.setLeftToRight(HierarchyPath.parse(`/${nodeCount - 1}`), HierarchyPath.parse(`/${nodeOffset}`));
+        map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(nodeOffset));
 
         var result = new RenderResult(root, map);
 
