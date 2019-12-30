@@ -48,9 +48,25 @@ export default class DocumentManager {
 
         this._map = result.map;
 
+        console.log(this._map);
+
         var document = result.root as DocumentFragment;
+
+        var selection: ContentSelection = null;
+
+        if(this._selection){
+            var startPath:HierarchyPath = this._map.findLeft(operation.start);
+            var endPath:HierarchyPath;
+    
+            if(operation.end != null) {
+                endPath = this._map.findLeft(operation.end)
+            }
+            selection = new ContentSelection(startPath, endPath);
+        }
+
+        console.log(selection);
         
-        return [document, new ContentSelection(HierarchyPath.createRoot())];
+        return [document, selection];
     }
 
     public executeOperation(operation:RteOperation) {

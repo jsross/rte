@@ -14,7 +14,8 @@ export default class ListItemNodeRenderer extends ParentNodeRenderer<ListItemNod
         var destPath = context.get('destPath') as HierarchyPath;
 
         map.setLeftToRight(destPath, sourcePath);
-
+        map.setRightToLeft(sourcePath, destPath);
+        
         var result = new RenderResult(root, map);
 
         return result;

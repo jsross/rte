@@ -14,6 +14,7 @@ export default class ListNodeRenderer extends ParentNodeRenderer<ListNode>{
         var destPath = context.get('destPath') as HierarchyPath;
 
         map.setLeftToRight(destPath, sourcePath);
+        map.setRightToLeft(sourcePath, destPath);
 
         var result = new RenderResult(root, map);
 

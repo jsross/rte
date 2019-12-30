@@ -33,6 +33,10 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
                 for(var entry of childResult.map.leftToRightEntries) {
                     resultMap.setLeftToRight(entry[0], entry[1]);
                 }
+
+                for(var entry of childResult.map.rightToLeftEntries) {
+                    resultMap.setRightToLeft(entry[0], entry[1]);
+                }
             }
         }
 

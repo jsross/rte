@@ -85,4 +85,8 @@ export default class HierarchyPathMap {
     public setLeftToRight(left: HierarchyPath, right: HierarchyPath) {
         this._leftToRightMap.set(left.toString(), right.toString());
     }
+
+    public setRightToLeft(right:HierarchyPath, left:HierarchyPath) {
+        this._rightToLeftMap.set(right.toString(), left.toString());
+    }
 }

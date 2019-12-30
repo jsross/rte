@@ -13,6 +13,7 @@ export default class DocumentFragmentNodeRenderer extends ParentNodeRenderer<Doc
         var destPath = context.get('destPath') as HierarchyPath;
 
         map.setLeftToRight(destPath, sourcePath);
+        map.setRightToLeft(sourcePath, destPath);
 
         var result = new RenderResult(root, map);
 

@@ -34,15 +34,15 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
                 root.appendChild(document.createTextNode(currentLine));
                 nodeCount++
 
-                map.setLeftToRight(destPath.getChild(nodeCount - 1),
-                                   sourcePath.getChild(nodeOffset));
+                map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(nodeOffset));
+                map.setRightToLeft(sourcePath.getChild(nodeOffset), destPath.getChild(nodeCount - 1));
 
                 var br = document.createElement('br');             
                 root.appendChild(br); 
                 nodeCount++;
 
-                map.setLeftToRight(destPath.getChild(nodeCount - 1),
-                                   sourcePath.getChild(index));
+                map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(index));
+                map.setRightToLeft(sourcePath.getChild(index), destPath.getChild(nodeCount - 1));
 
                 nodeOffset = index + 1;
                 currentLine = "";
@@ -56,6 +56,7 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         nodeCount++;
 
         map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(nodeOffset));
+        map.setRightToLeft(sourcePath.getChild(nodeOffset), destPath.getChild(nodeCount - 1));
 
         var result = new RenderResult(root, map);
 
