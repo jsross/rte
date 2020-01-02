@@ -26,16 +26,14 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
                 currentContext.set('sourcePath', sourcePath.getChild(index));
                 currentContext.set('destPath', destPath.getChild(index));
 
+                resultMap.addEntry(sourcePath.getChild(index), destPath.getChild(index));
+
                 var childResult = engine.render(child, currentContext);
                 
                 htmlNode.appendChild(childResult.root);
 
-                for(var entry of childResult.map.leftToRightEntries) {
-                    resultMap.setLeftToRight(entry[0], entry[1]);
-                }
-
-                for(var entry of childResult.map.rightToLeftEntries) {
-                    resultMap.setRightToLeft(entry[0], entry[1]);
+                for(var entry of childResult.map.entries) {
+                    resultMap.addEntry(entry[0], entry[1]);
                 }
             }
         }

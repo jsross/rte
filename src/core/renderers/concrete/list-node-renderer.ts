@@ -8,13 +8,7 @@ export default class ListNodeRenderer extends ParentNodeRenderer<ListNode>{
     public render(node: ListNode, engine: RenderEngine, context: Map<string, any>): RenderResult {
         var root = document.createElement('ul');
 
-        var map = this._renderChildren(node, root, engine,context);
-        
-        var sourcePath = context.get('sourcePath') as HierarchyPath;
-        var destPath = context.get('destPath') as HierarchyPath;
-
-        map.setLeftToRight(destPath, sourcePath);
-        map.setRightToLeft(sourcePath, destPath);
+        var map = this._renderChildren(node, root, engine, context);
 
         var result = new RenderResult(root, map);
 

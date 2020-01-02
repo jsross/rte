@@ -17,14 +17,11 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         }
 
         var sourcePath = context.get('sourcePath') as HierarchyPath;
-        var destPath = context.get('destPath') as HierarchyPath;
-
-        map.setLeftToRight(destPath, sourcePath.getChild(0));
+        var destPath = context.get('destPath') as HierarchyPath;   
         
         var content = node.content.replace(/ /g, '\u205f');
 
         var currentLine = "";
-        var nodeOffset = 0;
         var nodeCount = 0;
 
         for (var index = 0; index < content.length; index++) {
@@ -32,31 +29,25 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
 
             if(char === '\n'){
                 root.appendChild(document.createTextNode(currentLine));
-                nodeCount++
-
-                map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(nodeOffset));
-                map.setRightToLeft(sourcePath.getChild(nodeOffset), destPath.getChild(nodeCount - 1));
+                nodeCount++         
 
                 var br = document.createElement('br');             
                 root.appendChild(br); 
                 nodeCount++;
+                
+                map.addEntry(sourcePath.getChild(index),destPath.getChild(nodeCount));
 
-                map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(index));
-                map.setRightToLeft(sourcePath.getChild(index), destPath.getChild(nodeCount - 1));
-
-                nodeOffset = index + 1;
                 currentLine = "";
             }
             else {
                 currentLine += char;
+
+                map.addEntry(sourcePath.getChild(index),destPath.getChild(nodeCount).getChild(currentLine.length - 1));
             }
         }
 
         root.appendChild(document.createTextNode(currentLine));
         nodeCount++;
-
-        map.setLeftToRight(destPath.getChild(nodeCount - 1), sourcePath.getChild(nodeOffset));
-        map.setRightToLeft(sourcePath.getChild(nodeOffset), destPath.getChild(nodeCount - 1));
 
         var result = new RenderResult(root, map);
 

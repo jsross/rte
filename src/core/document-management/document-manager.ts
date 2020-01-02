@@ -36,6 +36,8 @@ export default class DocumentManager {
 
         this._map = result.map;
 
+        console.log(this._map.toString());
+
         return result.root as DocumentFragment;
     }
     
