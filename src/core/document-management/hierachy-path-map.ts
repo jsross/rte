@@ -29,7 +29,7 @@ export default class HierarchyPathMap {
             var entry = this.entries[index];
 
             if(entry[0].isEqual(left)){
-                return entry[0];
+                return entry[1];
             }
         }
 

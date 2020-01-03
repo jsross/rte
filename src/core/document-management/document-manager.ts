@@ -57,12 +57,13 @@ export default class DocumentManager {
         var selection: ContentSelection = null;
 
         if(this._selection){
-            var startPath:HierarchyPath = this._map.findLeft(operation.start);
+            var startPath:HierarchyPath = this._map.findRight(this._selection.AnchorPointer);
             var endPath:HierarchyPath;
     
-            if(operation.end != null) {
-                endPath = this._map.findLeft(operation.end)
+            if(this._selection.FocusPointer != null) {
+                endPath = this._map.findRight(this._selection.FocusPointer);
             }
+            
             selection = new ContentSelection(startPath, endPath);
         }
 
@@ -72,11 +73,11 @@ export default class DocumentManager {
     }
 
     public executeOperation(operation:RteOperation) {
-        var startPath:HierarchyPath = this._map.findRight(operation.start);
+        var startPath:HierarchyPath = this._map.findLeft(operation.start);
         var endPath:HierarchyPath;
 
         if(operation.end != null) {
-            endPath = this._map.findRight(operation.end)
+            endPath = this._map.findLeft(operation.end);
         }
 
         switch(operation.constructor) {
