@@ -22,32 +22,32 @@ export default class TextNodeRenderer implements RteNodeRenderer<TextNode>{
         var content = node.content.replace(/ /g, '\u205f');
 
         var currentLine = "";
-        var nodeCount = 0;
 
-        for (var index = 0; index < content.length; index++) {
+        var index = 0
+
+        for (; index < content.length; index++) {
             var char = content.charAt(index);
 
             if(char === '\n'){
-                root.appendChild(document.createTextNode(currentLine));
-                nodeCount++         
-
-                var br = document.createElement('br');             
-                root.appendChild(br); 
-                nodeCount++;
+                if(currentLine.length > 0) {
+                    root.appendChild(document.createTextNode(currentLine));
+                    currentLine = "";
+                }
                 
-                map.addEntry(sourcePath.getChild(index),destPath.getChild(nodeCount));
+                root.appendChild(document.createElement('br')); 
 
-                currentLine = "";
+                map.addEntry(sourcePath.getChild(index),destPath.getChild(root.childNodes.length - 1));
             }
             else {
                 currentLine += char;
 
-                map.addEntry(sourcePath.getChild(index),destPath.getChild(nodeCount).getChild(currentLine.length - 1));
+                map.addEntry(sourcePath.getChild(index),destPath.getChild(root.childNodes.length).getChild(currentLine.length - 1));
             }
         }
 
         root.appendChild(document.createTextNode(currentLine));
-        nodeCount++;
+
+        map.addEntry(sourcePath.getChild(index),destPath.getChild(root.childNodes.length - 1).getChild(currentLine.length));
 
         var result = new RenderResult(root, map);
 

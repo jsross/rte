@@ -14,6 +14,10 @@ export default class ContentSelection {
     }
     
     constructor(anchorPointer:HierachyPath, focusPointer:HierachyPath = null) {
+        if(!anchorPointer) {
+            throw Error('Illegal Argument Exception');
+        }
+
         this._anchorPointer = anchorPointer;
         this._focusPointer = focusPointer;
     }

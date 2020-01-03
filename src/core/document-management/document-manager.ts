@@ -42,17 +42,14 @@ export default class DocumentManager {
     }
     
     public executeOperations(operations:RteOperation[]) : [DocumentFragment, ContentSelection] {
+        var document:DocumentFragment;
+
         for(var operation of operations) {
-            this.executeOperation(operation);
+            var result = this.executeOperation(operation) as DocumentFragment;
+            if(result) {
+                document = result;
+            }
         }
-
-        var result = this._renderEngine.render(this._document);
-
-        this._map = result.map;
-
-        console.log(this._map);
-
-        var document = result.root as DocumentFragment;
 
         var selection: ContentSelection = null;
 
@@ -72,7 +69,7 @@ export default class DocumentManager {
         return [document, selection];
     }
 
-    public executeOperation(operation:RteOperation) {
+    public executeOperation(operation:RteOperation) : DocumentFragment {
         var startPath:HierarchyPath = this._map.findLeft(operation.start);
         var endPath:HierarchyPath;
 
@@ -85,11 +82,19 @@ export default class DocumentManager {
                 var insertTextOperation = operation as InsertTextOperation;
 
                 this._doInsert(insertTextOperation.value, startPath, endPath);
+
+                var result = this._renderEngine.render(this._document);
+
+                this._map = result.map;
+        
+                return result.root as DocumentFragment;
+
             break;
             case DeleteOperation:
 
             break;
             case SetSelectionOperation:
+                
                 this._selection = new ContentSelection(startPath, endPath);
             break;
         }

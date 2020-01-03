@@ -19,7 +19,9 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
         var destPath = context.get('destPath') as HierarchyPath;
 
         if(rteNode.hasChildren()){
-            for(let index = 0; index < rteNode.children.length; index++) {
+            let index = 0;
+
+            for(; index < rteNode.children.length; index++) {
                 var child = rteNode.children[index];
 
                 var currentContext = cloneDeep(context);
@@ -36,6 +38,8 @@ export default abstract class ParentNodeRenderer<T extends ParentNode<any>> impl
                     resultMap.addEntry(entry[0], entry[1]);
                 }
             }
+
+            resultMap.addEntry(sourcePath.getChild(index), destPath.getChild(index));
         }
 
         return resultMap;
