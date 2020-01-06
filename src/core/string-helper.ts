@@ -5,10 +5,15 @@ export default class StringHelper {
         return output;
     }
 
-    static remove(target:string, index:number, count:number) {
-        let end = index + count;
-        var output = target.substring(0, index) + target.substring(end);
+    static remove(target:string, index:number, count:number = null) {
+        var result:string = target.substring(0, index);
+
+        if(count != null){
+            var endIndex = index + count;
+
+            result += target.substring(endIndex);
+        }
   
-        return output;
+        return result;
     }
 }

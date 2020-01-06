@@ -2,6 +2,7 @@ import KeyPipe, { KeyPipePayload } from "./key-pipe";
 import DeleteOperation from "@src/core/document-management/operations/delete-operation";
 import HierarchyPathMap from "../document-management/hierachy-path-map";
 import HierarchyPath from "../hierarchy-path";
+import SetSelectionOperation from "../document-management/operations/set-selection-operation";
 
 export default class BackspaceListener implements KeyPipe{
 
@@ -27,6 +28,7 @@ export default class BackspaceListener implements KeyPipe{
         var operation = new DeleteOperation(start, end);
 
         payload.operations.push(operation);
+        payload.operations.push(new SetSelectionOperation(start));
 
         return payload;
     }

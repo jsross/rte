@@ -71,41 +71,88 @@ export default class DocumentManager {
 
     public executeOperation(operation:RteOperation) : DocumentFragment {
         var startPath:HierarchyPath = this._map.findLeft(operation.start);
+
+        if(startPath === null) {
+            throw new Error('Unable to locate start');
+        }
+
         var endPath:HierarchyPath;
 
         if(operation.end != null) {
             endPath = this._map.findLeft(operation.end);
+
+            if(endPath === null) {
+                throw new Error('Unable to locate end');
+            }
         }
 
         switch(operation.constructor) {
             case InsertTextOperation: 
                 var insertTextOperation = operation as InsertTextOperation;
 
-                this._doInsert(insertTextOperation.value, startPath, endPath);
+                this._doInsertText(insertTextOperation.value, startPath);
 
                 var result = this._renderEngine.render(this._document);
 
                 this._map = result.map;
         
                 return result.root as DocumentFragment;
-
             break;
             case DeleteOperation:
+                var deleteOperation = operation as DeleteOperation;
 
+                this._doDelete(startPath, endPath);
+
+                var result = this._renderEngine.render(this._document);
+
+                this._map = result.map;
+        
+                return result.root as DocumentFragment;                
             break;
             case SetSelectionOperation:
-                
                 this._selection = new ContentSelection(startPath, endPath);
             break;
         }
     }
 
-    private _doInsert(value:string, start:HierarchyPath, end:HierarchyPath){
+    private _doInsertText(value:string, start:HierarchyPath){
         var startResult = this._find(this._document, start);
         var startNode:TextNode = startResult[0] as TextNode;
         var startIndex = startResult[1].head;
 
-        startNode.content = StringHelper.insert(startNode.content, value, startIndex);
+        if(startNode instanceof TextNode) {
+            var textNode:TextNode = startNode as TextNode;
+            textNode.content = StringHelper.insert(textNode.content, value, startIndex);
+        }
+    }
+
+    private _doDelete(startPath:HierarchyPath, endPath:HierarchyPath) {
+        var startResult = this._find(this._document, startPath);
+        var startNode = startResult[0];
+        var startIndex = startResult[1].head;
+
+        var endNode:RteNode = null;
+        var endIndex: number = null;
+
+        if(endPath !== null) {
+            var endResult = this._find(this._document, endPath);
+            endNode = endResult[0];
+            endIndex = endResult[1].head;
+        }
+
+        if(startNode === endNode && startNode instanceof TextNode) {
+            this._doDeleteText(startNode as TextNode, startIndex, endIndex);
+        }
+    }
+
+    private _doDeleteText(node:TextNode, startIndex:number, endIndex:number = null) {
+        var count:number = null;
+        
+        if(endIndex !== null) {
+            count = endIndex - startIndex;
+        }
+
+        node.content = StringHelper.remove(node.content,startIndex,count)
     }
 
     private _find(root:RteNode, path: HierarchyPath) : [RteNode, HierarchyPath] {
