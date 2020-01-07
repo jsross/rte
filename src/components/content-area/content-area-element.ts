@@ -2,8 +2,19 @@ import { LitElement, customElement, css, html } from 'lit-element';
 import HierarchyPath from '@src/core/hierarchy-path';
 import ContentSelection from '@src/core/content-selection';
 import NodePathHelper from '@src/core/node-path-helper';
+import {NamedKeyAttributeValues} from '@src/core/named-key-attribute-values'
 
-const keyCodeWhiteList = [123];
+const keyWhiteList:Array<string> = [
+                                      NamedKeyAttributeValues.FUNCTION_KEYS.F12,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.ARROW_DOWN,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.ARROW_LEFT,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.ARROW_RIGHT,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.ARROW_UP,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.END,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.HOME,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.PAGE_DOWN,
+                                      NamedKeyAttributeValues.NAVIGATION_KEYS.PAGE_UP
+                                    ];
 
 @customElement('content-area')
 export default class ContentAreaElement extends LitElement {
@@ -40,7 +51,7 @@ export default class ContentAreaElement extends LitElement {
 
     this.addEventListener("focus",this._handleEvent_focus.bind(this));
     this.addEventListener("blur",this._handleEvent_blur.bind(this));
-    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));
+    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));    
   }
 
   public clearContent(){
@@ -143,8 +154,8 @@ export default class ContentAreaElement extends LitElement {
     var rteEvent = new CustomEvent('rte-keyboard-event', { detail: detail});
 
     this.dispatchEvent(rteEvent);      
-
-    if(keyCodeWhiteList.indexOf(event.keyCode) < 0) {
+    
+    if(keyWhiteList.indexOf(event.key) < 0) {
       event.preventDefault();
     }
   }
