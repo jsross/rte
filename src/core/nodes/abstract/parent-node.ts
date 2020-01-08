@@ -22,5 +22,9 @@ export default abstract class ParentNode<T extends RteNode> extends RteNode {
     public hasChildren():boolean{
         return this._children.length > 0;
     }
+
+    public insertChildAtIndex(child:T, index:number){
+        this._children.splice(index, 0, child);
+    }
     
 }
