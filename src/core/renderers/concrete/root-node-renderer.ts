@@ -1,11 +1,10 @@
 import RenderEngine from "@src/core/render-engine";
-import DocumentFragmentNode from "@src/core/nodes/concrete/document-fragment-node";
+import RootNode from "@src/core/nodes/concrete/root-node";
 import ParentNodeRenderer from "../abstract/parent-node-renderer";
 import RenderResult from "@src/core/render-result";
-import HierarchyPath from "@src/core/hierarchy-path";
 
-export default class DocumentFragmentNodeRenderer extends ParentNodeRenderer<DocumentFragmentNode> {
-    public render(node: DocumentFragmentNode, engine: RenderEngine, context: Map<string,any>): RenderResult {
+export default class RootNodeRenderer extends ParentNodeRenderer<RootNode> {
+    public render(node: RootNode, engine: RenderEngine, context: Map<string,any>): RenderResult {
         var root = document.createDocumentFragment();
 
         var map = this._renderChildren(node, root, engine, context);

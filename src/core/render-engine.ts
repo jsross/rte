@@ -1,4 +1,4 @@
-import RteNode from "./nodes/abstract/rte-node";
+import DocumentTreeNode from "./nodes/abstract/document-tree-node";
 import RteConfig from './config/rte-config';
 import RenderResult from "./render-result";
 import HierarchyPath from "./hierarchy-path";
@@ -8,7 +8,7 @@ export default class RenderEngine {
         RteConfig.configure();
     }
 
-    render(root:RteNode, context:Map<string,any> = null): RenderResult {
+    render(root:DocumentTreeNode, context:Map<string,any> = null): RenderResult {
         if(context === null) {
             context = new Map<string,any>();
             context.set('sourcePath', HierarchyPath.createRoot())

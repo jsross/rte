@@ -1,7 +1,6 @@
-import RteNode from './rte-node';
-import HierarchyPath from '@src/core/hierarchy-path';
+import DocumentTreeNode from './document-tree-node';
 
-export default abstract class LeafNode extends RteNode {
+export default abstract class LeafNode extends DocumentTreeNode {
     public hasChildren():boolean{
         return false;
     }

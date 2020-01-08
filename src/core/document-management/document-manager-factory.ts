@@ -1,5 +1,5 @@
 import RenderEngine from "@src/core/render-engine";
-import DocumentFragmentNode from "@src/core/nodes/concrete/document-fragment-node";
+import RootNode from "@src/core/nodes/concrete/root-node";
 import DocumentManager from "./document-manager";
 
 export default class DocumentManagerFactory {
@@ -11,7 +11,7 @@ export default class DocumentManagerFactory {
 
     private static $inject:string[] = ['RenderEngine'];
 
-    public createInstance(document: DocumentFragmentNode): DocumentManager {
+    public createInstance(document: RootNode): DocumentManager {
         return new DocumentManager(document, this._renderEngine);
     }
 }

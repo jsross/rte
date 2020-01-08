@@ -1,6 +1,6 @@
 import Configurator from "./configurator";
 import RteConfig from "./rte-config"
-import DocumentFragmentRenderer from "@src/core/renderers/concrete/document-fragment-node-renderer"
+import DocumentFragmentRenderer from "@src/core/renderers/concrete/root-node-renderer"
 import ListNodeRenderer from "@src/core/renderers/concrete/list-node-renderer";
 import TextNodeRenderer from "@src/core/renderers/concrete/text-node-renderer";
 import TextBlockNodeRenderer from "@src/core/renderers/concrete/text-block-node-renderer";
@@ -12,7 +12,7 @@ import Container from "@src/core/ioc/container";
 
 export default class DefaultConfigurator implements Configurator {
     public configure() {
-        RteConfig.registerRenderer('DocumentFragmentNode', new DocumentFragmentRenderer());
+        RteConfig.registerRenderer('RootNode', new DocumentFragmentRenderer());
         RteConfig.registerRenderer('ListNode', new ListNodeRenderer());
         RteConfig.registerRenderer('ListItemNode', new ListItemNodeRenderer());
         RteConfig.registerRenderer('TextNode', new TextNodeRenderer());

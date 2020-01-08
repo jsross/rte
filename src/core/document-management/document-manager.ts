@@ -1,9 +1,9 @@
-import DocumentFragmentNode from "@src/core/nodes/concrete/document-fragment-node";
+import RootNode from "@src/core/nodes/concrete/root-node";
 import ContentSelection from "@src/core/content-selection";
 import HierarchyPathMap from "./hierachy-path-map";
 import RenderEngine from "@src/core/render-engine";
 import RteOperation from "./operations/rte-operation";
-import RteNode from "../nodes/abstract/rte-node";
+import DocumentTreeNode from "../nodes/abstract/document-tree-node";
 import ParentNode from "../nodes/abstract/parent-node";
 import HierarchyPath from "../hierarchy-path";
 import InsertTextOperation from "./operations/insert-text-operation";
@@ -15,12 +15,12 @@ import SetSelectionOperation from "./operations/set-selection-operation";
 export default class DocumentManager {
 
     private _initialized: boolean = false;
-    private _document:DocumentFragmentNode;
+    private _document:RootNode;
     private _selection:ContentSelection;
     private _map:HierarchyPathMap;
     private _renderEngine: RenderEngine;
 
-    constructor(document: DocumentFragmentNode, renderEngine: RenderEngine){
+    constructor(document: RootNode, renderEngine: RenderEngine){
         this._document = document;
         this._renderEngine = renderEngine;
     }
@@ -131,7 +131,7 @@ export default class DocumentManager {
         var startNode = startResult[0];
         var startIndex = startResult[1].head;
 
-        var endNode:RteNode = null;
+        var endNode:DocumentTreeNode = null;
         var endIndex: number = null;
 
         if(endPath !== null) {
@@ -155,12 +155,12 @@ export default class DocumentManager {
         node.content = StringHelper.remove(node.content,startIndex,count)
     }
 
-    private _find(root:RteNode, path: HierarchyPath) : [RteNode, HierarchyPath] {
+    private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {
         if(!root.hasChildren()){
             return [root, path];
         }
 
-        var parentNode = root as ParentNode<RteNode>;
+        var parentNode = root as ParentNode<DocumentTreeNode>;
 
         var child = parentNode.children[path.head];
 

@@ -1,6 +1,6 @@
-import RteNode from "./rte-node";
+import DocumentTreeNode from "./document-tree-node";
 
-export default abstract class ParentNode<T extends RteNode> extends RteNode {
+export default abstract class ParentNode<T extends DocumentTreeNode> extends DocumentTreeNode {
     private _children:Array<T> = [];
 
     get children(): Array<T> {

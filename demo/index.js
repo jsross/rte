@@ -1,5 +1,5 @@
 window.addEventListener('load', (event) => {
-    let root = new MojjRte.BasicParentNode();
+    let root = new MojjRte.RootNode();
 
     var header = new MojjRte.TextBlockNode(null,'header');
     header.appendChild(new MojjRte.TextNode('Examp'));

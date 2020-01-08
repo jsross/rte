@@ -1,4 +1,4 @@
-import RteNodeRenderer from "./rte-node-renderer";
+import DocumentTreeNodeRenderer from "./document-tree-node-renderer";
 import RenderEngine from "@src/core/render-engine";
 import ParentNode from '@src/core/nodes/abstract/parent-node';
 import RenderResult from "@src/core/render-result";
@@ -6,7 +6,7 @@ import HierarchyPath from "@src/core/hierarchy-path";
 import HierarchyPathMap from "@src/core/document-management/hierachy-path-map";
 import cloneDeep = require('lodash/cloneDeep');
 
-export default abstract class ParentNodeRenderer<T extends ParentNode<any>> implements RteNodeRenderer<T>{
+export default abstract class ParentNodeRenderer<T extends ParentNode<any>> implements DocumentTreeNodeRenderer<T>{
     abstract render(node: T, engine: RenderEngine, context:Map<string,any>): RenderResult;
 
     protected _renderChildren(rteNode: T,

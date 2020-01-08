@@ -1,7 +1,7 @@
 import { LitElement, html, customElement, css } from 'lit-element';
 import * as view from "./template.html";
 import ContentAreaElement from "@src/components/content-area/content-area-element"
-import DocumentFragmentNode from '@src/core/nodes/concrete/document-fragment-node';
+import RootNode from '@src/core/nodes/concrete/root-node';
 import KeyPipe, { KeyPipePayload } from '@src/core/keyPipeline/key-pipe';
 import LoggerPipe from '@src/core/keyPipeline/logger-pipe';
 import ContentSelection from '@src/core/content-selection';
@@ -52,7 +52,7 @@ export default class RteElement extends LitElement {
     return result;
   }
 
-  public setValue(value:DocumentFragmentNode) {
+  public setValue(value:RootNode) {
     this._documentManager = this._documentManagerFactory.createInstance(value);
     var root = this._documentManager.init();
     
