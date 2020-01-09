@@ -1,4 +1,4 @@
-import TextNode from '../../../src/core/nodes/concrete/text-node';
+import TextNode from '../../../src/core/nodes/concrete/text/text-node';
 import Registry from '../../../src/core/ioc/registry';
 
 describe('Container class', function() {

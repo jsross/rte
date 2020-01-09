@@ -7,8 +7,6 @@ import DocumentTreeNode from "../nodes/abstract/document-tree-node";
 import ParentNode from "../nodes/abstract/parent-node";
 import HierarchyPath from "../hierarchy-path";
 import InsertTextOperation from "./operations/insert-text-operation";
-import TextNode from "../nodes/concrete/text-node";
-import StringHelper from "../string-helper";
 import DeleteOperation from "./operations/delete-operation";
 import SetSelectionOperation from "./operations/set-selection-operation";
 
@@ -90,8 +88,6 @@ export default class DocumentManager {
             case InsertTextOperation: 
                 var insertTextOperation = operation as InsertTextOperation;
 
-                this._doInsertText(insertTextOperation.value, startPath);
-
                 var result = this._renderEngine.render(this._document);
 
                 this._map = result.map;
@@ -100,8 +96,6 @@ export default class DocumentManager {
             break;
             case DeleteOperation:
                 var deleteOperation = operation as DeleteOperation;
-
-                this._doDelete(startPath, endPath);
 
                 var result = this._renderEngine.render(this._document);
 
@@ -115,45 +109,6 @@ export default class DocumentManager {
         }
     }
 
-    private _doInsertText(value:string, start:HierarchyPath){
-        var startResult = this._find(this._document, start);
-        var startNode:TextNode = startResult[0] as TextNode;
-        var startIndex = startResult[1].head;
-
-        if(startNode instanceof TextNode) {
-            var textNode:TextNode = startNode as TextNode;
-            textNode.content = StringHelper.insert(textNode.content, value, startIndex);
-        }
-    }
-
-    private _doDelete(startPath:HierarchyPath, endPath:HierarchyPath) {
-        var startResult = this._find(this._document, startPath);
-        var startNode = startResult[0];
-        var startIndex = startResult[1].head;
-
-        var endNode:DocumentTreeNode = null;
-        var endIndex: number = null;
-
-        if(endPath !== null) {
-            var endResult = this._find(this._document, endPath);
-            endNode = endResult[0];
-            endIndex = endResult[1].head;
-        }
-
-        if(startNode === endNode && startNode instanceof TextNode) {
-            this._doDeleteText(startNode as TextNode, startIndex, endIndex);
-        }
-    }
-
-    private _doDeleteText(node:TextNode, startIndex:number, endIndex:number = null) {
-        var count:number = null;
-        
-        if(endIndex !== null) {
-            count = endIndex - startIndex;
-        }
-
-        node.content = StringHelper.remove(node.content,startIndex,count)
-    }
 
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {
         if(!root.hasChildren()){

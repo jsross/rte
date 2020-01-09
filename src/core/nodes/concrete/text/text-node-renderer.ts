@@ -1,5 +1,5 @@
 import RenderEngine from "@src/core/render-engine";
-import TextNode from "@src/core/nodes/concrete/text-node";
+import TextNode from "./text-node";
 import DocumentTreeNodeRenderer from "@src/core/renderers/abstract/document-tree-node-renderer";
 import RenderResult from "@src/core/render-result";
 import HierarchyPath from "@src/core/hierarchy-path";
