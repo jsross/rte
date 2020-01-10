@@ -10,6 +10,8 @@ import CharacterKeyListener from '@src/core/keyPipeline/character-key-listener';
 import DocumentManagerFactory from '@src/core/document-management/document-manager-factory';
 import DocumentManager from '@src/core/document-management/document-manager';
 import RteConfig from '@src/core/config/rte-config';
+import KeyEvent from '@src/core/document-management/key-event';
+import { Subject } from 'rxjs'
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
@@ -18,6 +20,7 @@ export default class RteElement extends LitElement {
   private _keyPipeline: KeyPipe[];
   private _documentManagerFactory: DocumentManagerFactory;
   private _documentManager: DocumentManager;
+  private _keySubject: Subject<KeyEvent>;
 
   static get styles() {    
     return [ css`
@@ -29,6 +32,8 @@ export default class RteElement extends LitElement {
   constructor(){
     super();
     RteConfig.configure();
+
+    this._keySubject = new Subject<KeyEvent>();
     
     this._keyPipeline = new Array<KeyPipe>();
     this._keyPipeline.push(new LoggerPipe());
@@ -53,7 +58,13 @@ export default class RteElement extends LitElement {
   }
 
   public setValue(value:RootNode) {
-    this._documentManager = this._documentManagerFactory.createInstance(value);
+
+    if(this._documentManager != null) {
+      this._documentManager.destroy();
+      this._documentManager = null;
+    }
+
+    this._documentManager = this._documentManagerFactory.createInstance(value, this._keySubject);
     var root = this._documentManager.init();
     
     this._contentArea.setContent(root);
@@ -62,6 +73,8 @@ export default class RteElement extends LitElement {
   private _handleRteKeyboardEvent(event:CustomEvent) {
     let key:string = event.detail.key;
     let selection:ContentSelection = event.detail.selection;
+
+    this._keySubject.next(new KeyEvent(key, selection.AnchorPointer, selection.FocusPointer));
 
     var payload = new KeyPipePayload(key, selection);
 

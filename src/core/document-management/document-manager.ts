@@ -9,6 +9,8 @@ import HierarchyPath from "../hierarchy-path";
 import InsertTextOperation from "./operations/insert-text-operation";
 import DeleteOperation from "./operations/delete-operation";
 import SetSelectionOperation from "./operations/set-selection-operation";
+import { Observable, Subscription } from 'rxjs'
+import KeyEvent from "./key-event";
 
 export default class DocumentManager {
 
@@ -17,10 +19,18 @@ export default class DocumentManager {
     private _selection:ContentSelection;
     private _map:HierarchyPathMap;
     private _renderEngine: RenderEngine;
+    private _keyObserbable: Observable<KeyEvent>;
+    private _keySubscription: Subscription;
 
-    constructor(document: RootNode, renderEngine: RenderEngine){
+    constructor(document: RootNode, renderEngine: RenderEngine, keyObserable: Observable<KeyEvent>){
         this._document = document;
         this._renderEngine = renderEngine;
+        this._keyObserbable = keyObserable;
+        this._keySubscription = keyObserable.subscribe(this._handleNextKeyEvent.bind(this));
+    }
+
+    public destroy(){
+        this._keySubscription.unsubscribe();
     }
 
     public init() : DocumentFragment {
@@ -107,6 +117,13 @@ export default class DocumentManager {
                 this._selection = new ContentSelection(startPath, endPath);
             break;
         }
+    }
+
+    private _handleNextKeyEvent(event:KeyEvent) {
+        var startPointer:HierarchyPath = this._map.findLeft(event.start);
+        var endPointer:HierarchyPath = event.end != null ? this._map.findLeft(event.end): null;
+
+        console.log(`nextKeyEvent: ${startPointer.toString()}`);
     }
 
 
