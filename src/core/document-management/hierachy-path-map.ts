@@ -21,7 +21,18 @@ export default class HierarchyPathMap {
             }
         }
 
-        return null;
+        if(right.isRoot()){
+            return null;
+        }
+        else {
+            var result = this.findLeft(right.getParent())
+
+            if(result != null){
+                result.getChild(right.end);
+            }
+
+            return result;
+        }
     }
 
     public findRight(left:HierarchyPath) : HierarchyPath {
@@ -33,7 +44,18 @@ export default class HierarchyPathMap {
             }
         }
 
-        return null;
+        if(left.isRoot){
+            return null;
+        }
+        else {
+            var result = this.findRight(left.getParent())
+
+            if(result != null){
+                result.getChild(left.end);
+            }
+
+            return result;
+        }
     }
 
     public addEntry(left: HierarchyPath, right: HierarchyPath) {
