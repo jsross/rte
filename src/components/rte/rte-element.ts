@@ -80,14 +80,7 @@ export default class RteElement extends LitElement {
 
     this._keyPipeline.forEach(pipe => {
       payload = pipe.process(payload);
-    });
-
-    if(payload.operations.length > 0) {
-      var result = this._documentManager.executeOperations(payload.operations);
-
-      this._contentArea.setContent(result[0]);
-      this._contentArea.setSelection(result[1].AnchorPointer, result[1].FocusPointer);
-    }
+    });    
   }
 
 }

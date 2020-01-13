@@ -35,4 +35,35 @@ describe('HierarchyPath class', function() {
         });
 
     });
+
+    describe('getLowestCommonAncestor function', function(){
+        it('should return common ancestor', function() {
+            var target = new HierarchyPath([0,3,5,1]);
+            var toCompare = new HierarchyPath([0,3,6,2]);
+            var expected = new HierarchyPath([0,3]);
+
+            var actual = target.getLowestCommonAncestor(toCompare);
+
+            expect(actual.isEqual(expected)).toBe(true);
+        });
+
+        it('should return root when target is root', function(){
+            var target = HierarchyPath.createRoot();
+            var toCompare = new HierarchyPath([0,3,6,2]);
+
+            var actual = target.getLowestCommonAncestor(toCompare);
+
+            expect(actual.isRoot()).toBe(true);
+        });
+
+        it('should return root when toComare is root', function(){
+            var target = new HierarchyPath([0,3,6,2]); 
+            var toCompare = HierarchyPath.createRoot();
+
+            var actual = target.getLowestCommonAncestor(toCompare);
+
+            expect(actual.isRoot()).toBe(true);
+        });
+
+    })
 });

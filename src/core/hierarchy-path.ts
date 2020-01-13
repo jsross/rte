@@ -84,6 +84,22 @@ export default class HierarchyPath {
         return new HierarchyPath(array);
     }
 
+    public getLowestCommonAncestor(toCompare:HierarchyPath) : HierarchyPath{
+        var array = new Array<number>();
+
+        var length = Math.min(this.depth(), toCompare.depth());
+
+        for(var index = 0; index < length; index++){
+            if(this._path[index] !== toCompare._path[index] ) {
+                break;
+            }
+
+            array.push(this._path[index]);
+        }
+
+        return new HierarchyPath(array);
+    }
+
     public getParent():HierarchyPath {
         if(this.isRoot()) {
             return null;
