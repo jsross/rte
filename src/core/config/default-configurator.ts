@@ -7,7 +7,6 @@ import TextBlockNodeRenderer from "@src/core/renderers/concrete/text-block-node-
 import ListItemNodeRenderer from "@src/core/renderers/concrete/list-item-node-renderer";
 import Registry from "@src/core/ioc/registry";
 import RenderEngine from "@src/core/render-engine";
-import DocumentManagerFactory from "@src/core/document-management/document-manager-factory";
 import Container from "@src/core/ioc/container";
 
 export default class DefaultConfigurator implements Configurator {
@@ -21,7 +20,6 @@ export default class DefaultConfigurator implements Configurator {
         var registry = new Registry();
 
         registry.register(RenderEngine);
-        registry.register(DocumentManagerFactory);
 
         RteConfig.container = new Container(registry);        
     }

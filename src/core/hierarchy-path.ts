@@ -76,7 +76,7 @@ export default class HierarchyPath {
         return this.depth() === 0;
     }
 
-    public getChild(value:number) {
+    public getChild(value:number): HierarchyPath {
         var array = this._path.slice(0);
 
         array.push(value);
