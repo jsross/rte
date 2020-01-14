@@ -35,7 +35,16 @@ export default class DocumentManager {
 
             node = result[0];
 
+            console.log(startPath.toString());
+            console.log(endPath.toString());
+            console.log(commonAncestor.toString());
+
+            startPath = commonAncestor.getRelativePath(startPath);
+            endPath = commonAncestor.getRelativePath(endPath);
+
             console.log(node);
+            console.log(startPath.toString());
+            console.log(endPath.toString());
         }
     }
 

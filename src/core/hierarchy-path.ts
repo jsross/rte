@@ -62,6 +62,12 @@ export default class HierarchyPath {
         return this._path.length;
     }
 
+    public isAncestorOf(path:HierarchyPath): boolean {
+        var lca = this.getLowestCommonAncestor(path);
+        
+        return this.isEqual(lca);
+    }
+ 
     public isChildOf(path:HierarchyPath):boolean {
         var parent = this.getParent();
 
@@ -122,6 +128,16 @@ export default class HierarchyPath {
         }
 
         return this.getSibling(end - 1);
+    }
+
+    public getRelativePath(descendant: HierarchyPath){
+        if(!this.isAncestorOf(descendant)){
+            return null;
+        }
+
+        var path = descendant._path.splice(this.depth());
+
+        return new HierarchyPath(path);
     }
 
     public getSibling(value:number):HierarchyPath {
