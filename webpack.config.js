@@ -10,12 +10,7 @@ module.exports = {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: 'ts-loader',
-      },
-      {
-        test: /\.html$/,
-        exclude: /node_modules/,
-        loader: "html-loader?exportAsEs6Default"
-      }    
+      }  
     ],
   },
   resolve: {
