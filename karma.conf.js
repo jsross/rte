@@ -17,7 +17,7 @@
 // Karma configuration
 // Generated on Sun Jun 23 2019 11:58:21 GMT-0700 (Pacific Daylight Time)
 
-const webpackConfig = require('./webpack.dev.config');
+const webpackConfig = require('./webpack.config');
 
 module.exports = function(config) {
     config.set({
@@ -29,7 +29,7 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
-        files: ['test/*.ts', 'test/*.js'],
+        files: ['tests/*.ts', 'tests/*.js'],
 
         // list of files / patterns to exclude
         exclude: [],
@@ -71,7 +71,7 @@ module.exports = function(config) {
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun: false,
+        singleRun: true,
 
         // Concurrency level
         // how many browser should be started simultaneous
