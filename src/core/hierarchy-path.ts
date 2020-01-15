@@ -27,7 +27,7 @@ export default class HierarchyPath {
         return new HierarchyPath(parsed);
     }
 
-    private readonly _path:Array<number>;
+    private readonly _path:ReadonlyArray<number>;
     private _stringValue: string = null;
 
     get head(): number{
@@ -76,6 +76,20 @@ export default class HierarchyPath {
         }
 
         return parent.isEqual(path);
+    }
+
+    public isEqual(toCompare:HierarchyPath):boolean {
+        if(toCompare._path.length !== this._path.length) {
+            return false;
+        }
+
+        for(let index:number = 0; index < this._path.length; index++){
+            if(this._path[index] !== toCompare._path[index]){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public isRoot():boolean {
@@ -130,12 +144,12 @@ export default class HierarchyPath {
         return this.getSibling(end - 1);
     }
 
-    public getRelativePath(descendant: HierarchyPath){
+    public getRelativePath(descendant: HierarchyPath): HierarchyPath{
         if(!this.isAncestorOf(descendant)){
             return null;
         }
 
-        var path = descendant._path.splice(this.depth());
+        var path = descendant._path.slice(this.depth());
 
         return new HierarchyPath(path);
     }
@@ -146,20 +160,6 @@ export default class HierarchyPath {
         array.push(value);
 
         return new HierarchyPath(array);
-    }
-
-    public isEqual(toCompare:HierarchyPath):boolean {
-        if(toCompare._path.length !== this._path.length) {
-            return false;
-        }
-
-        for(let index:number = 0; index < this._path.length; index++){
-            if(this._path[index] !== toCompare._path[index]){
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public toString():string{
