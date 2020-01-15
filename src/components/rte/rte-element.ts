@@ -1,5 +1,4 @@
 import { LitElement, html, customElement, css } from 'lit-element';
-import * as view from "./template.html";
 import ContentAreaElement from "@src/components/content-area/content-area-element"
 import RootNode from '@src/core/nodes/concrete/root-node';
 import KeyPipe, { KeyPipePayload } from '@src/core/keyPipeline/key-pipe';
@@ -51,13 +50,8 @@ export default class RteElement extends LitElement {
     this._contentArea.addEventListener('rte-keyboard-event', this._handleRteKeyboardEvent.bind(this));
   }
 
-  public render() {
-    const _html = html;
-    let code: string = '_html`' + view + "`";
-
-    var result = eval(code);
-
-    return result;
+  public render(){
+    return html`<content-area id='content-area'></content-area>`;
   }
 
   public setValue(value:RootNode) {
