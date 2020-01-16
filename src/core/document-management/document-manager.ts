@@ -46,6 +46,9 @@ export default class DocumentManager {
             console.log(startPath.toString());
             console.log(endPath.toString());
         }
+        else {
+            var result = this._find(this._document, startPath);
+        }
     }
 
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {

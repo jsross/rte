@@ -4,8 +4,6 @@ import RootNode from '@src/core/nodes/concrete/root-node';
 import KeyPipe, { KeyPipePayload } from '@src/core/keyPipeline/key-pipe';
 import LoggerPipe from '@src/core/keyPipeline/logger-pipe';
 import ContentSelection from '@src/core/content-selection';
-import BackspaceListener from '@src/core/keyPipeline/backspace-listener';
-import CharacterKeyListener from '@src/core/keyPipeline/character-key-listener';
 import DocumentManager from '@src/core/document-management/document-manager';
 import RteConfig from '@src/core/config/rte-config';
 import KeyEvent from '@src/core/document-management/key-event';
@@ -39,8 +37,6 @@ export default class RteElement extends LitElement {
 
     this._keyPipeline = new Array<KeyPipe>();
     this._keyPipeline.push(new LoggerPipe());
-    this._keyPipeline.push(new BackspaceListener());
-    this._keyPipeline.push(new CharacterKeyListener());
 
     this._renderEngine = RteConfig.container.resolve(RenderEngine);
   }
