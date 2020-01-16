@@ -5,6 +5,7 @@ import ParentNode from "../nodes/abstract/parent-node";
 import HierarchyPath from "../hierarchy-path";
 import { Observable, Subscription } from 'rxjs'
 import KeyEvent from "./key-event";
+import RteConfig from "../config/rte-config";
 
 export default class DocumentManager {
 
@@ -34,21 +35,18 @@ export default class DocumentManager {
             var result = this._find(this._document, commonAncestor);
 
             node = result[0];
-
-            console.log(startPath.toString());
-            console.log(endPath.toString());
-            console.log(commonAncestor.toString());
-
             startPath = commonAncestor.getRelativePath(startPath);
             endPath = commonAncestor.getRelativePath(endPath);
-
-            console.log(node);
-            console.log(startPath.toString());
-            console.log(endPath.toString());
         }
         else {
             var result = this._find(this._document, startPath);
+            node = result[0];
+            startPath = result[1];
         }
+
+        var keyListener = RteConfig.getRegisteredNodeKeyListener(node.constructor.name);
+
+        keyListener.handleKeyEvent(node, event.key, event.modifiers, startPath, endPath);
     }
 
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {

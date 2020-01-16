@@ -8,6 +8,7 @@ import ListItemNodeRenderer from "@src/core/renderers/concrete/list-item-node-re
 import Registry from "@src/core/ioc/registry";
 import RenderEngine from "@src/core/render-engine";
 import Container from "@src/core/ioc/container";
+import TextNodeCharacterKeyListener from "../nodes/concrete/text/text-node-character-key-listener";
 
 export default class DefaultConfigurator implements Configurator {
     public configure() {
@@ -16,6 +17,8 @@ export default class DefaultConfigurator implements Configurator {
         RteConfig.registerRenderer('ListItemNode', new ListItemNodeRenderer());
         RteConfig.registerRenderer('TextNode', new TextNodeRenderer());
         RteConfig.registerRenderer('TextBlockNode', new TextBlockNodeRenderer());
+
+        RteConfig.registerNodeKeyListener('TextNode', new TextNodeCharacterKeyListener());
 
         var registry = new Registry();
 

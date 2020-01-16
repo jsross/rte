@@ -10,13 +10,13 @@
         },
         {
             "type": "npm",
-            "script": "build",
+            "script": "build:dev",
             "group": "build",
             "problemMatcher": []
         },
         {
             "type": "npm",
-            "script": "serve",
+            "script": "start:dev",
             "problemMatcher": []
         }
     ]
