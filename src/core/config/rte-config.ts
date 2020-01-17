@@ -2,7 +2,7 @@ import Configurator from "./configurator";
 import DefaultConfigurator from "./default-configurator";
 import DocumentTreeNodeRenderer from "@src/core/renderers/abstract/document-tree-node-renderer";
 import Container from "@src/core/ioc/container";
-import INodeKeyListener from "../document-management/node-key-listeners/node-key-listener";
+import IDocumentTreeNodeKeyListener from "../document-management/document-tree-node-key-listener";
 import DocumentTreeNode from "../nodes/abstract/document-tree-node";
 
 export default class RteConfig {
@@ -10,13 +10,13 @@ export default class RteConfig {
     public static container: Container;
     
     private static _rendererRegistry: Map<string, DocumentTreeNodeRenderer<any>> = new Map<string,DocumentTreeNodeRenderer<any>>();
-    private static _nodeKeyListenerRegistry: Map<string, INodeKeyListener<any>> = new  Map<string, INodeKeyListener<any>>();
+    private static _nodeKeyListenerRegistry: Map<string, IDocumentTreeNodeKeyListener<any>> = new  Map<string, IDocumentTreeNodeKeyListener<any>>();
 
     public static configure():void {
         RteConfig.configurator.configure();
     }
 
-    public static registerNodeKeyListener(nodeType: string, listener: INodeKeyListener<any>){
+    public static registerNodeKeyListener(nodeType: string, listener: IDocumentTreeNodeKeyListener<any>){
         this._nodeKeyListenerRegistry.set(nodeType, listener);
     }
 
@@ -24,7 +24,7 @@ export default class RteConfig {
         this._rendererRegistry.set(nodeType, renderer);
     }
 
-    public static getRegisteredNodeKeyListener<T extends DocumentTreeNode>(nodeType: string) : INodeKeyListener<T> {
+    public static getRegisteredNodeKeyListener<T extends DocumentTreeNode>(nodeType: string) : IDocumentTreeNodeKeyListener<T> {
         if(!this._nodeKeyListenerRegistry.has(nodeType)){
             return null;
         }

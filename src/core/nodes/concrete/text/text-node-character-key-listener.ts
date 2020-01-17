@@ -1,4 +1,4 @@
-import INodeKeyListener from "@src/core/document-management/node-key-listeners/node-key-listener";
+import IDocumentTreeNodeKeyListener from "@src/core/document-management/document-tree-node-key-listener";
 import TextNode from "./text-node";
 import HierarchyPath from "@src/core/hierarchy-path";
 import Action from "@src/core/document-management/actions/action";
@@ -7,7 +7,7 @@ import InsertTextAction from "@src/core/document-management/actions/insert-text-
 import DeleteTextAction from "@src/core/document-management/actions/delete-text-action";
 import GroupAction from "@src/core/document-management/actions/group-action";
 
-export default class TextNodeCharacterKeyListener implements INodeKeyListener<TextNode> {
+export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextNode> {
     private readonly _NAMED_KEY_WHITE_LIST:Array<string> = [NamedKeyAttributeValues.WHITESPACE_KEYS.SPACE];
 
     handleKeyEvent(node: TextNode, key: string, modifiers: string[], start: HierarchyPath, end: HierarchyPath): Action {
