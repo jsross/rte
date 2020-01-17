@@ -3,7 +3,7 @@ import TextNode from "./text-node";
 import DocumentTreeNodeRenderer from "@src/core/renderers/abstract/document-tree-node-renderer";
 import RenderResult from "@src/core/render-result";
 import HierarchyPath from "@src/core/hierarchy-path";
-import HierarchyPathMap from "@src/core/document-management/hierachy-path-map";
+import HierarchyPathMap from "@src/core/hierachy-path-map";
 
 export default class TextNodeRenderer implements DocumentTreeNodeRenderer<TextNode>{
     

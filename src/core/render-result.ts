@@ -1,4 +1,4 @@
-import HierarchyPathMap from "./document-management/hierachy-path-map";
+import HierarchyPathMap from "./hierachy-path-map";
 
 export default class RenderResult {
     public readonly root : Node;

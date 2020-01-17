@@ -9,7 +9,7 @@ import RteConfig from '@src/core/config/rte-config';
 import KeyEvent from '@src/core/document-management/key-event';
 import { Subject } from 'rxjs'
 import RenderEngine from '@src/core/render-engine';
-import HierarchyPathMap from '@src/core/document-management/hierachy-path-map';
+import HierarchyPathMap from '@src/core/hierachy-path-map';
 
 @customElement('mojj-rte')
 export default class RteElement extends LitElement {
