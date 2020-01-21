@@ -8,7 +8,7 @@ import InsertTextAction from "@src/core/document-management/actions/insert-text-
 import GroupAction from "@src/core/document-management/actions/group-action";
 
 
-export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextBlockNode> {
+export default class TextBlockNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextBlockNode> {
     private readonly _NAMED_KEY_WHITE_LIST:Array<string> = [NamedKeyAttributeValues.WHITESPACE_KEYS.SPACE];
 
     handleKeyEvent(node: TextBlockNode, key: string, modifiers: string[], start: HierarchyPath, end: HierarchyPath): Action {
