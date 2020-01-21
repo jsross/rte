@@ -4,7 +4,7 @@ import HierarchyPath from "@src/core/hierarchy-path";
 import Action from "@src/core/document-management/actions/action";
 import { NamedKeyAttributeValues } from "@src/core/named-key-attribute-values";
 import InsertTextAction from "@src/core/document-management/actions/insert-text-action";
-import DeleteTextAction from "@src/core/document-management/actions/delete-text-action";
+import DeleteAction from "@src/core/document-management/actions/delete-action";
 import GroupAction from "@src/core/document-management/actions/group-action";
 
 export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextNode> {
@@ -26,9 +26,7 @@ export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKe
         var actions = new Array<Action>();
         
         if(end != null) {
-            var count = end.end - start.end;
-
-            actions.push(new DeleteTextAction(start,count));
+            actions.push(new DeleteAction(start,end));
         }
 
         actions.push(new InsertTextAction(start, key));
