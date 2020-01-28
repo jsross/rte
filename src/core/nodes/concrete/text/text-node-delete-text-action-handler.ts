@@ -7,16 +7,21 @@ import DeleteAction from '@src/core/document-management/actions/delete-action';
 export default class TextNodeDeleteTextActionHandler extends ActionHandler<DeleteAction, TextNode> {
     
     do(action: DeleteAction, node: TextNode): Action {
-        var startIndex = action.startPath.head;
-        var endIndex = action.endPath.head;
         var content = node.content;
 
+        if(action.startPath && action.startPath.depth() !== 1 || action.endPath != null && action.endPath.depth() !== 1) {
+            throw new Error('Bad Path');
+        }
+
+        var startIndex = action.startPath ? action.startPath.head : 0;
+        var endIndex = action.endPath ? action.endPath.head : content.length - 1;
+
         var result:string = content.substring(0, startIndex) + content.substring(endIndex);
-        var removed:string = content.substring(startIndex,endIndex);
+        var removed:string = content.substring(startIndex, endIndex);
 
         node.content = result;
 
-        return new InsertTextAction(action.startPath, removed);
+        return new InsertTextAction(action.targetPath, action.startPath, removed);
     }
 
 }

@@ -10,9 +10,7 @@ import GroupAction from "@src/core/document-management/actions/group-action";
 export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextNode> {
     private readonly _NAMED_KEY_WHITE_LIST:Array<string> = [NamedKeyAttributeValues.WHITESPACE_KEYS.SPACE];
 
-    handleKeyEvent(node: TextNode, key: string, modifiers: string[], start: HierarchyPath, end: HierarchyPath): Action {
-        console.log(`handleKeyEvent: ${node.content}, '${key}'`);
-
+    handleKeyEvent(key: string, modifiers: string[], root: HierarchyPath, start: HierarchyPath, end: HierarchyPath): Action {
         modifiers = modifiers.filter(obj => obj != NamedKeyAttributeValues.MODIFIER_KEYS.SHIFT);
 
         if(modifiers.length > 0) {
@@ -26,10 +24,10 @@ export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKe
         var actions = new Array<Action>();
         
         if(end != null) {
-            actions.push(new DeleteAction(start,end));
+            actions.push(new DeleteAction(root, start,end));
         }
 
-        actions.push(new InsertTextAction(start, key));
+        actions.push(new InsertTextAction(root, start, key));
 
         return new GroupAction(start, actions);
     }

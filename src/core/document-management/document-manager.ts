@@ -6,6 +6,8 @@ import HierarchyPath from "../hierarchy-path";
 import { Observable, Subscription } from 'rxjs'
 import KeyEvent from "./key-event";
 import RteConfig from "../config/rte-config";
+import HierarchyPathMap from "../hierachy-path-map";
+import Action from "./actions/action";
 
 export default class DocumentManager {
 
@@ -23,31 +25,6 @@ export default class DocumentManager {
     public destroy(){
         this._keySubscription.unsubscribe();
     }
-    
-    private _handleNextKeyEvent(event:KeyEvent) {
-        var startPath:HierarchyPath = event.start;
-        var endPath:HierarchyPath = event.end;
-        var node: DocumentTreeNode;
-
-        if(endPath !== null) {
-            var commonAncestor = startPath.getLowestCommonAncestor(endPath);
-
-            var result = this._find(this._document, commonAncestor);
-
-            node = result[0];
-            startPath = commonAncestor.getRelativePath(startPath);
-            endPath = commonAncestor.getRelativePath(endPath);
-        }
-        else {
-            var result = this._find(this._document, startPath);
-            node = result[0];
-            startPath = result[1];
-        }
-
-        var keyListener = RteConfig.getRegisteredNodeKeyListener(node.constructor.name);
-
-        keyListener.handleKeyEvent(node, event.key, event.modifiers, startPath, endPath);
-    }
 
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {
         if(!root.hasChildren() || path.isRoot()){
@@ -64,6 +41,50 @@ export default class DocumentManager {
 
         return this._find(child, path.tail);       
     }
+    
+    private _handleNextKeyEvent(event:KeyEvent):void {
+        var rootPath:HierarchyPath;
+        var relativeStartPath:HierarchyPath;
+        var relativeEndPath:HierarchyPath;
+        var node: DocumentTreeNode;
+
+        try {
+
+            if(event.end !== null) {
+                rootPath = event.start.getLowestCommonAncestor(event.end);
+
+                var result = this._find(this._document, rootPath);
+
+                node = result[0];
+
+                var remained = result[1];
+
+                relativeStartPath = rootPath.getRelativePath(remained.concat(event.start));
+                relativeEndPath = rootPath.getRelativePath(remained.concat(event.end));
+            }
+            else {
+                var result = this._find(this._document, event.start);
+                node = result[0];
+                relativeStartPath = result[1];
+            }
+
+            var keyListener = RteConfig.getRegisteredNodeKeyListener(node.constructor.name);
+
+            var action = keyListener.handleKeyEvent(event.key, event.modifiers, rootPath, relativeStartPath, relativeEndPath);
+            if(action !== null){
+                this._processAction(action);
+            }
+        }
+        catch(e){
+            console.error(e);
+        }
+    }
+
+    private _processAction(action:Action):void{
+        console.log(action);
+    }
+
+    
 
 
 }

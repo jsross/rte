@@ -8,14 +8,17 @@ export default class TextNodeInsertTextActionHandler extends ActionHandler<Inser
     
     do(action: InsertTextAction, node: TextNode): Action {
         var content = node.content;
-        var index = action.startPath.head;
+
+        var index = action.indexPath.head;
 
         var result = content.substring(0, index) + action.value + content.substring(index);
         node.content = result;
 
-        var deleteEnd = action.startPath.getSibling(action.startPath.end + action.value.length);
+        var deleteEnd = index + action.value.length;
 
-        return new DeleteAction(action.startPath, deleteEnd);
+        return new DeleteAction(action.targetPath,
+                                action.targetPath.getChild(index),
+                                action.targetPath.getChild(deleteEnd));
     }
 
 }

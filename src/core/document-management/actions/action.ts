@@ -2,9 +2,9 @@ import HierarchyPath from "@src/core/hierarchy-path";
 
 export default abstract class Action {
  
-    public startPath:HierarchyPath;
+    public targetPath:HierarchyPath;
 
-    constructor(startPath:HierarchyPath){
-        this.startPath = startPath;
+    constructor(targetPath:HierarchyPath){
+        this.targetPath = targetPath;
     }
 }

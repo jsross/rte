@@ -3,32 +3,31 @@ import ActionHandler from '@src/core/document-management/actions/action-handler'
 import TextBlockNode from './text-block-node';
 import InsertTextAction from '@src/core/document-management/actions/insert-text-action';
 import DeleteAction from '@src/core/document-management/actions/delete-action';
-import { TextNode } from '@src/export';
+import InsertNodeAction from '@src/core/document-management/actions/insert-node-action';
+import GroupAction from '@src/core/document-management/actions/group-action';
 
-export default class TextBlockNodeDeleteTextActionHandler extends ActionHandler<DeleteAction, TextBlockNode> {
+export default class TextBlockNodeDeleteActionHandler extends ActionHandler<DeleteAction, TextBlockNode> {
     
     do(action: DeleteAction, node: TextBlockNode): Action {
-        var startIndex = action.startPath.head;
+        var startIndex = action.startPath ? action.startPath.head : 0;
+        var endIndex = action.endPath ? action.endPath.head : node.children.length;
 
-        var children = node.getChildren(action.startPath.head, action.endPath.head);
+        var children = node.getChildren(startIndex, endIndex);
 
-        if(children.length == 1){
-            if(action.startPath.depth() > 1) {
-                
-            }
+        var undoActions:Array<Action> = new Array<Action>();
+
+        for(var index = 0; index < children.length; index++) {
+            var indexWithOffset = index + startIndex;
+            node.children.splice(indexWithOffset,1);
+
+            var childNode = children[index];
+            var childPath = action.targetPath.getChild(indexWithOffset);
+            
+            var insertNodeAction = new InsertNodeAction(childPath, childNode);
+            undoActions.push(insertNodeAction);            
         }
 
-        if(node.children[startIndex] !== undefined){
-            //TODO: hand off to action handler of child node?
-
-            return null;
-        }
-        else {
-            var textNode = new TextNode(action);
-            node.insertChildAtIndex(textNode, startIndex);
-
-            return new DeleteAction(action.startPath, null);
-        }
+        return new GroupAction(action.targetPath, undoActions);
     }
 
 }
