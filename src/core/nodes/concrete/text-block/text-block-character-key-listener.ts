@@ -32,7 +32,7 @@ export default class TextBlockNodeCharacterKeyListener implements IDocumentTreeN
 
         actions.push(new InsertTextAction(root, start, key));
 
-        return new GroupAction(start, actions);
+        return new GroupAction(root, actions);
     }
 
 }

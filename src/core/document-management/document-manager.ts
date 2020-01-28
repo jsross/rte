@@ -8,6 +8,7 @@ import KeyEvent from "./key-event";
 import RteConfig from "../config/rte-config";
 import HierarchyPathMap from "../hierachy-path-map";
 import Action from "./actions/action";
+import ActionHandler from "./actions/action-handler";
 
 export default class DocumentManager {
 
@@ -65,6 +66,7 @@ export default class DocumentManager {
             else {
                 var result = this._find(this._document, event.start);
                 node = result[0];
+                rootPath = event.start;
                 relativeStartPath = result[1];
             }
 
@@ -82,9 +84,35 @@ export default class DocumentManager {
 
     private _processAction(action:Action):void{
         console.log(action);
+
+        var target = this._find(this._document, action.targetPath)[0];
+
+        var actionType = action.constructor.name;
+
+        var actionHandler = this._findActionHandler(actionType, target);
+
+        if(actionHandler != null){
+            var undoAction = actionHandler.do(action, target);
+
+            console.log(undoAction);
+        }
     }
 
-    
+    private _findActionHandler(actionType:string, node: DocumentTreeNode) : ActionHandler<any,any> {
+        var nodeType = node.constructor.name;
 
+        var actionHandler = RteConfig.getRegisteredActionHandler(nodeType, actionType);
+
+        if(actionHandler != null) {
+            return actionHandler;
+        }
+
+        if(nodeType === 'DocumentTreeNode')
+            return null;
+            
+        var parentObject = Object.getPrototypeOf(node) as DocumentTreeNode;
+
+        return this._findActionHandler(actionType, parentObject);        
+    }
 
 }

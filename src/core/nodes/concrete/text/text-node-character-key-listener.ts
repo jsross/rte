@@ -29,7 +29,7 @@ export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKe
 
         actions.push(new InsertTextAction(root, start, key));
 
-        return new GroupAction(start, actions);
+        return new GroupAction(root, actions);
     }
 
 }
