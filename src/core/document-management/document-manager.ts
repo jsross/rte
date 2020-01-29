@@ -3,28 +3,33 @@ import ContentSelection from "@src/core/content-selection";
 import DocumentTreeNode from "../nodes/abstract/document-tree-node";
 import ParentNode from "../nodes/abstract/parent-node";
 import HierarchyPath from "../hierarchy-path";
-import { Observable, Subscription } from 'rxjs'
+import { Observable, Subscription, Subject, Observer } from 'rxjs'
 import KeyEvent from "./key-event";
 import RteConfig from "../config/rte-config";
-import HierarchyPathMap from "../hierachy-path-map";
 import Action from "./actions/action";
 import ActionHandler from "./actions/action-handler";
+import DocumentChangeEvent from "./document-change-event";
 
 export default class DocumentManager {
 
     private _document:RootNode;
     private _selection:ContentSelection;
-    private _keyObserbable: Observable<KeyEvent>;
     private _keySubscription: Subscription;
+    private _changeSubject: Subject<DocumentChangeEvent>;
 
     constructor(document: RootNode, keyObserable: Observable<KeyEvent>){
         this._document = document;
-        this._keyObserbable = keyObserable;
         this._keySubscription = keyObserable.subscribe(this._handleNextKeyEvent.bind(this));
+        this._changeSubject = new Subject<DocumentChangeEvent>();
     }
 
     public destroy(){
         this._keySubscription.unsubscribe();
+        this._changeSubject.unsubscribe();
+    }
+
+    public onChange(observer: Observer<DocumentChangeEvent>) {
+        this._changeSubject.subscribe(observer);
     }
 
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {
@@ -83,8 +88,6 @@ export default class DocumentManager {
     }
 
     private _processAction(action:Action):void{
-        console.log(action);
-
         var target = this._find(this._document, action.targetPath)[0];
 
         var actionType = action.constructor.name;
@@ -94,7 +97,9 @@ export default class DocumentManager {
         if(actionHandler != null){
             var undoAction = actionHandler.do(action, target);
 
-            console.log(undoAction);
+            var event = new DocumentChangeEvent(action.targetPath, this._document);
+            
+            this._changeSubject.next(event);
         }
     }
 

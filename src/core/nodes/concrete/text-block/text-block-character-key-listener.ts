@@ -6,8 +6,6 @@ import Action from "@src/core/document-management/actions/action";
 import DeleteAction from "@src/core/document-management/actions/delete-action";
 import InsertTextAction from "@src/core/document-management/actions/insert-text-action";
 import GroupAction from "@src/core/document-management/actions/group-action";
-import HierarchyPathMap from "@src/core/hierachy-path-map";
-
 
 export default class TextBlockNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextBlockNode> {
     private readonly _NAMED_KEY_WHITE_LIST:Array<string> = [NamedKeyAttributeValues.WHITESPACE_KEYS.SPACE];
