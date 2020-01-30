@@ -52,7 +52,8 @@ export default class RteElement extends LitElement {
 
   public firstUpdated() {
     this._contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
-    this._contentArea.addEventListener('rte-keyboard-event', this._handleRteKeyboardEvent.bind(this));
+    this._contentArea.addEventListener('contentArea:keyEvent', this._handleEvent_contentArea_keyEvent.bind(this));
+    this._contentArea.addEventListener('contentArea:selectionChange', this._handleEvent_contentArea_selectionChange.bind(this));
   }
 
   public render(){
@@ -82,9 +83,21 @@ export default class RteElement extends LitElement {
 
     this._documentMap = renderResult.map;
     this._contentArea.setContent(renderResult.root as DocumentFragment);
+
+    if(event.selection) {
+      var start:HierarchyPath = this._documentMap.findRight(event.selection.AnchorPointer);
+      var end:HierarchyPath = event.selection.FocusPointer ? this._documentMap.findRight(event.selection.FocusPointer) : null;
+
+      this._contentArea.setSelection(start, end);
+    }
+    
   }
 
-  private _handleRteKeyboardEvent(event:CustomEvent) {
+  private _handleEvent_contentArea_selectionChange(event:CustomEvent) {
+    console.log(event);
+  }
+
+  private _handleEvent_contentArea_keyEvent(event:CustomEvent) {
     let key:string = event.detail.key;
     let selection:ContentSelection = event.detail.selection;
 

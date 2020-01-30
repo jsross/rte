@@ -2,6 +2,8 @@ import { LitElement, customElement, css, html } from 'lit-element';
 import HierarchyPath from '@src/core/hierarchy-path';
 import ContentSelection from '@src/core/content-selection';
 import NodePathHelper from '@src/core/node-path-helper';
+import {fromEvent, ObservableLike} from 'rxjs';
+import {filter} from 'rxjs/operators';
 import {NamedKeyAttributeValues} from '@src/core/named-key-attribute-values'
 
 const keyWhiteList:Array<string> = [
@@ -20,7 +22,7 @@ const keyWhiteList:Array<string> = [
 export default class ContentAreaElement extends LitElement {
   
   private _root: DocumentFragment = null;
-  private _contentWrapperElement: HTMLElement = null;
+  private _contentWrapperElement: HTMLElement = null;  
 
   static get styles() {
     return [ css`
@@ -51,7 +53,11 @@ export default class ContentAreaElement extends LitElement {
 
     this.addEventListener("focus",this._handleEvent_focus.bind(this));
     this.addEventListener("blur",this._handleEvent_blur.bind(this));
-    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));    
+    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));
+
+    var x = fromEvent(document,'selectionchange')
+              .pipe(filter(this._filter_selectionChangedEvents.bind(this)))
+              .subscribe(this._handleEvent_selectionChange.bind(this));
   }
 
   public clearContent(){
@@ -135,6 +141,24 @@ export default class ContentAreaElement extends LitElement {
     target.node.parentNode.replaceChild(node, target.node);  
   }
 
+  private _filter_selectionChangedEvents(value:Event, index:number){
+    var selection = this.shadowRoot.getSelection();
+
+    return selection.anchorNode !== null;
+  }
+
+  private _handleEvent_selectionChange(event:Event) {
+    var selection = this.getSelection();
+
+    var detail = {
+      selection: selection,
+    }
+
+    var rteEvent = new CustomEvent('contentArea:selectionChange', { detail: detail});
+
+    this.dispatchEvent(rteEvent);      
+  }
+
   private _handleEvent_blur(event: Event){
     this._contentWrapperElement.contentEditable = 'false';
   }
@@ -151,12 +175,16 @@ export default class ContentAreaElement extends LitElement {
       key: event.key
     }
 
-    var rteEvent = new CustomEvent('rte-keyboard-event', { detail: detail});
+    var rteEvent = new CustomEvent('contentArea:keyEvent', { detail: detail});
 
     this.dispatchEvent(rteEvent);      
     
     if(keyWhiteList.indexOf(event.key) < 0) {
       event.preventDefault();
     }
+  }
+
+  private _handleEvent_select(event: Event) {
+    console.log(event);
   }
 }

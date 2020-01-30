@@ -97,7 +97,7 @@ export default class DocumentManager {
         if(actionHandler != null){
             var undoAction = actionHandler.do(action, target);
 
-            var event = new DocumentChangeEvent(action.targetPath, this._document);
+            var event = new DocumentChangeEvent(action.targetPath, this._document, this._selection);
             
             this._changeSubject.next(event);
         }
