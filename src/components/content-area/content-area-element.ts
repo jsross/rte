@@ -2,7 +2,7 @@ import { LitElement, customElement, css, html } from 'lit-element';
 import HierarchyPath from '@src/core/hierarchy-path';
 import ContentSelection from '@src/core/content-selection';
 import NodePathHelper from '@src/core/node-path-helper';
-import {fromEvent, ObservableLike} from 'rxjs';
+import {fromEvent, Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {NamedKeyAttributeValues} from '@src/core/named-key-attribute-values'
 
@@ -23,6 +23,7 @@ export default class ContentAreaElement extends LitElement {
   
   private _root: DocumentFragment = null;
   private _contentWrapperElement: HTMLElement = null;  
+  private _selectionChangeSubscription: Subscription;
 
   static get styles() {
     return [ css`
@@ -53,17 +54,32 @@ export default class ContentAreaElement extends LitElement {
 
     this.addEventListener("focus",this._handleEvent_focus.bind(this));
     this.addEventListener("blur",this._handleEvent_blur.bind(this));
-    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));
-
-    var x = fromEvent(document,'selectionchange')
-              .pipe(filter(this._filter_selectionChangedEvents.bind(this)))
-              .subscribe(this._handleEvent_selectionChange.bind(this));
+    this.addEventListener('keydown', this._handleEvent_keydown.bind(this));                                          
   }
+
+  public connectedCallback(){
+    super.connectedCallback();
+
+    this._selectionChangeSubscription = fromEvent(document,'selectionchange')
+                                            .pipe(filter(this._filter_selectionChangedEvents.bind(this)))
+                                            .subscribe(this._handleEvent_selectionChange.bind(this));
+  }
+
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this._selectionChangeSubscription.unsubscribe();
+  }
+ 
 
   public clearContent(){
     while (this._contentWrapperElement.firstChild) {
       this._contentWrapperElement.firstChild.remove();
     }
+  }
+
+  public destroy() {
+    this._selectionChangeSubscription.unsubscribe();
   }
 
   public firstUpdated(){

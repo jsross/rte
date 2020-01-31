@@ -50,6 +50,14 @@ export default class RteElement extends LitElement {
     }
   }
 
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    if(this._documentManager) {
+      this._documentManager.destroy();
+    }
+  }
+
   public firstUpdated() {
     this._contentArea = this.shadowRoot.getElementById('content-area') as ContentAreaElement;
     this._contentArea.addEventListener('contentArea:keyEvent', this._handleEvent_contentArea_keyEvent.bind(this));
