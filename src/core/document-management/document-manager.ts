@@ -32,6 +32,13 @@ export default class DocumentManager {
         this._changeSubject.subscribe(observer);
     }
 
+    public setSelection(selection:ContentSelection) {
+        this._selection = selection;
+
+        console.log('selection change');
+        console.log(this._selection);
+    }
+
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {
         if(!root.hasChildren() || path.isRoot()){
             return [root, path];
@@ -55,7 +62,6 @@ export default class DocumentManager {
         var node: DocumentTreeNode;
 
         try {
-
             if(event.end !== null) {
                 rootPath = event.start.getLowestCommonAncestor(event.end);
 
@@ -70,6 +76,7 @@ export default class DocumentManager {
             }
             else {
                 var result = this._find(this._document, event.start);
+
                 node = result[0];
                 rootPath = event.start;
                 relativeStartPath = result[1];
@@ -78,6 +85,7 @@ export default class DocumentManager {
             var keyListener = RteConfig.getRegisteredNodeKeyListener(node.constructor.name);
 
             var action = keyListener.handleKeyEvent(event.key, event.modifiers, rootPath, relativeStartPath, relativeEndPath);
+            
             if(action !== null){
                 this._processAction(action);
             }

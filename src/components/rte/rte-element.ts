@@ -94,7 +94,17 @@ export default class RteElement extends LitElement {
   }
 
   private _handleEvent_contentArea_selectionChange(event:CustomEvent) {
-    console.log(event);
+    let contentSelection:ContentSelection = event.detail.selection;
+    let documentSelection:ContentSelection = null;
+
+    if(contentSelection) {
+      var anchor = this._documentMap.findLeft(contentSelection.AnchorPointer);
+      var focus = contentSelection.FocusPointer ? this._documentMap.findLeft(contentSelection.FocusPointer) : null;
+
+      documentSelection = new ContentSelection(anchor, focus);
+    }
+
+    this._documentManager.setSelection(documentSelection);
   }
 
   private _handleEvent_contentArea_keyEvent(event:CustomEvent) {
