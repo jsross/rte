@@ -107,9 +107,25 @@ export default class ContentAreaElement extends LitElement {
   }
 
   public setSelection(start:HierarchyPath, end:HierarchyPath=null){
-    var startPointer = NodePathHelper.resolvePath(this._contentWrapperElement, start);
+    var startPointer:[Node, HierarchyPath];
+    var endPointer:[Node, HierarchyPath];
+    
+    startPointer = NodePathHelper.resolvePath(this._contentWrapperElement, start);
 
-    this.shadowRoot.getSelection().setPosition(startPointer.node, startPointer.remainder.end);
+    if(end !== null) {
+      endPointer = NodePathHelper.resolvePath(this._contentWrapperElement, end);
+    }
+    else {
+      endPointer = startPointer;
+    }
+
+    var selection = document.getSelection();
+    selection.removeAllRanges();
+    var range = document.createRange();
+    range.setStart(startPointer[0], startPointer[1].head);
+    range.setEnd(endPointer[0], endPointer[1].head);
+
+    selection.addRange(range);
   }
 
   public render() {
@@ -125,8 +141,8 @@ export default class ContentAreaElement extends LitElement {
 
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    if(target.remainder.isRoot()){
-      target.node.parentNode.removeChild(target.node);
+    if(target[1].isRoot()){
+      target[0].parentNode.removeChild(target[0]);
     }
   }
 
@@ -147,14 +163,14 @@ export default class ContentAreaElement extends LitElement {
 
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
 
-    if(target.remainder.isRoot()){
-      target.node.parentNode.replaceChild(node, target.node);
+    if(target[1].isRoot()){
+      target[0].parentNode.replaceChild(node, target[0]);
     }
   }
 
   public updateNode(path:HierarchyPath, node:Node) {
     var target = NodePathHelper.resolvePath(this._contentWrapperElement, path);
-    target.node.parentNode.replaceChild(node, target.node);  
+    target[0].parentNode.replaceChild(node, target[0]);  
   }
 
   private _filter_selectionChangedEvents(value:Event, index:number){

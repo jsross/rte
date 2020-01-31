@@ -20,9 +20,9 @@ export default class NodePathHelper{
         return result;
     }
 
-    static resolvePath(root:Node, path:HierarchyPath): PathResolution {
+    static resolvePath(root:Node, path:HierarchyPath): [Node, HierarchyPath] {
         if(path.isRoot() || !root.hasChildNodes() ){
-          return { node: root, remainder: path};
+          return [root, path];
         }
     
         var child = root.childNodes[path.head];
