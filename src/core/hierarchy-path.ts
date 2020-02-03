@@ -96,6 +96,16 @@ export default class HierarchyPath {
         return this.depth() === 0;
     }
 
+    public getAncestor(generationsBack:number): HierarchyPath {
+        if(generationsBack > this.depth()) {
+            throw Error('generationsBack exceeds path depth');
+        }
+
+        var array = this._path.slice(0, this._path.length - generationsBack);
+
+        return new HierarchyPath(array);
+    }
+
     public getChild(value:number): HierarchyPath {
         var array = this._path.slice(0);
 
@@ -129,13 +139,7 @@ export default class HierarchyPath {
     }
 
     public getParent():HierarchyPath {
-        if(this.isRoot()) {
-            return null;
-        }
-
-        var parentArray = this._path.slice(0, this._path.length - 1);
-        
-        return new HierarchyPath(parentArray);
+        return this.getAncestor(1);
     }
 
     public getRelativePath(descendant: HierarchyPath): HierarchyPath{

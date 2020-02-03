@@ -116,16 +116,13 @@ export default class ContentAreaElement extends LitElement {
     if(start) {
       startPointer = NodePathHelper.resolvePath(this._contentWrapperElement, start);
 
-      if(end !== null) {
-        endPointer = NodePathHelper.resolvePath(this._contentWrapperElement, end);
-      }
-      else {
-        endPointer = startPointer;
-      }
-
       var range = document.createRange();
       range.setStart(startPointer[0], startPointer[1].head);
-      range.setEnd(endPointer[0], endPointer[1].head);
+
+      if(end !== null) {
+        endPointer = NodePathHelper.resolvePath(this._contentWrapperElement, end);
+        range.setEnd(endPointer[0], endPointer[1].head);
+      }
 
       selection.addRange(range);
     }

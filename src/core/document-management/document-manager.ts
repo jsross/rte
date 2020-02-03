@@ -79,7 +79,7 @@ export default class DocumentManager {
                 var result = this._find(this._document, event.start);
 
                 node = result[0];
-                rootPath = event.start;
+                rootPath = event.start.getAncestor(result[1].depth());
                 relativeStartPath = result[1];
             }
 
