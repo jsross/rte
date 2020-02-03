@@ -14,6 +14,7 @@ import TextNodeDeleteTextActionHandler from "../nodes/concrete/text/text-node-de
 import TextBlockNodeInsertTextActionHandler from "../nodes/concrete/text-block/text-block-node-insert-text-action-handler";
 import TextBlockNodeDeleteActionHandler from "../nodes/concrete/text-block/text-block-node-delete-action-handler";
 import GroupActionHandler from "../nodes/concrete/group-action-handler";
+import SelectActionHandler from "../nodes/concrete/select-action-handler";
 
 export default class DefaultConfigurator implements Configurator {
     public configure() {
@@ -26,6 +27,7 @@ export default class DefaultConfigurator implements Configurator {
         RteConfig.registerNodeKeyListener('TextNode', new TextNodeCharacterKeyListener());
 
         RteConfig.registerActionHandler('DocumentTreeNode','GroupAction', new GroupActionHandler());
+        RteConfig.registerActionHandler('DocumentTreeNode', 'SelectAction', new SelectActionHandler());
         RteConfig.registerActionHandler('TextNode', 'InsertTextAction', new TextNodeInsertTextActionHandler());
         RteConfig.registerActionHandler('TextNode', 'DeleteAction', new TextNodeDeleteTextActionHandler());
 

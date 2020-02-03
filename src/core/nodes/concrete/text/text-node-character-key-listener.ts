@@ -6,6 +6,7 @@ import { NamedKeyAttributeValues } from "@src/core/named-key-attribute-values";
 import InsertTextAction from "@src/core/document-management/actions/insert-text-action";
 import DeleteAction from "@src/core/document-management/actions/delete-action";
 import GroupAction from "@src/core/document-management/actions/group-action";
+import SelectAction from '@src/core/document-management/actions/select-action'; 
 
 export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextNode> {
     private readonly _NAMED_KEY_WHITE_LIST:Array<string> = [NamedKeyAttributeValues.WHITESPACE_KEYS.SPACE];
@@ -16,7 +17,7 @@ export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKe
         if(modifiers.length > 0) {
             return null;
         }
-    
+        
         if(NamedKeyAttributeValues.Helper.isNamedKeyAttributeValue(key) && !this._NAMED_KEY_WHITE_LIST.includes(key)) {
             return null;
         }
@@ -28,6 +29,7 @@ export default class TextNodeCharacterKeyListener implements IDocumentTreeNodeKe
         }
 
         actions.push(new InsertTextAction(root, start, key));
+        actions.push(new SelectAction(root, start.offset(1),null));
 
         return new GroupAction(root, actions);
     }

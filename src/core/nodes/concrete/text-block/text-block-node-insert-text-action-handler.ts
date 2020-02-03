@@ -5,10 +5,11 @@ import InsertTextAction from '@src/core/document-management/actions/insert-text-
 import DeleteAction from '@src/core/document-management/actions/delete-action';
 import { TextNode } from '@src/export';
 import HierarchyPath from '@src/core/hierarchy-path';
+import ActionContext from '@src/core/document-management/actions/action-context';
 
 export default class TextBlockNodeInsertTextActionHandler extends ActionHandler<InsertTextAction, TextBlockNode> {
     
-    do(action: InsertTextAction, node: TextBlockNode): Action {
+    do(action: InsertTextAction, node: TextBlockNode, context:ActionContext): Action {
         var startIndex = action.indexPath.head;
 
         if(node.children[startIndex] !== undefined){

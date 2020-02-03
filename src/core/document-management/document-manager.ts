@@ -9,6 +9,7 @@ import RteConfig from "../config/rte-config";
 import Action from "./actions/action";
 import ActionHandler from "./actions/action-handler";
 import DocumentChangeEvent from "./document-change-event";
+import ActionContext from "./actions/action-context";
 
 export default class DocumentManager {
 
@@ -103,7 +104,11 @@ export default class DocumentManager {
         var actionHandler = this._findActionHandler(actionType, target);
 
         if(actionHandler != null){
-            var undoAction = actionHandler.do(action, target);
+            var context = new ActionContext(this._selection);
+
+            var undoAction = actionHandler.do(action, target, context);
+
+            this._selection = context.selection;
 
             var event = new DocumentChangeEvent(action.targetPath, this._document, this._selection);
             

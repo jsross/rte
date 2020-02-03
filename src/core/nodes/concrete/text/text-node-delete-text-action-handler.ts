@@ -3,10 +3,11 @@ import ActionHandler from '@src/core/document-management/actions/action-handler'
 import TextNode from './text-node';
 import InsertTextAction from '@src/core/document-management/actions/insert-text-action';
 import DeleteAction from '@src/core/document-management/actions/delete-action';
+import ActionContext from '@src/core/document-management/actions/action-context';
 
 export default class TextNodeDeleteTextActionHandler extends ActionHandler<DeleteAction, TextNode> {
     
-    do(action: DeleteAction, node: TextNode): Action {
+    do(action: DeleteAction, node: TextNode, context:ActionContext): Action {
         var content = node.content;
 
         if(action.startPath && action.startPath.depth() !== 1 || action.endPath != null && action.endPath.depth() !== 1) {

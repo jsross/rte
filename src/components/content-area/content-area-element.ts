@@ -109,23 +109,26 @@ export default class ContentAreaElement extends LitElement {
   public setSelection(start:HierarchyPath, end:HierarchyPath=null){
     var startPointer:[Node, HierarchyPath];
     var endPointer:[Node, HierarchyPath];
-    
-    startPointer = NodePathHelper.resolvePath(this._contentWrapperElement, start);
-
-    if(end !== null) {
-      endPointer = NodePathHelper.resolvePath(this._contentWrapperElement, end);
-    }
-    else {
-      endPointer = startPointer;
-    }
 
     var selection = document.getSelection();
     selection.removeAllRanges();
-    var range = document.createRange();
-    range.setStart(startPointer[0], startPointer[1].head);
-    range.setEnd(endPointer[0], endPointer[1].head);
 
-    selection.addRange(range);
+    if(start) {
+      startPointer = NodePathHelper.resolvePath(this._contentWrapperElement, start);
+
+      if(end !== null) {
+        endPointer = NodePathHelper.resolvePath(this._contentWrapperElement, end);
+      }
+      else {
+        endPointer = startPointer;
+      }
+
+      var range = document.createRange();
+      range.setStart(startPointer[0], startPointer[1].head);
+      range.setEnd(endPointer[0], endPointer[1].head);
+
+      selection.addRange(range);
+    }
   }
 
   public render() {

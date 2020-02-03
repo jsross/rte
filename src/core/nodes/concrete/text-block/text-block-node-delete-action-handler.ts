@@ -1,14 +1,14 @@
 import Action from '@src/core/document-management/actions/action';
 import ActionHandler from '@src/core/document-management/actions/action-handler';
 import TextBlockNode from './text-block-node';
-import InsertTextAction from '@src/core/document-management/actions/insert-text-action';
 import DeleteAction from '@src/core/document-management/actions/delete-action';
 import InsertNodeAction from '@src/core/document-management/actions/insert-node-action';
 import GroupAction from '@src/core/document-management/actions/group-action';
+import ActionContext from '@src/core/document-management/actions/action-context';
 
 export default class TextBlockNodeDeleteActionHandler extends ActionHandler<DeleteAction, TextBlockNode> {
     
-    do(action: DeleteAction, node: TextBlockNode): Action {
+    do(action: DeleteAction, node: TextBlockNode, context:ActionContext): Action {
         var startIndex = action.startPath ? action.startPath.head : 0;
         var endIndex = action.endPath ? action.endPath.head : node.children.length;
 

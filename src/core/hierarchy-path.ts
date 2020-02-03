@@ -104,6 +104,14 @@ export default class HierarchyPath {
         return new HierarchyPath(array);
     }
 
+    public offset(value:number): HierarchyPath {
+        if(this.isRoot()){
+            throw new Error('Cannot offset root');
+        }
+
+        return this.getSibling(this.end + value);
+    }
+
     public getLowestCommonAncestor(toCompare:HierarchyPath) : HierarchyPath{
         var array = new Array<number>();
 
@@ -130,20 +138,6 @@ export default class HierarchyPath {
         return new HierarchyPath(parentArray);
     }
 
-    public getPreviousSibling():HierarchyPath {
-        if(this.isRoot()){
-            return null;
-        }
-
-        var end = this.end;
-
-        if(this.end === 0){
-            return null;
-        }
-
-        return this.getSibling(end - 1);
-    }
-
     public getRelativePath(descendant: HierarchyPath): HierarchyPath{
         if(!this.isAncestorOf(descendant)){
             return null;
@@ -155,6 +149,10 @@ export default class HierarchyPath {
     }
 
     public getSibling(value:number):HierarchyPath {
+        if(this.isRoot()){
+            throw new Error('Root has no siblings');
+        }
+
         var array = this._path.slice(0, -1);
 
         array.push(value);
