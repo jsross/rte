@@ -5,7 +5,7 @@ import InsertTextAction from '@src/core/document-management/actions/insert-text-
 import DeleteAction from '@src/core/document-management/actions/delete-action';
 import ActionContext from '@src/core/document-management/actions/action-context';
 
-export default class TextNodeDeleteActionHandler extends ActionHandler<DeleteAction, TextNode> {
+export default class TextNodeDeleteTextActionHandler extends ActionHandler<DeleteAction, TextNode> {
     
     do(action: DeleteAction, node: TextNode, context:ActionContext): Action {
         var content = node.content;

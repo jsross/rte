@@ -9,7 +9,7 @@ import Registry from "@src/core/ioc/registry";
 import RenderEngine from "@src/core/render-engine";
 import Container from "@src/core/ioc/container";
 import TextNodeInsertTextActionHandler from "../nodes/concrete/text/text-node-insert-text-action-handler";
-import TextNodeDeleteTextActionHandler from "../nodes/concrete/text/text-node-delete-text-action-handler";
+import TextNodeDeleteActionHandler from "../nodes/concrete/text/text-node-delete-action-handler";
 import TextBlockNodeInsertTextActionHandler from "../nodes/concrete/text-block/text-block-node-insert-text-action-handler";
 import TextBlockNodeDeleteActionHandler from "../nodes/concrete/text-block/text-block-node-delete-action-handler";
 import GroupActionHandler from "../nodes/concrete/group-action-handler";
@@ -29,7 +29,7 @@ export default class DefaultConfigurator implements Configurator {
         RteConfig.registerActionHandler('DocumentTreeNode','GroupAction', new GroupActionHandler());
         RteConfig.registerActionHandler('DocumentTreeNode', 'SelectAction', new SelectActionHandler());
         RteConfig.registerActionHandler('TextNode', 'InsertTextAction', new TextNodeInsertTextActionHandler());
-        RteConfig.registerActionHandler('TextNode', 'DeleteAction', new TextNodeDeleteTextActionHandler());
+        RteConfig.registerActionHandler('TextNode', 'DeleteAction', new TextNodeDeleteActionHandler());
 
         RteConfig.registerActionHandler('TextBlockNode', 'InsertTextAction', new TextBlockNodeInsertTextActionHandler());
         RteConfig.registerActionHandler('TextBlockNode', 'DeleteAction', new TextBlockNodeDeleteActionHandler());
