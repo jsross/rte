@@ -83,7 +83,10 @@ export default class DocumentManager {
                 relativeStartPath = result[1];
             }
 
-            var keyListener = RteConfig.getRegisteredNodeKeyListener(node.constructor.name);
+            var keyListener = RteConfig.getKeyEventListener(event.key, event.modifiers);
+
+            if(keyListener === null)
+                return;
 
             var action = keyListener.handleKeyEvent(event.key, event.modifiers, rootPath, relativeStartPath, relativeEndPath);
             

@@ -2,25 +2,25 @@ import Configurator from "./configurator";
 import DefaultConfigurator from "./default-configurator";
 import DocumentTreeNodeRenderer from "@src/core/renderers/abstract/document-tree-node-renderer";
 import Container from "@src/core/ioc/container";
-import IDocumentTreeNodeKeyListener from "../document-management/document-tree-node-key-listener";
 import DocumentTreeNode from "../nodes/abstract/document-tree-node";
 import ActionHandler from "../document-management/actions/action-handler";
 import Action from "../document-management/actions/action";
+import IKeyEventListener from "../document-management/key-events/key-event-listener";
 
 export default class RteConfig {
     public static configurator:Configurator = new DefaultConfigurator();
     public static container: Container;
     
     private static _rendererRegistry: Map<string, DocumentTreeNodeRenderer<any>> = new Map<string,DocumentTreeNodeRenderer<any>>();
-    private static _nodeKeyListenerRegistry: Map<string, IDocumentTreeNodeKeyListener<any>> = new  Map<string, IDocumentTreeNodeKeyListener<any>>();
     private static _actionHandlerRegistry: Map<string, ActionHandler<any, any>> = new Map<string, ActionHandler<any,any>>();
+    private static _keyEventListeners: Array<IKeyEventListener> = new Array<IKeyEventListener>();
 
     public static configure():void {
         RteConfig.configurator.configure();
     }
 
-    public static registerNodeKeyListener(nodeType: string, listener: IDocumentTreeNodeKeyListener<any>){
-        this._nodeKeyListenerRegistry.set(nodeType, listener);
+    public static addKeyEventListener(listener: IKeyEventListener){
+        this._keyEventListeners.push(listener);        
     }
 
     public static registerRenderer(nodeType: string, renderer: DocumentTreeNodeRenderer<any>) {
@@ -33,6 +33,18 @@ export default class RteConfig {
         this._actionHandlerRegistry.set(key, listener);
     }
 
+    public static getKeyEventListener(key:string, modifiers:string[]){
+        for(var listener of this._keyEventListeners) {
+            var canHandle = listener.isHandleable(key,modifiers);
+
+            if(canHandle){
+                return listener;
+            }
+        }
+
+        return null;
+    }
+    
     public static getRegisteredActionHandler<A extends Action, T extends DocumentTreeNode, >(nodeType:string, actionType:string) : ActionHandler<A,T> {
         var key = nodeType + ':' + actionType;
 
@@ -41,14 +53,6 @@ export default class RteConfig {
         }
 
         return this._actionHandlerRegistry.get(key);
-    }
-
-    public static getRegisteredNodeKeyListener<T extends DocumentTreeNode>(nodeType: string) : IDocumentTreeNodeKeyListener<T> {
-        if(!this._nodeKeyListenerRegistry.has(nodeType)){
-            return null;
-        }
-
-        return this._nodeKeyListenerRegistry.get(nodeType);
     }
 
     public static getRegisteredRenderer(nodeType: string) : DocumentTreeNodeRenderer<any> {

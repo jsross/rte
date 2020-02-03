@@ -8,13 +8,13 @@ import ListItemNodeRenderer from "@src/core/renderers/concrete/list-item-node-re
 import Registry from "@src/core/ioc/registry";
 import RenderEngine from "@src/core/render-engine";
 import Container from "@src/core/ioc/container";
-import TextNodeCharacterKeyListener from "../nodes/concrete/text/text-node-character-key-listener";
 import TextNodeInsertTextActionHandler from "../nodes/concrete/text/text-node-insert-text-action-handler";
 import TextNodeDeleteTextActionHandler from "../nodes/concrete/text/text-node-delete-text-action-handler";
 import TextBlockNodeInsertTextActionHandler from "../nodes/concrete/text-block/text-block-node-insert-text-action-handler";
 import TextBlockNodeDeleteActionHandler from "../nodes/concrete/text-block/text-block-node-delete-action-handler";
 import GroupActionHandler from "../nodes/concrete/group-action-handler";
 import SelectActionHandler from "../nodes/concrete/select-action-handler";
+import CharacterKeyEventListener from "../document-management/key-events/character-key-event-listener";
 
 export default class DefaultConfigurator implements Configurator {
     public configure() {
@@ -24,7 +24,7 @@ export default class DefaultConfigurator implements Configurator {
         RteConfig.registerRenderer('TextNode', new TextNodeRenderer());
         RteConfig.registerRenderer('TextBlockNode', new TextBlockNodeRenderer());
 
-        RteConfig.registerNodeKeyListener('TextNode', new TextNodeCharacterKeyListener());
+        RteConfig.addKeyEventListener(new CharacterKeyEventListener());
 
         RteConfig.registerActionHandler('DocumentTreeNode','GroupAction', new GroupActionHandler());
         RteConfig.registerActionHandler('DocumentTreeNode', 'SelectAction', new SelectActionHandler());

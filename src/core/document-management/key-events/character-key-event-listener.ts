@@ -1,28 +1,30 @@
-import { NamedKeyAttributeValues } from "@src/core/named-key-attribute-values";
-import IDocumentTreeNodeKeyListener from "@src/core/document-management/document-tree-node-key-listener";
-import TextBlockNode from "./text-block-node";
 import HierarchyPath from "@src/core/hierarchy-path";
 import Action from "@src/core/document-management/actions/action";
-import DeleteAction from "@src/core/document-management/actions/delete-action";
+import { NamedKeyAttributeValues } from "@src/core/named-key-attribute-values";
 import InsertTextAction from "@src/core/document-management/actions/insert-text-action";
+import DeleteAction from "@src/core/document-management/actions/delete-action";
 import GroupAction from "@src/core/document-management/actions/group-action";
-import SelectAction from "@src/core/document-management/actions/select-action";
+import SelectAction from '@src/core/document-management/actions/select-action'; 
+import IKeyEventListener from "./key-event-listener";
 
-export default class TextBlockNodeCharacterKeyListener implements IDocumentTreeNodeKeyListener<TextBlockNode> {
+export default class CharacterKeyEventListener implements IKeyEventListener {
     private readonly _NAMED_KEY_WHITE_LIST:Array<string> = [NamedKeyAttributeValues.WHITESPACE_KEYS.SPACE];
 
-    handleKeyEvent(key: string, modifiers: string[], root:HierarchyPath, start: HierarchyPath, end: HierarchyPath): Action {
-
+    isHandleable(key: string, modifiers:string[]): boolean {
         modifiers = modifiers.filter(obj => obj != NamedKeyAttributeValues.MODIFIER_KEYS.SHIFT);
 
         if(modifiers.length > 0) {
-            return null;
-        }
-    
-        if(NamedKeyAttributeValues.Helper.isNamedKeyAttributeValue(key) && !this._NAMED_KEY_WHITE_LIST.includes(key)) {
-            return null;
+            return false;
         }
 
+        if(this._NAMED_KEY_WHITE_LIST.includes(key)) {
+            return true;
+        }
+        
+        return !NamedKeyAttributeValues.Helper.isNamedKeyAttributeValue(key);
+    }
+
+    handleKeyEvent(key: string, modifiers: string[], root: HierarchyPath, start: HierarchyPath, end: HierarchyPath): Action {
         var actions = new Array<Action>();
         
         if(end != null) {
