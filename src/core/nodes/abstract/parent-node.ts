@@ -27,8 +27,8 @@ export default abstract class ParentNode<T extends DocumentTreeNode> extends Doc
         this._children.splice(index, 0, child);
     }
 
-    public getChildren(startIndex: number, endIndex: number):T[] {
-        return this._children.slice(startIndex, endIndex);
+    public getChildrenSubset(from: number, to: number):T[] {
+        return this._children.slice(from, to + 1);
     }
     
 }

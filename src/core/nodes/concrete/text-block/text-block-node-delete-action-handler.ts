@@ -42,7 +42,7 @@ export default class TextBlockNodeDeleteActionHandler extends ActionHandler<Dele
             endIndex--;
         }
 
-        var toDelete = node.getChildren(startIndex, endIndex);
+        var toDelete = node.getChildrenSubset(startIndex, endIndex);
 
         for(var index = 0; index < toDelete.length; index++) {
             var indexWithOffset = index + startIndex;
