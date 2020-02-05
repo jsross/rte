@@ -14,7 +14,7 @@ export default class GroupActionHandler extends ActionHandler<GroupAction, Docum
             var childAction = action.actions[index];
             var childActionType:string = childAction.constructor.name;
 
-            var actionHandler = this._findActionHandler(childActionType, node);
+            var actionHandler = context.findActionHandler(childActionType, node);
 
             if(actionHandler != null) {
                 var undoAction = actionHandler.do(childAction, node, context);
@@ -25,21 +25,6 @@ export default class GroupActionHandler extends ActionHandler<GroupAction, Docum
         return new GroupAction(action.targetPath, undoActions);
     }
 
-    private _findActionHandler(actionType:string, node: DocumentTreeNode) : ActionHandler<any,any> {
-        var nodeType = node.constructor.name;
-
-        var actionHandler = RteConfig.getRegisteredActionHandler(nodeType, actionType);
-
-        if(actionHandler != null) {
-            return actionHandler;
-        }
-
-        if(nodeType === 'DocumentTreeNode')
-            return null;
-            
-        var parentObject = Object.getPrototypeOf(node) as DocumentTreeNode;
-
-        return this._findActionHandler(actionType, parentObject);        
-    }
+   
 
 }
