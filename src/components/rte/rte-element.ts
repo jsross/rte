@@ -125,8 +125,27 @@ export default class RteElement extends LitElement {
       payload = pipe.process(payload);
     });
 
-    var start = this._documentMap.findLeft(payload.selection.AnchorPointer);
-    var end = payload.selection.FocusPointer ? this._documentMap.findLeft(payload.selection.FocusPointer) : null;
+    var startPointer:HierarchyPath = null;
+    var endPointer:HierarchyPath = null;
+
+    if(!payload.selection.FocusPointer){
+      startPointer = payload.selection.AnchorPointer;
+    }
+    else {
+      var comparison = payload.selection.AnchorPointer.compare(payload.selection.FocusPointer);
+
+      if(comparison > 0) {
+        startPointer = payload.selection.FocusPointer;
+        endPointer = payload.selection.AnchorPointer;
+      }
+      else if(comparison < 0){
+        startPointer = payload.selection.AnchorPointer;
+        endPointer = payload.selection.FocusPointer;
+      }
+    }
+
+    var start = this._documentMap.findLeft(startPointer);
+    var end = endPointer ? this._documentMap.findLeft(endPointer) : null;
 
     this._keySubject.next(new KeyEvent(key, [], start, end));
   }

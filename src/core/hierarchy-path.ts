@@ -1,3 +1,5 @@
+import HierarchyPathMap from "./hierachy-path-map";
+
 export default class HierarchyPath {
 
     static createRoot() : HierarchyPath{
@@ -50,6 +52,22 @@ export default class HierarchyPath {
     
     constructor(path:number[]) {
         this._path = path;
+    }
+
+    public compare(toCompare:HierarchyPath): number{
+        var minLength = Math.min(this._path.length, toCompare._path.length);
+
+        for(var index = 0; index < minLength; index++) {
+            var pathValue = this._path[index];
+            var compareValue = toCompare._path[index];
+
+            if(pathValue === compareValue)
+                continue;
+            
+            return pathValue - compareValue;
+        }
+
+        return this._path.length - toCompare._path.length;
     }
 
     public concat(value:HierarchyPath): HierarchyPath {
