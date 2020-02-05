@@ -1,5 +1,3 @@
-import HierarchyPathMap from "./hierachy-path-map";
-
 export default class HierarchyPath {
 
     static createRoot() : HierarchyPath{
