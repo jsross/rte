@@ -10,18 +10,25 @@ import ActionContext from '@src/core/document-management/actions/action-context'
 export default class TextBlockNodeInsertTextActionHandler extends ActionHandler<InsertTextAction, TextBlockNode> {
     
     do(action: InsertTextAction, node: TextBlockNode, context:ActionContext): Action {
-        var startIndex = action.indexPath.head;
+        var childIndex = action.indexPath.head;
 
-        if(node.children[startIndex] !== undefined){
+        if(node.children[childIndex] !== undefined){
             //TODO: hand off to action handler of child node?
+            var childNode = node.children[childIndex];
 
-            return null;
+            var childAction = new InsertTextAction(action.targetPath.getChild(childIndex),
+                                                   action.indexPath.tail,
+                                                   action.value);
+
+            var childActionHandler = context.findActionHandler(childAction.constructor.name, childNode);
+
+            return childActionHandler.do(childAction, childNode, context);
         }
         else {
             var textNode = new TextNode(action.value);
-            node.insertChildAtIndex(textNode, startIndex);
+            node.insertChildAtIndex(textNode, childIndex);
 
-            return new DeleteAction(action.targetPath, new HierarchyPath([startIndex]), new HierarchyPath([startIndex + 1]));
+            return new DeleteAction(action.targetPath, new HierarchyPath([childIndex]), new HierarchyPath([childIndex + 1]));
         }
     }
 }
