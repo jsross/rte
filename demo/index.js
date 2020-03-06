@@ -37,6 +37,7 @@ window.addEventListener('load', (event) => {
 function _handleDocumentChanged(event) {
     var svg = chart(event.detail.html);
 
+    diagramContainer.innerHTML = '';
     diagramContainer.appendChild(svg);
 }
 
@@ -51,7 +52,8 @@ function chart(data) {
     });
 
   const svg = d3.create("svg")
-      .attr("viewBox", [0, 0, width, x1 - x0 + root.dx * 2]);
+      .attr("viewBox", [0, 0, width, x1 - x0 + root.dx * 2])
+      .style("font", "10px sans-serif");
   
   const g = svg.append("g")
       .attr("font-family", "sans-serif")
