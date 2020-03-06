@@ -26,7 +26,7 @@ module.exports = {
     libraryTarget: 'umd'
   },
   devServer: {
-    contentBase: path.join(__dirname, './dist'),
+    contentBase: [path.join(__dirname, './dist'), path.join(__dirname, './node_modules')],
     compress: true,
     hot: true,
     port: 8007

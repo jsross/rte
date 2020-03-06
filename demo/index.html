@@ -7,19 +7,23 @@
     <title>Rte Demo</title>
 
     <meta name="theme-color" content="#2A3443" />
+
+    <link rel="stylesheet" href="./index.less">
   </head>
 
   <body>
     <main>
-      <textarea>this is some text</textarea>
+      
       <div>
         <mojj-rte id='main'></mojj-rte>
       </div>
-
-      <div>Some additional content</div>
+      
+      <div id='diagram-container'></div>
     </main>
     
     <script src='./bundle.js' type='module'></script>
     <script src='./index.js' type='module'></script>
+    <script src="./d3/dist/d3.js"></script>
+    <script src="./d3-hierarchy/dist/d3-hierarchy.js"></script>
   </body>
 </html>
