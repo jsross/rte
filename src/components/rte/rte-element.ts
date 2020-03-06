@@ -98,7 +98,13 @@ export default class RteElement extends LitElement {
 
       this._contentArea.setSelection(start, end);
     }
-    
+
+    var rteEvent = new CustomEvent('rte:documentChanged', { detail: {
+      html: renderResult.root,
+      document: event.node
+    }});
+
+    this.dispatchEvent(rteEvent);
   }
 
   private _handleEvent_contentArea_selectionChange(event:CustomEvent) {
@@ -111,6 +117,13 @@ export default class RteElement extends LitElement {
 
       documentSelection = new ContentSelection(anchor, focus);
     }
+
+    var rteEvent = new CustomEvent('rte:selectionChanged', { detail: {
+      htmlSelection: event.detail.selection,
+      documentSelection: documentSelection
+    }});
+
+    this.dispatchEvent(rteEvent); 
 
     this._documentManager.setSelection(documentSelection);
   }
