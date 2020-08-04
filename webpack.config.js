@@ -29,6 +29,6 @@ module.exports = {
     contentBase: [path.join(__dirname, './dist'), path.join(__dirname, './node_modules')],
     compress: true,
     hot: true,
-    port: 8007
+    port: 8080
   },
 };
