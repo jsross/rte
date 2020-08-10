@@ -1,13 +1,14 @@
 import ParentNode from '@src/core/nodes/abstract/parent-node';
-import DocumentTreeNode from '@src/core/nodes/abstract/document-tree-node';
-import RenderResult from '@src/core/render-result';
+import ListItemNode from './list-item-node';
 import RenderEngine from '@src/core/render-engine';
+import RenderResult from '@src/core/render-result';
+import DocumentTreeNode from '../../abstract/document-tree-node';
 import HierarchyPath from '@src/core/hierarchy-path';
 import Action from '@src/core/document-management/actions/action';
 import ActionContext from '@src/core/document-management/actions/action-context';
 
-export default class RootNode extends ParentNode<DocumentTreeNode> {
-    constructor(children: DocumentTreeNode[] = []){
+export default class ListNode extends ParentNode<ListItemNode> {
+    constructor(children: ListItemNode[] = []){
         super(children);
     }
 
@@ -20,13 +21,13 @@ export default class RootNode extends ParentNode<DocumentTreeNode> {
                           rootPath:HierarchyPath,
                           relativeStartPath: HierarchyPath,
                           relativeEndPath: HierarchyPath): Action {
-        console.debug('RootNode.handleKeyEvent');
+        console.debug('ListNode.handleKeyEvent');
 
         return null;
     }
 
-    public render(engine: RenderEngine, context: Map<string,any>): RenderResult {
-        var root = document.createDocumentFragment();
+    public render(engine: RenderEngine, context: Map<string, any>): RenderResult {
+        var root = document.createElement('ul');
 
         var map = this._renderChildren(root, engine, context);
 

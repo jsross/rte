@@ -15,15 +15,7 @@ export default class RenderEngine {
             context.set('destPath', HierarchyPath.createRoot())
         }
 
-        var type = root.constructor.name;
-        
-        var renderer = RteConfig.getRegisteredRenderer(type);
-
-        if(renderer === null){
-            throw new Error('Renderer not registered for type: ' + type);
-        }
-        
-        var result = renderer.render(root, this, context);
+        var result = root.render(this, context);
 
         return result;
     }

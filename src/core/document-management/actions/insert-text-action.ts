@@ -4,12 +4,12 @@ import HierarchyPath from "@src/core/hierarchy-path";
 export default class InsertTextAction extends Action {
 
     public value: string;
-    public indexPath: HierarchyPath;
+    public index: number;
 
-    constructor(target:HierarchyPath, indexPath: HierarchyPath, value: string){
+    constructor(target:HierarchyPath, index: number, value: string){
         super(target);
 
-        this.indexPath = indexPath;
+        this.index = index;
         this.value = value;
     }
 }

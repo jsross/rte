@@ -5,11 +5,11 @@ import ParentNode from "../nodes/abstract/parent-node";
 import HierarchyPath from "../hierarchy-path";
 import { Observable, Subscription, Subject, Observer } from 'rxjs'
 import KeyEvent from "./key-event";
-import RteConfig from "../config/rte-config";
 import Action from "./actions/action";
-import ActionHandler from "./actions/action-handler";
 import DocumentChangeEvent from "./document-change-event";
 import ActionContext from "./actions/action-context";
+import SelectAction from "./actions/select-action";
+import GroupAction from "./actions/group-action";
 
 export default class DocumentManager {
 
@@ -38,6 +38,62 @@ export default class DocumentManager {
 
         console.log('selection change');
         console.log(this._selection);
+    }
+
+    private _do(action:Action, context:ActionContext) : Action {
+        switch (action.constructor) {
+            case SelectAction:
+                return this._doSelect(action as SelectAction, context);
+            break;
+            case GroupAction:
+                return this._doGroupAction(action as GroupAction, context);
+            break;
+            default:
+                var target = this._find(this._document, action.targetPath)[0];
+
+                return target.do(action, context);
+        }
+    }
+
+    private _doGroupAction(action:GroupAction, context:ActionContext) : Action {
+        var undoActions = new Array<Action>();
+
+        for(var childAction of action.actions) {
+            var undoAction = this._do(childAction, context);
+
+            if(undoAction) {
+                undoActions.push(undoAction);
+            }
+        }
+
+        return new GroupAction(action.targetPath, undoActions);
+    }
+
+    private _doSelect(action: SelectAction, context:ActionContext): Action {
+        var originalTarget:HierarchyPath = null;
+        var originalAnchor:HierarchyPath = null;
+        var originalFocus:HierarchyPath;
+
+        if(context.selection.FocusPointer){
+            originalTarget = context.selection.AnchorPointer.getLowestCommonAncestor(context.selection.FocusPointer);
+
+            originalAnchor = originalTarget.getRelativePath(context.selection.AnchorPointer);
+            originalFocus = originalTarget.getRelativePath(context.selection.FocusPointer);
+        }
+        else {
+            originalTarget = context.selection.AnchorPointer;
+            originalAnchor = HierarchyPath.createRoot();
+        }
+
+        var anchor:HierarchyPath;
+        var focus:HierarchyPath;
+
+        anchor = action.targetPath.concat(action.startPath);
+        focus = action.endPath ? action.targetPath.concat(action.endPath) : null;
+
+        context.selection = new ContentSelection(anchor, focus);
+        
+        return new SelectAction(originalTarget, originalAnchor, originalFocus);
     }
 
     private _find(root:DocumentTreeNode, path: HierarchyPath) : [DocumentTreeNode, HierarchyPath] {
@@ -83,12 +139,7 @@ export default class DocumentManager {
                 relativeStartPath = result[1];
             }
 
-            var keyListener = RteConfig.getKeyEventListener(event.key, event.modifiers);
-
-            if(keyListener === null)
-                return;
-
-            var action = keyListener.handleKeyEvent(event.key, event.modifiers, rootPath, relativeStartPath, relativeEndPath);
+            var action = node.handleKeyEvent(event.key, event.modifiers, rootPath, relativeStartPath, relativeEndPath);
             
             if(action !== null){
                 this._processAction(action);
@@ -100,40 +151,15 @@ export default class DocumentManager {
     }
 
     private _processAction(action:Action):void{
-        var target = this._find(this._document, action.targetPath)[0];
+        var context = new ActionContext(this._selection);
 
-        var actionType = action.constructor.name;
+        this._do(action, context);
 
-        var actionHandler = this._findActionHandler(actionType, target);
+        this._selection = context.selection;
 
-        if(actionHandler != null){
-            var context = new ActionContext(this._selection);
-
-            var undoAction = actionHandler.do(action, target, context);
-
-            this._selection = context.selection;
-
-            var event = new DocumentChangeEvent(action.targetPath, this._document, this._selection);
-            
-            this._changeSubject.next(event);
-        }
-    }
-
-    private _findActionHandler(actionType:string, node: DocumentTreeNode) : ActionHandler<any,any> {
-        var nodeType = node.constructor.name;
-
-        var actionHandler = RteConfig.getRegisteredActionHandler(nodeType, actionType);
-
-        if(actionHandler != null) {
-            return actionHandler;
-        }
-
-        if(nodeType === 'DocumentTreeNode')
-            return null;
-            
-        var parentObject = Object.getPrototypeOf(node) as DocumentTreeNode;
-
-        return this._findActionHandler(actionType, parentObject);        
+        var event = new DocumentChangeEvent(action.targetPath, this._document, this._selection);
+        
+        this._changeSubject.next(event);
     }
 
 }
